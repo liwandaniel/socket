@@ -1,0 +1,35 @@
+_config:
+  _metadata:
+    description: postgres-10-alpine
+    name: postgres
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: 10-alpine
+  controllers:
+  - containers:
+    - env:
+      - name: POSTGRES_PASSWORD
+        value: 7c6fa0e1ec027acc14afc0f0
+      image: '[[ g_registry_prefix_release ]]/postgres:10-alpine'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: postgres-storage
+        path: /var/lib/postgresql/data
+      ports:
+      - port: 5432
+        protocol: TCP
+    controller:
+      replicas: 1
+    services:
+    - name: kubeflow-admin-postgres
+      ports:
+      - port: 5432
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment
+    volumes:
+    - name: postgres-storage
+      source:
+        target: kubeflow-admin-postgres-data
+      type: Static

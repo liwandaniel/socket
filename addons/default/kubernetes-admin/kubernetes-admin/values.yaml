@@ -1,0 +1,69 @@
+_config:
+  _metadata:
+    description: kubernetes-admin-v1.1.5
+    name: kubernetes-admin
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: v1.1.5
+  controllers:
+  - containers:
+    - env:
+      - from:
+          key: kubernetes-admin.mongo-server
+          name: generic-config
+          type: Config
+        name: MONGO_IP
+      - from:
+          key: kubernetes-admin.cds-server
+          name: generic-config
+          type: Config
+        name: CDS_SERVER
+      - from:
+          key: kubernetes-admin.cyclone-endpoint
+          name: generic-config
+          type: Config
+        name: CYCLONE_ENDPOINT
+      - from:
+          key: kubernetes-admin.apiserver-host
+          name: generic-config
+          type: Config
+        name: APISERVER_HOST
+      - name: Namespace
+        value: default
+      - from:
+          key: kubernetes-admin.webhook-token
+          name: generic-config
+          type: Config
+        name: WEBHOOK_TOKEN
+      - from:
+          key: kubernetes-admin.monitoring-admin
+          name: generic-config
+          type: Config
+        name: MONITORING_ADMIN
+      - from:
+          key: kubernetes-admin.helm-registry
+          name: generic-config
+          type: Config
+        name: HELM_REGISTRY_HOST
+      - from:
+          key: kubernetes-admin.helm-registry
+          name: generic-config
+          type: Config
+        name: HELM_REGISTRY_ENDPOINT
+      - name: HELM_TILLER_PORT
+        value: '32767'
+      image: '[[ g_registry_prefix_release ]]/kubernetes-admin:v1.1.5'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 7799
+        protocol: TCP
+    controller:
+      replicas: 1
+    services:
+    - name: kubernetes-admin
+      ports:
+      - port: 7799
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment

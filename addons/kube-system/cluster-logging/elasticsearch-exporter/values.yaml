@@ -1,0 +1,38 @@
+_config:
+  _metadata:
+    description: elasticsearch_exporter-1.0.1
+    name: elasticsearch_exporter
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: 1.0.1
+  controllers:
+  - containers:
+    - command:
+      - /bin/elasticsearch_exporter
+      - -es.uri=http://elasticsearch:9200
+      - -es.all=true
+      image: '[[ g_registry_prefix_release ]]/elasticsearch_exporter:1.0.1'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 9108
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 100m
+          memory: 128Mi
+        requests:
+          cpu: 25m
+          memory: 64Mi
+    controller:
+      replica: 1
+    services:
+    - name: elasticsearch-exporter
+      ports:
+      - annotations:
+          prometheus.io/port: '9108'
+          prometheus.io/scrape: 'true'
+        port: 9108
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment

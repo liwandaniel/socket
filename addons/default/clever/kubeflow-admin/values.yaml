@@ -1,0 +1,80 @@
+_config:
+  _metadata:
+    description: kubeflow-admin-v0.3.0
+    name: kubeflow-admin
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: v0.3.0
+  controllers:
+  - containers:
+    - env:
+      - from:
+          key: kubeflow-admin.db-conn-str
+          name: generic-config
+          type: Config
+        name: KUBEFLOW_ADMIN_POSTGRESQL
+      - from:
+          key: kubeflow-admin.app-admin
+          name: generic-config
+          type: Config
+        name: APP_ADMIN
+      - from:
+          key: kubeflow-admin.storage-manager
+          name: generic-config
+          type: Config
+        name: STORAGE_MANAGER
+      - from:
+          key: kubeflow-admin.k8s-host
+          name: generic-config
+          type: Config
+        name: KUBE_APISERVER
+      - from:
+          key: kubeflow-admin.k8s-username
+          name: generic-config
+          type: Config
+        name: KUBE_USERNAME
+      - from:
+          key: kubeflow-admin.k8s-password
+          name: generic-config
+          type: Config
+        name: KUBE_PASSWORD
+      image: '[[ g_registry_prefix_release ]]/kubeflow-admin:v0.3.0'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 8080
+        protocol: TCP
+    controller:
+      replicas: 1
+    initContainers:
+    - args:
+      - sh
+      - -c
+      - until nslookup kubeflow-admin-postgres; do echo waiting for mydb; sleep 2;
+        done;
+      image: '[[ g_registry_prefix_release ]]/alpine:3.6'
+      imagePullPolicy: IfNotPresent
+    - args:
+      - admin
+      - migrate
+      - up
+      env:
+      - from:
+          key: kubeflow-admin.db-conn-str
+          name: generic-config
+          type: Config
+        name: KUBEFLOW_ADMIN_POSTGRESQL
+      image: '[[ g_registry_prefix_release ]]/kubeflow-admin:v1.0.0'
+      imagePullPolicy: IfNotPresent
+    pod:
+      terms:
+        selector:
+          labels:
+            caicloud-app: kubeflow-admin
+    services:
+    - name: kubeflow-admin
+      ports:
+      - port: 8080
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment

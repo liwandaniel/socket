@@ -1,0 +1,158 @@
+_config:
+  _metadata:
+    description: cluster-machine-v1.1.0-alpha.0
+    name: cluster-machine
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: v1.1.0-alpha.0
+  controllers:
+  - containers:
+    - env:
+      - name: ENV_CONTROLLER_MAX_RETRY_TIMES
+        value: '0'
+      - name: ENV_CONTROLLER_RESYNC_PERIOD_SECOND
+        value: '180'
+      - name: ENV_LOG_LEVEL
+        value: info
+      - name: MONGO_ADDR
+        value: cds-mongo:27017
+      - name: EXECUTOR_MONGO_IP
+        value: cds-mongo
+      - name: EXECUTOR_SERVICE_PORT
+        value: '8765'
+      - name: EXECUTOR_UPLOAD_CONFIG
+        value: 'true'
+      - name: EXECUTOR_SELFSIGNED_CERT
+        value: 'false'
+      - name: BASE64_ENCODED_PASSWORD
+        value: 'true'
+      - name: EXECUTOR_RELEASE_HOST_URL
+        value: http://[[ cluster-admin-executor.offline-cacher-ip ]]:3142/files
+      - name: CAICLOUD_K8S_CFG_STRING_KUBE_BASE_VERSION
+        value: v1.8.6
+      - name: CAICLOUD_K8S_CFG_STRING_KUBE_CAICLOUD_VERSION
+        value: v1.8.6
+      - name: EXECUTOR_CAICLOUD_VERSION
+        value: v1.8.6+v1.8.6
+      - from:
+          key: cluster-admin-executor.publish-server-version
+          name: generic-config
+          type: Config
+        name: CAICLOUD_K8S_CFG_STRING_PUBLISH_SERVER_VERSION
+      - name: CAICLOUD_K8S_CFG_NUMBER_SETUP_KUBELET_EVICTION
+        value: 'false'
+      - name: CAICLOUD_K8S_CFG_STRING_DOCKER_PARTITION
+        value: ''
+      - name: CAICLOUD_K8S_CFG_STRING_KUBELET_PARTITION
+        value: ''
+      - from:
+          key: cluster-admin-executor.heketi-user-admin
+          name: generic-config
+          type: Config
+        name: CAICLOUD_K8S_CFG_STRING_HEKETI_USER_ADMIN
+      - from:
+          key: cluster-admin-executor.addon-manager-master-addr
+          name: generic-config
+          type: Config
+        name: CAICLOUD_K8S_CFG_STRING_ADDON_MANAGER_MASTER_URL
+      - from:
+          key: cluster-admin-executor.offline-mode
+          name: generic-config
+          type: Config
+        name: CAICLOUD_K8S_CFG_NUMBER_OFFLINE_MODE
+      - from:
+          key: cluster-admin-executor.offline-cacher-ip
+          name: generic-config
+          type: Config
+        name: CAICLOUD_K8S_CFG_STRING_OFFLINE_CACHER_IP
+      - from:
+          key: cluster-admin-executor.registry-prefix
+          name: generic-config
+          type: Config
+        name: CAICLOUD_K8S_CFG_STRING_REGISTRY_PREFIX
+      - from:
+          key: cluster-admin-executor.ensure-registry-hosts
+          name: generic-config
+          type: Config
+        name: CAICLOUD_K8S_CFG_NUMBER_ENSURE_REGISTRY_HOSTS
+      - from:
+          key: cluster-admin-executor.registry-ip
+          name: generic-config
+          type: Config
+        name: CAICLOUD_K8S_CFG_STRING_REGISTRY_IP
+      - from:
+          key: cluster-admin-executor.use-aufs
+          name: generic-config
+          type: Config
+        name: CAICLOUD_K8S_CFG_NUMBER_USE_AUFS
+      - from:
+          key: cluster-admin-executor.use-hyperkube
+          name: generic-config
+          type: Config
+        name: CAICLOUD_K8S_CFG_NUMBER_USE_HYPERKUBE
+      - from:
+          key: cluster-admin-executor.paging-external-addr
+          name: generic-config
+          type: Config
+        name: EXECUTOR_PAGING_EXTERNAL_ADDR
+      - from:
+          key: cluster-admin-executor.running-env
+          name: generic-config
+          type: Config
+        name: EXECUTOR_RUNNING_ENV
+      - from:
+          key: cluster-admin-executor.docker-direct-lvm
+          name: generic-config
+          type: Config
+        name: CAICLOUD_K8S_CFG_NUMBER_DOCKER_DIRECT_LVM
+      - from:
+          key: cluster-admin-executor.docker-lvm-partition
+          name: generic-config
+          type: Config
+        name: CAICLOUD_K8S_CFG_STRING_DOCKER_LVM_PARTITION
+      - from:
+          key: cluster-admin-executor.glusterfs-storageclass-addr
+          name: generic-config
+          type: Config
+        name: CAICLOUD_K8S_CFG_STRING_GLUSTERFS_STORAGECLASS_ADDR
+      - from:
+          key: cluster-admin-executor.rhel-yum-server
+          name: generic-config
+          type: Config
+        name: CAICLOUD_K8S_CFG_STRING_RHEL_YUM_SERVER
+      - from:
+          key: cluster-admin-executor.storage-backend
+          name: generic-config
+          type: Config
+        name: CAICLOUD_K8S_CFG_STRING_STORAGE_BACKEND
+      - from:
+          key: cluster.gpu-setup
+          name: generic-config
+          type: Config
+        name: CAICLOUD_K8S_CFG_NUMBER_GPU_SETUP
+      - name: ANCHNET_IP_GROUP
+        value: eipg-98dyd0aj
+      - name: ANCHNET_IMAGE
+        value: img-6CIUFP3S
+      - name: ANCHNET_MODE
+        value: image
+      image: '[[ g_registry_prefix_release ]]/cluster-machine-controller:v1.1.0-alpha.0'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: caicloudapp-ssl-cert
+        path: /etc/caicloud/secrets/certs
+        readonly: true
+    controller:
+      replica: 1
+      strategy:
+        surge: 1
+        unavailable: 0
+    pod:
+      serviceAccountName: admin
+    type: Deployment
+    volumes:
+    - name: caicloudapp-ssl-cert
+      source:
+        target: caicloudapp-ssl-cert
+      type: Secret

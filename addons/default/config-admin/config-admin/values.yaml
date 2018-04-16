@@ -1,0 +1,30 @@
+_config:
+  _metadata:
+    description: config-admin-v0.1.7
+    name: config-admin
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: v0.1.7
+  controllers:
+  - containers:
+    - env:
+      - name: MONGO_HOST
+        value: config-admin-mongo
+      image: '[[ g_registry_prefix_release ]]/config-admin:v0.1.7'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 8080
+        protocol: TCP
+    controller:
+      replicas: 1
+      strategy:
+        surge: 1
+        unavailable: 0
+    services:
+    - name: config-admin
+      ports:
+      - port: 8080
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment

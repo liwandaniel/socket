@@ -1,0 +1,33 @@
+_config:
+  _metadata:
+    description: notify-admin-v0.0.4
+    name: notify-admin
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: v0.0.4
+  controllers:
+  - containers:
+    - args:
+      - /admin
+      - --db.host=notify-admin-postgres
+      - --db.auto-migrate=true
+      image: '[[ g_registry_prefix_release ]]/notify-admin:v0.0.4'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 8900
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 1
+          memory: 500Mi
+        requests:
+          cpu: 100m
+          memory: 50Mi
+    services:
+    - name: notify-admin
+      ports:
+      - port: 8900
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment

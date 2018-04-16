@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+data:
+  myhosts: [[ private-dns.myhosts ]]
+metadata:
+  name: kube-dns
+  namespace: kube-system
+  labels:
+    kubernetes.io/cluster-service: "true"

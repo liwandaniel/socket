@@ -1,0 +1,24 @@
+_config:
+  _metadata:
+    description: redis-3.0.3
+    name: redis
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: 3.0.3
+  controllers:
+  - containers:
+    - image: '[[ g_registry_prefix_release ]]/redis:3.0.3'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 6379
+        protocol: TCP
+    controller:
+      replica: 1
+    services:
+    - name: clever-web-redis
+      ports:
+      - port: 6379
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment

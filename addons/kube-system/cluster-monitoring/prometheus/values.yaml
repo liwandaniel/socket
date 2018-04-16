@@ -1,0 +1,73 @@
+_config:
+  _metadata:
+    description: prometheus-release-v2.1.0
+    name: prometheus
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: release-v2.1.0
+  controllers:
+  - containers:
+    - args:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention=7d
+      - --web.enable-lifecycle
+      image: '[[ g_registry_prefix_release ]]/prometheus:release-v2.1.0'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: prometheus-config
+        path: /etc/prometheus
+      ports:
+      - port: 9090
+        protocol: TCP
+      resources:
+        limits:
+          cpu: '4'
+          memory: 8Gi
+        requests:
+          cpu: '2'
+          memory: 4Gi
+    - env:
+      - name: WATCH_DIR
+        value: /etc/prometheus
+      image: '[[ g_registry_prefix_release ]]/prom-reloader:v0.0.1'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: prometheus-config
+        path: /etc/prometheus
+      - name: prometheus-data
+        path: /prometheus
+    - args:
+      - --web.listen-address=:9101
+      image: '[[ g_registry_prefix_release ]]/hierarchy-exporter:v0.2'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 9101
+        protocol: TCP
+    controller:
+      replicas: 1
+    services:
+    - name: prometheus
+      ports:
+      - nodePort: 32100
+        port: 9090
+        protocol: TCP
+        targetPort: 9090
+      type: NodePort
+    - name: prometheus-0
+      ports:
+      - port: 9090
+        protocol: TCP
+        targetPort: 9090
+      type: ClusterIP
+    type: StatefulSet
+    volumes:
+    - name: prometheus-config
+      source:
+        target: prometheus-config
+      type: Config
+    - name: prometheus-data
+      source:
+        medium: ''
+      type: Scratch

@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: am-master-v3.0
+  namespace: [[ default_namespace ]]
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      caicloud-app: am-master
+  template:
+    metadata:
+      labels:
+        caicloud-app: am-master
+    spec:
+      containers:
+      - name: am-master
+        image: [[ g_registry_prefix_release ]]/am_master:v3.0
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: SECRET_KEY
+          value: 'q*(7(ljz=i61)f_^6vu42u0i1cl4-txz@h6h79kn%c49w$j=n9'
+        - name: MYSQL_HOST
+          value: 'am-mysql'
+        - name: MYSQL_PASSWORD
+          value: 'my-secret-pw'
+        - name: MYSQL_PORT
+          value: '3306'
+        ports:
+        - containerPort: 8000

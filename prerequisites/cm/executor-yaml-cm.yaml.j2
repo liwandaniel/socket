@@ -1,0 +1,159 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: executor-yaml
+  labels:
+    caicloud.io/cluster-service: "true"
+data:
+  executor.yaml: |-
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: cluster-admin-executor
+      labels:
+        role: cluster-admin-executor
+    spec:
+      containers:
+      - name: k8s-scripts
+        image: [[ g_registry_prefix_release ]]/k8s-scripts:v0.12.13
+        imagePullPolicy: [[ cluster-admin-executor.default-imagepullpolicy ]]
+        volumeMounts:
+        - name: scripts
+          mountPath: "/scripts"
+      - name: executor
+        image: [[ g_registry_prefix_release ]]/cluster-admin-executor:v0.1.23
+        imagePullPolicy: [[ cluster-admin-executor.default-imagepullpolicy ]]
+        env:
+          - name: EXECUTOR_MONGO_IP
+            value: "cds-mongo"
+          - name: EXECUTOR_SERVICE_PORT
+            value: "8765"
+          - name: EXECUTOR_UPLOAD_CONFIG
+            value: "true"
+          - name: EXECUTOR_SELFSIGNED_CERT
+            value: "false"
+          - name: BASE64_ENCODED_PASSWORD
+            value: "true"
+          - name: EXECUTOR_RELEASE_HOST_URL
+            value: "http://[[ cluster-admin-executor.offline-cacher-ip ]]:3142/files"
+          - name: CAICLOUD_K8S_CFG_STRING_KUBE_BASE_VERSION
+            value: "v1.7.9"
+          - name: CAICLOUD_K8S_CFG_STRING_KUBE_CAICLOUD_VERSION
+            value: "v1.7.9"
+          - name: EXECUTOR_CAICLOUD_VERSION
+            value: "v1.7.9+v1.7.9"
+          - name: CAICLOUD_K8S_CFG_STRING_PUBLISH_SERVER_VERSION
+            valueFrom:
+              configMapKeyRef:
+                name: generic-config
+                key: cluster-admin-executor.publish-server-version
+          - name: CAICLOUD_K8S_CFG_NUMBER_SETUP_KUBELET_EVICTION
+            value: "false"
+          - name: CAICLOUD_K8S_CFG_STRING_DOCKER_PARTITION
+            value: ""
+          - name: CAICLOUD_K8S_CFG_STRING_KUBELET_PARTITION
+            value: ""
+          - name: CAICLOUD_K8S_CFG_STRING_HEKETI_USER_ADMIN
+            valueFrom:
+              configMapKeyRef:
+                name: generic-config
+                key: cluster-admin-executor.heketi-user-admin
+          - name: CAICLOUD_K8S_CFG_STRING_ADDON_MANAGER_MASTER_URL
+            valueFrom:
+              configMapKeyRef:
+                name: generic-config
+                key: cluster-admin-executor.addon-manager-master-addr
+          - name: CAICLOUD_K8S_CFG_NUMBER_OFFLINE_MODE
+            valueFrom:
+              configMapKeyRef:
+                name: generic-config
+                key: cluster-admin-executor.offline-mode
+          - name: CAICLOUD_K8S_CFG_STRING_OFFLINE_CACHER_IP
+            valueFrom:
+              configMapKeyRef:
+                name: generic-config
+                key: cluster-admin-executor.offline-cacher-ip
+          - name: CAICLOUD_K8S_CFG_STRING_REGISTRY_PREFIX
+            valueFrom:
+              configMapKeyRef:
+                name: generic-config
+                key: cluster-admin-executor.registry-prefix
+          - name: CAICLOUD_K8S_CFG_NUMBER_ENSURE_REGISTRY_HOSTS
+            valueFrom:
+              configMapKeyRef:
+                name: generic-config
+                key: cluster-admin-executor.ensure-registry-hosts
+          - name: CAICLOUD_K8S_CFG_STRING_REGISTRY_IP
+            valueFrom:
+              configMapKeyRef:
+                name: generic-config
+                key: cluster-admin-executor.registry-ip
+          - name: CAICLOUD_K8S_CFG_NUMBER_USE_AUFS
+            valueFrom:
+              configMapKeyRef:
+                name: generic-config
+                key: cluster-admin-executor.use-aufs
+          - name: CAICLOUD_K8S_CFG_NUMBER_USE_HYPERKUBE
+            valueFrom:
+              configMapKeyRef:
+                name: generic-config
+                key: cluster-admin-executor.use-hyperkube
+          - name: EXECUTOR_PAGING_EXTERNAL_ADDR
+            valueFrom:
+              configMapKeyRef:
+                name: generic-config
+                key: cluster-admin-executor.paging-external-addr
+          - name: EXECUTOR_RUNNING_ENV
+            valueFrom:
+              configMapKeyRef:
+                name: generic-config
+                key: cluster-admin-executor.running-env
+          - name: CAICLOUD_K8S_CFG_NUMBER_DOCKER_DIRECT_LVM
+            valueFrom:
+              configMapKeyRef:
+                name: generic-config
+                key: cluster-admin-executor.docker-direct-lvm
+          - name: CAICLOUD_K8S_CFG_STRING_DOCKER_LVM_PARTITION
+            valueFrom:
+              configMapKeyRef:
+                name: generic-config
+                key: cluster-admin-executor.docker-lvm-partition
+          - name: CAICLOUD_K8S_CFG_STRING_GLUSTERFS_STORAGECLASS_ADDR
+            valueFrom:
+              configMapKeyRef:
+                name: generic-config
+                key: cluster-admin-executor.glusterfs-storageclass-addr
+          - name: CAICLOUD_K8S_CFG_STRING_RHEL_YUM_SERVER
+            valueFrom:
+              configMapKeyRef:
+                name: generic-config
+                key: cluster-admin-executor.rhel-yum-server
+          - name: CAICLOUD_K8S_CFG_STRING_STORAGE_BACKEND
+            valueFrom:
+              configMapKeyRef:
+                name: generic-config
+                key: cluster-admin-executor.storage-backend
+          - name: CAICLOUD_K8S_CFG_STRING_MYHOSTS_DATA
+            valueFrom:
+              configMapKeyRef:
+                name: generic-config
+                key: private-dns.myhosts
+          - name: ANCHNET_IP_GROUP
+            value: "eipg-98dyd0aj"
+          - name: ANCHNET_IMAGE
+            value: "img-6CIUFP3S"
+          - name: ANCHNET_MODE
+            value: "image"
+        volumeMounts:
+        - name: scripts
+          mountPath: "/kubernetes"
+        - name: caicloudapp-ssl-cert
+          mountPath: /etc/caicloud/secrets/certs
+          readOnly: true
+      volumes:
+      - name: caicloudapp-ssl-cert
+        secret:
+          secretName: caicloudapp-ssl-cert
+      - name: scripts
+        emptyDir: {}
+      restartPolicy: Never

@@ -1,0 +1,35 @@
+_config:
+  _metadata:
+    description: mongo-v3.0.15
+    name: mongo
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: v3.0.15
+  controllers:
+  - containers:
+    - args:
+      - mongod
+      - --smallfiles
+      image: '[[ g_registry_prefix_release ]]/mongo:v3.0.15'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: mongo-storage
+        path: /data/db
+      ports:
+      - port: 27017
+        protocol: TCP
+    controller:
+      replicas: 1
+    services:
+    - name: cyclone-mongo-server
+      ports:
+      - port: 27017
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment
+    volumes:
+    - name: mongo-storage
+      source:
+        target: cyclone-mongo-data
+      type: Static

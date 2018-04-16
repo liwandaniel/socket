@@ -1,0 +1,10 @@
+release/storage-manager:v1.4.1
+release/storage-fileserver:v1.3.1
+release/postgres:10-alpine
+release/clever-web:v2.1.2
+release/kubeflow-admin:v0.3.0
+release/redis:3.0.3
+release/alpine:3.6
+library/mysql:5.7.14
+library/tensorflow:v1.4.0-example
+library/tf_serving:v1.4.0-universal

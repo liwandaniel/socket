@@ -1,0 +1,66 @@
+_config:
+  _metadata:
+    description: cauth-v2.1.0-alpha.4
+    name: cauth
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: v2.1.0-alpha.4
+  controllers:
+  - containers:
+    - args:
+      - --finalizer-config-path=/app/etc/finalizer/finalizer.yaml
+      env:
+      - name: ENABLE_HOOK
+        value: 'true'
+      - name: MONGO_ADDR
+        value: dex-cauth-mongo:27017
+      - name: SKIP_VERIFY_EMAIL
+        value: 'true'
+      - from:
+          key: cauth.smtp-server
+          name: generic-config
+          type: Config
+        name: SMTP_SERVER
+      - from:
+          key: cauth.smtp-port
+          name: generic-config
+          type: Config
+        name: SMTP_PORT
+      - name: ENABLE_SMTP_SSL
+        value: 'true'
+      - from:
+          key: cauth.smtp-user
+          name: generic-config
+          type: Config
+        name: SMTP_USER
+      - from:
+          key: cauth.smtp-pass
+          name: generic-config
+          type: Config
+        name: SMTP_PASSWORD
+      - from:
+          key: cauth.multi-tenant
+          name: generic-config
+          type: Config
+        name: MULTI_TENANT
+      image: '[[ g_registry_prefix_release ]]/cauth:v2.1.0-alpha.4'
+      imagePullPolicy: IfNotPresent
+      name: cauth
+      resources:
+        limits:
+          cpu: 500m
+          memory: 500Mi
+        requests:
+          cpu: 200m
+          memory: 200Mi
+    controller:
+      replicas: 1
+    services:
+    - name: dex-cauth
+      ports:
+      - port: 8080
+        protocol: TCP
+        targetPort: 8080
+      type: ClusterIP
+    type: Deployment

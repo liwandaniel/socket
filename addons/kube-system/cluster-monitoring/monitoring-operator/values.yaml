@@ -1,0 +1,23 @@
+_config:
+  _metadata:
+    description: monitoring-operator-v0.0.1
+    name: monitoring-operator
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: v0.0.1
+  controllers:
+  - containers:
+    - args:
+      - --clusterAdminAddr=cluster-admin.default:2233
+      - --mongodbURL=mongodb://monitoring-admin-mongo.default:27017
+      image: '[[ g_registry_prefix_release ]]/monitoring-operator:v0.0.1'
+      imagePullPolicy: IfNotPresent
+    controller:
+      replica: 1
+      strategy:
+        rollingUpdate:
+          maxSurge: 1
+          maxUnavailable: 0
+        type: RollingUpdate
+    type: Deployment

@@ -1,0 +1,35 @@
+_config:
+  _metadata:
+    description: heapster-v1.2.0-v0.0.3
+    name: heapster
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: v1.2.0-v0.0.3
+  controllers:
+  - containers:
+    - command:
+      - /heapster
+      - --source=kubernetes.caicloud:''
+      - --sink=influxdb:http://monitoring-influxdb:8086?withfields=true
+      - --metric_resolution=60s
+      - --processors=kubernetes.caicloud
+      image: '[[ g_registry_prefix_release ]]/heapster:v1.2.0-v0.0.3'
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 100m
+          memory: 200Mi
+        requests:
+          cpu: 100m
+          memory: 200Mi
+    controller:
+      replica: 1
+    services:
+    - name: heapster
+      ports:
+      - port: 80
+        protocol: TCP
+        targetPort: 8082
+      type: ClusterIP
+    type: Deployment

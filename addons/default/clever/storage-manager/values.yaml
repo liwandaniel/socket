@@ -1,0 +1,121 @@
+_config:
+  _metadata:
+    description: storage-manager-v1.4.1
+    name: storage-manager
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: v1.4.1
+  controllers:
+  - containers:
+    - env:
+      - from:
+          key: storage-manager.app-admin
+          name: generic-config
+          type: Config
+        name: APP_ADMIN_URL
+      - from:
+          key: storage-manager.fileserver-image
+          name: generic-config
+          type: Config
+        name: FILESERVER_IMAGE
+      - from:
+          key: storage-manager.fileserver-limits-cpu
+          name: generic-config
+          type: Config
+        name: FILESERVER_LIMITS_CPU
+      - from:
+          key: storage-manager.fileserver-limits-memory
+          name: generic-config
+          type: Config
+        name: FILESERVER_LIMITS_MEMORY
+      - from:
+          key: storage-manager.fileserver-requests-cpu
+          name: generic-config
+          type: Config
+        name: FILESERVER_REQUESTS_CPU
+      - from:
+          key: storage-manager.fileserver-requests-memory
+          name: generic-config
+          type: Config
+        name: FILESERVER_REQUESTS_MEMORY
+      - from:
+          key: storage-manager.fileserver-volume-count
+          name: generic-config
+          type: Config
+        name: FILESERVER_VOLUME_COUNT
+      - from:
+          key: clever.kube-cluster-id
+          name: generic-config
+          type: Config
+        name: KUBE_CLUSTER_ID
+      - from:
+          key: clever.kube-cluster-ownerid
+          name: generic-config
+          type: Config
+        name: KUBE_CLUSTER_OWNER_ID
+      - from:
+          key: clever.kube-host
+          name: generic-config
+          type: Config
+        name: KUBE_HOST
+      - from:
+          key: clever.kube-user
+          name: generic-config
+          type: Config
+        name: KUBE_USER
+      - from:
+          key: clever.kube-password
+          name: generic-config
+          type: Config
+        name: KUBE_PASSWORD
+      - from:
+          key: storage-manager.poll-interval-second
+          name: generic-config
+          type: Config
+        name: POLL_INTERVAL_SECOND
+      - from:
+          key: storage-manager.kube-namespace
+          name: generic-config
+          type: Config
+        name: STORAGE_KUBE_NAMESPACE
+      - from:
+          key: storage-manager.mysql
+          name: generic-config
+          type: Config
+        name: STORAGE_MYSQL_DB_STRING
+      - from:
+          key: storage-manager.volume-kube-storageclass
+          name: generic-config
+          type: Config
+        name: VOLUME_KUBE_STORAGECLASS
+      - from:
+          key: storage-manager.volume-size
+          name: generic-config
+          type: Config
+        name: VOLUME_SIZE
+      - from:
+          key: storage-manager.volumes-pool-size
+          name: generic-config
+          type: Config
+        name: VOLUMES_POOL_SIZE
+      image: '[[ g_registry_prefix_release ]]/storage-manager:v1.4.1'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 4500
+        protocol: TCP
+      stdin: true
+    controller:
+      replicas: 1
+    pod:
+      terms:
+        selector:
+          labels:
+            caicloud-app: storage-manager
+    services:
+    - name: storage-manager
+      ports:
+      - port: 4500
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment

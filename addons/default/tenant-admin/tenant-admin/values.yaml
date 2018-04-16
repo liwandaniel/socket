@@ -1,0 +1,27 @@
+_config:
+  _metadata:
+    description: tenant-admin-v1.1.0-alpha.1
+    name: tenant-admin
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: v1.1.0-alpha.1
+  controllers:
+  - containers:
+    - env:
+      - name: CDS_HOST
+        value: cds-server:9000
+      image: '[[ g_registry_prefix_release ]]/tenant-admin:v1.1.0-alpha.1'
+      imagePullPolicy: IfNotPresent
+    controller:
+      replicas: 1
+      strategy:
+        surge: 1
+        unavailable: 0
+    services:
+    - name: tenant-admin
+      ports:
+      - port: 8080
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment

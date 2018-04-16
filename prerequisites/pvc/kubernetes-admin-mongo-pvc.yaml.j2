@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kubernetes-admin-mongo-data
+  namespace: [[ default_namespace ]]
+  labels:
+    caicloud-app: kubernetes-admin-mongo-data
+spec:
+  storageClassName: heketi-storageclass
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 4096Mi

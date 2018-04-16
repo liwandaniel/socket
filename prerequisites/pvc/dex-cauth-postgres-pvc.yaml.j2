@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dex-postgres-data
+  namespace: [[ default_namespace ]]
+  labels:
+    caicloud-app: dex-postgres-data
+spec:
+  storageClassName: heketi-storageclass
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 4096Mi

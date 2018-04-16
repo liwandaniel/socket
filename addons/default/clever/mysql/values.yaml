@@ -1,0 +1,42 @@
+_config:
+  _metadata:
+    description: mysql-5.7.14
+    name: mysql
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: 5.7.14
+  controllers:
+  - containers:
+    - env:
+      - name: MYSQL_DATABASE
+        value: storage
+      - name: DATADIR
+        value: /var/lib/mysql
+      - from:
+          key: storage-manager-mysql.root-password
+          name: generic-config
+          type: Config
+        name: MYSQL_ROOT_PASSWORD
+      image: '[[ g_registry_prefix_library ]]/mysql:5.7.14'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: manager-data
+        path: /var/lib/mysql
+      ports:
+      - port: 3306
+        protocol: TCP
+    controller:
+      replicas: 1
+    services:
+    - name: storage-manager-mysql
+      ports:
+      - port: 3306
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment
+    volumes:
+    - name: manager-data
+      source:
+        target: storage-manager-mysql
+      type: Static

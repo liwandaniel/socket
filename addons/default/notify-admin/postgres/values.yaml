@@ -1,0 +1,38 @@
+_config:
+  _metadata:
+    description: postgres-10.1-alpine
+    name: postgres
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: 10.1-alpine
+  controllers:
+  - containers:
+    - env:
+      - name: POSTGRES_USER
+        value: postgres
+      - name: POSTGRES_DB
+        value: postgres
+      - name: PGDATA
+        value: /var/lib/postgresql/data/pgdata
+      image: '[[ g_registry_prefix_release ]]/postgres:10.1-alpine'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: postgres-storage
+        path: /var/lib/postgresql/data
+      name: postgres
+      ports:
+      - port: 5432
+        protocol: TCP
+    services:
+    - name: notify-admin-postgres
+      ports:
+      - port: 5432
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment
+    volumes:
+    - name: postgres-storage
+      source:
+        target: notify-admin-postgres-data
+      type: Static

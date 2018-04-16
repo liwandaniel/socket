@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: am-mysql-data
+  namespace: [[ default_namespace ]]
+  labels:
+    caicloud-app: am-mysql-data
+spec:
+  storageClassName: heketi-storageclass
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 4096Mi

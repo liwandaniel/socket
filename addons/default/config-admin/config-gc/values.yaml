@@ -1,0 +1,25 @@
+_config:
+  _metadata:
+    description: config-gc-v0.1.5
+    name: config-gc
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: v0.1.5
+  controllers:
+  - containers:
+    - env:
+      - name: CONFIG_ADMIN_URL
+        value: http://config-admin:8080
+      image: '[[ g_registry_prefix_release ]]/config-gc:v0.1.5'
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 500m
+          memory: 500Mi
+        requests:
+          cpu: 300m
+          memory: 200Mi
+    controller:
+      replicas: 1
+    type: Deployment

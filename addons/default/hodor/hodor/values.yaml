@@ -1,0 +1,74 @@
+_config:
+  _metadata:
+    description: hodor-v1.0.0-alpha.9
+    name: hodor
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: v1.0.0-alpha.9
+  controllers:
+  - containers:
+    - env:
+      - name: CAUTH_SERVER
+        value: cauth:8082
+      - name: CLUSTER_ADMIN_SERVER
+        value: cds-server:9000
+      - name: KUBERNETES_ADMIN_SERVER
+        value: kubernetes-admin:7799
+      - name: HELM_REGISTRY_SERVER
+        value: helm-registry:8099
+      - name: CYCLONE_SERVER
+        value: http://circle-server.cyclone:7099
+      - name: LOADBALANCER_SERVER
+        value: loadbalancer-admin:8080
+      - name: LOADBALANCER_SERVER_V2
+        value: loadbalancer-admin:8080
+      - name: CAUTH_V2_SERVER
+        value: dex-cauth:8080
+      - name: TENANT_ADMIN_SERVER
+        value: tenant-admin:8080
+      - name: CARGO_ADMIN_SERVER
+        value: cargo-admin:8080
+      - name: CONFIG_ADMIN_SERVER
+        value: config-admin:8080
+      - name: APP_ADMIN_SERVER
+        value: app-admin:7799
+      - name: LOGGING_ADMIN_SERVER
+        value: logging-admin:7800
+      - name: DEVOPS_ADMIN_SERVER
+        value: devops-admin:7088
+      - from:
+          key: dex.oidc_issuer
+          name: generic-config
+          type: Config
+        name: OIDC_ISSUER
+      - from:
+          key: dex.oidc_caicloud_client_id
+          name: generic-config
+          type: Config
+        name: OIDC_CLIENT_ID
+      - name: OIDC_ROOT_CA
+        value: ''
+      image: '[[ g_registry_prefix_release ]]/hodor:v1.0.0-alpha.9'
+      imagePullPolicy: IfNotPresent
+    controller:
+      replicas: 1
+    pod:
+      annotations: null
+      prometheus.io/port: '8080'
+      prometheus.io/scrape: 'true'
+    services:
+    - name: hodor-nodeport
+      ports:
+      - nodePort: 30069
+        port: 8080
+        protocol: TCP
+        targetPort: 8080
+      type: NodePort
+    - name: hodor
+      ports:
+      - port: 8080
+        protocol: TCP
+        targetPort: 8080
+      type: ClusterIP
+    type: Deployment
