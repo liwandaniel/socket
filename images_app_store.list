@@ -1,0 +1,14 @@
+library/filemanager:1.4.4
+library/galera:5.7.20
+library/gitlab-ce:10.3.3
+library/influxdb:1.4.2
+library/jenkins:2.101.0
+library/mariadb:10.2.12
+library/memcached:1.5.4
+library/mongo:3.6.1
+library/mysql:5.7.20
+library/nginx:1.13.8
+library/rabbitmq:3.7.2
+library/redis:4.0.6
+library/redmine:3.4.4
+library/wordpress:4.9.1
