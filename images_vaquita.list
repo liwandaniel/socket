@@ -1,7 +1,6 @@
 release/nvidia-k8s-device-plugin:1.10
 release/local-volume-provisioner:e43f3f6
 release/heketi:v4.1.6
-release/am_minion:v0.0.3
 release/templates:v1.2.4
 release/release-controller:v0.2.2
 release/keepalived:v1.2.19
