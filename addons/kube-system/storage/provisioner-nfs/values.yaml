@@ -1,0 +1,43 @@
+_config:
+  _metadata:
+    description: storage-provisioner-nfs-v0.0.2-alpha.1
+    name: storage-provisioner-nfs
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.0.2-alpha.1"
+  controllers:
+  - containers:
+    - env:
+      - name: ENV_KUBE_MASTER
+        value: ""
+      - name: ENV_KUBE_CONFIG
+        value: ""
+      - name: ENV_LOG_LEVEL
+        value: info
+      - name: ENV_LOG_VERBOSITY
+        value: "0"
+      - name: ENV_MOUNT_BASE
+        value: /caicloud/external-storage/mnt-nfs
+      - name: ENV_PROVISION_NAME
+        value: caicloud.io/nfs
+      - name: ENV_FAILED_DELETE_THRESHOLD
+        value: "15"
+      - name: ENV_FAILED_PROVISION_THRESHOLD
+        value: "15"
+      - name: ENV_CLEAN_UP_INTERVAL_SECOND
+        value: "600"
+      image: '[[ registry_release ]]/storage-nfs-multiple-provisioner:v0.0.2-alpha.1'
+      imagePullPolicy: IfNotPresent
+      securityContext:
+        privileged: true
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+    controller:
+      replica: 1
+    type: Deployment

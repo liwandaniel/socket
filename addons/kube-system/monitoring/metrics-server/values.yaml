@@ -1,0 +1,25 @@
+_config:
+  _metadata:
+    description: caicloud-metrics-server-v0.1.1
+    name: caicloud-metrics-server
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.1.1"
+  controllers:
+  - containers:
+    - image: '[[ registry_release ]]/caicloud-metrics-server:v0.1.1'
+      imagePullPolicy: IfNotPresent
+    controller:
+      replica: 3
+      strategy:
+        surge: 1
+        unavailable: 0
+    services:
+    - name: caicloud-metrics-server
+      ports:
+      - port: 443
+        protocol: TCP
+        targetPort: 8080
+      type: ClusterIP
+    type: Deployment

@@ -1,0 +1,70 @@
+_config:
+  _metadata:
+    description: console-web-v3.1.44
+    name: console-web
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v3.1.49"
+  controllers:
+  - containers:
+    - env:
+      - name: HIDE_MENU
+        value: caas_circle
+      - name: HIDE
+        value: forget
+      - name: CLOUD_ENV
+        value: private
+      - name: CLUSTER_ENV
+        value: '50'
+      - name: FORNAX_LOG_ENV
+        value: ws://[[ kube_apiserver_endpoint_ip ]]:30070
+      - name: OEM_ENV
+        value: '0'
+      - name: HODOR_SERVER
+        value: http://hodor:8080
+      - name: EXTERNAL_HODOR
+        value: ws://[[ kube_apiserver_endpoint_ip ]]:30069
+      - name: MONITOR_SERVER
+        value: http://[[ kube_apiserver_endpoint_ip ]]:30040
+      - name: MANUAL_URL
+        value: http://[[ kube_apiserver_endpoint_ip ]]:30040
+      - name: _CAAS_SERVER
+        value: '[[ kube_apiserver_endpoint_ip ]]:30000'
+      - name: CAICLOUD_PRODUCT_CFG_STRING_MULTI_TENANCY
+        value: '[[ multi_tenant ]]'
+      - name: DEX_SERVER
+        value: http://[[ kube_apiserver_endpoint_ip ]]:32000
+      - name: ISSUER
+        value: http://[[ kube_apiserver_endpoint_ip ]]:32000
+      - name: OIDC_CLIENT_ID
+        value: caicloud
+      - name: OIDC_CLIENT_SECRET
+        value: caicloud
+      - name: OIDC_REDIRECT_URI
+        value: /api/idToken
+      - name: SHOW_LANG
+        value: 'true'
+      # Following release info will be replaced by Makefile
+      - name: PRODUCT_VERSION
+        value: PLATFORM_RELEASE_VERSION
+      - name: PRODUCT_RELEASE_TIME
+        value: PLATFORM_RELEASE_TIME
+      image: '[[ registry_release ]]/console-web:v3.1.49'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 3000
+        protocol: TCP
+    controller:
+      replica: 1
+      strategy:
+        surge: 1
+        unavailable: 0
+    services:
+    - name: console-web
+      ports:
+      - nodePort: 30000
+        port: 3000
+        protocol: TCP
+      type: NodePort
+    type: Deployment

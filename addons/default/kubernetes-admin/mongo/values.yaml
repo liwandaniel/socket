@@ -5,22 +5,22 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: v3.0.15
+    version: "v3.0.15"
   controllers:
   - containers:
     - args:
       - mongod
       - --smallfiles
-      image: '[[ g_registry_prefix_release ]]/mongo:v3.0.15'
+      image: '[[ registry_release ]]/mongo:v3.0.15'
       imagePullPolicy: IfNotPresent
       mounts:
-      - name: mongo-storage
+      - name: storage
         path: /data/db
       ports:
       - port: 27017
         protocol: TCP
     controller:
-      replicas: 1
+      replica: 1
     services:
     - name: kubernetes-admin-mongo
       ports:
@@ -29,7 +29,12 @@ _config:
       type: ClusterIP
     type: Deployment
     volumes:
-    - name: mongo-storage
+    - name: storage
+      type: Dynamic
       source:
-        target: kubernetes-admin-mongo-data
-      type: Static
+        class: heketi-storageclass
+        modes:
+        - ReadWriteMany
+      storage:
+        request: 4096Mi
+        limit: 4096Mi

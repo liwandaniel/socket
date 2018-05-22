@@ -1,0 +1,27 @@
+_config:
+  _metadata:
+    description: storage-controller-v0.1.10-alpha.1
+    name: storage-controller
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.1.10-alpha.4"
+  controllers:
+  - containers:
+    - env:
+      - name: ENV_CONTROLLER_MAX_RETRY_TIMES
+        value: '0'
+      - name: ENV_LOG_LEVEL
+        value: info
+      image: '[[ registry_release ]]/storage-controller:v0.1.10-alpha.4'
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+    controller:
+      replica: 1
+    type: Deployment

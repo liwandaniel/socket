@@ -1,0 +1,59 @@
+_config:
+  _metadata:
+    description: alert-notifier-v0.4.1
+    name: alert-notifier
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.4.1"
+  controllers:
+  - containers:
+    - args:
+      - -config=/etc/alert-notifier/notifier.yaml
+      env:
+      - name: MONGO_ENDPOINT
+        value: monitoring-admin-mongo
+      image: '[[ registry_release ]]/alert-notifier:v0.4.1'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: notifier-config
+        path: /etc/alert-notifier
+      ports:
+      - port: 5001
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 100m
+          memory: 256Mi
+        requests:
+          cpu: 20m
+          memory: 50Mi
+    controller:
+      replica: 1
+    services:
+    - name: alert-notifier
+      ports:
+      - port: 5001
+        protocol: TCP
+        targetPort: 5001
+      type: ClusterIP
+    type: Deployment
+    volumes:
+    - name: notifier-config
+      source:
+        default: '420'
+        target: alert-notifier
+      type: Secret
+    secrets:
+    - name: alert-notifier
+      type: Opaque
+      data:
+      - key: notifier.yaml
+        value: c210cF9mcm9tOiBwYWdpbmdAY2FpY2xvdWQuaW8Kc210cF9zbWFydGhvc3Q6IHNtdHBoei5xaXllLjE2My5jb206MjUKc210cF9hdXRoX3VzZXJuYW1lOiA8dXNlcm5hbWU+CnNtdHBfYXV0aF9wYXNzd29yZDogPHBhc3N3b3JkPgpyZXNvbHZlVGltZW91dDogMTBtCg==
+    configs:
+    - name: alert-operator
+      data:
+      - key: operator.yaml
+        value: |
+          group_interval: "5m"
+          repeat_interval: "3h"

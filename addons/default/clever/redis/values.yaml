@@ -5,10 +5,10 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: 3.0.3
+    version: "3.0.3"
   controllers:
   - containers:
-    - image: '[[ g_registry_prefix_release ]]/redis:3.0.3'
+    - image: '[[ registry_release ]]/redis:3.0.3'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 6379

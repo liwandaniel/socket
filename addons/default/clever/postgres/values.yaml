@@ -5,22 +5,22 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: 10-alpine
+    version: "10-alpine"
   controllers:
   - containers:
     - env:
       - name: POSTGRES_PASSWORD
         value: 7c6fa0e1ec027acc14afc0f0
-      image: '[[ g_registry_prefix_release ]]/postgres:10-alpine'
+      image: '[[ registry_release ]]/postgres:10-alpine'
       imagePullPolicy: IfNotPresent
       mounts:
-      - name: postgres-storage
+      - name: pg-storage
         path: /var/lib/postgresql/data
       ports:
       - port: 5432
         protocol: TCP
     controller:
-      replicas: 1
+      replica: 1
     services:
     - name: kubeflow-admin-postgres
       ports:
@@ -29,7 +29,12 @@ _config:
       type: ClusterIP
     type: Deployment
     volumes:
-    - name: postgres-storage
+    - name: pg-storage
+      type: Dynamic
       source:
-        target: kubeflow-admin-postgres-data
-      type: Static
+        class: heketi-storageclass
+        modes:
+        - ReadWriteMany
+      storage:
+        request: 4096Mi
+        limit: 4096Mi

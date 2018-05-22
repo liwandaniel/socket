@@ -1,0 +1,70 @@
+_config:
+  _metadata:
+    description: hodor-v1.0.0-alpha.12
+    name: hodor
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v1.0.0-alpha.14"
+  controllers:
+  - containers:
+    - env:
+      - name: CAUTH_SERVER
+        value: cauth:8082
+      - name: CLUSTER_ADMIN_SERVER
+        value: cds-server:9000
+      - name: KUBERNETES_ADMIN_SERVER
+        value: kubernetes-admin:7799
+      - name: HELM_REGISTRY_SERVER
+        value: helm-registry:8099
+      - name: CYCLONE_SERVER
+        value: http://circle-server.cyclone:7099
+      - name: LOADBALANCER_SERVER
+        value: loadbalancer-admin:8080
+      - name: LOADBALANCER_SERVER_V2
+        value: loadbalancer-admin:8080
+      - name: CAUTH_V2_SERVER
+        value: dex-cauth:8080
+      - name: TENANT_ADMIN_SERVER
+        value: tenant-admin:8080
+      - name: CARGO_ADMIN_SERVER
+        value: cargo-admin:8080
+      - name: CONFIG_ADMIN_SERVER
+        value: config-admin:8080
+      - name: APP_ADMIN_SERVER
+        value: app-admin:7799
+      - name: LOGGING_ADMIN_SERVER
+        value: logging-admin:7800
+      - name: DEVOPS_ADMIN_SERVER
+        value: devops-admin:7088
+      - name: OIDC_ISSUER
+        value: http://[[ kube_apiserver_endpoint_ip ]]:32000
+      - name: OIDC_CLIENT_ID
+        value: caicloud
+      - name: OIDC_ROOT_CA
+        value: ''
+      image: '[[ registry_release ]]/hodor:v1.0.0-alpha.14'
+      imagePullPolicy: IfNotPresent
+    controller:
+      replica: 1
+    pod:
+      annotations:
+      - key: prometheus.io/port
+        value: '8080'
+      - key: prometheus.io/scrape
+        value: 'true'
+    services:
+    - name: hodor-nodeport
+      ports:
+      - nodePort: 30069
+        port: 8080
+        protocol: TCP
+        targetPort: 8080
+      type: NodePort
+    - name: hodor
+      ports:
+      - port: 8080
+        protocol: TCP
+        targetPort: 8080
+      type: ClusterIP
+    type: Deployment

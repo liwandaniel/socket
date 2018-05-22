@@ -1,0 +1,27 @@
+_config:
+  _metadata:
+    description: controller-manager-v1.2.3
+    name: controller-manager
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v1.2.3"
+  controllers:
+  - containers:
+    - image: '[[ registry_release ]]/controller-manager:v1.2.3'
+      args:
+      - '-clustercidr=[[ cluster_cidr ]]'
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 500m
+          memory: 200Mi
+        requests:
+          cpu: 500m
+          memory: 200Mi
+    controller:
+      replica: 1
+      strategy:
+        surge: 1
+        unavailable: 0
+    type: Deployment

@@ -1,0 +1,41 @@
+_config:
+  _metadata:
+    description: eventer-v0.0.2
+    name: eventer
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.1.0"
+  controllers:
+  - containers:
+    - command:
+      - /eventer
+      - --source=kubernetes:''
+      - --sink=elasticsearch:http://elasticsearch:9200?sniff=false
+      image: '[[ registry_release ]]/eventer:v0.1.0'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 8084
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 100m
+          memory: 128Mi
+        requests:
+          cpu: 25m
+          memory: 64Mi
+    controller:
+      replica: 1
+    services:
+    - annotations:
+      - key: prometheus.io/port
+        value: '8084'
+      - key: prometheus.io/scrape
+        value: 'true'
+      name: eventer
+      ports:
+      - port: 8084
+        protocol: TCP
+        targetPort: 8084
+      type: ClusterIP
+    type: Deployment

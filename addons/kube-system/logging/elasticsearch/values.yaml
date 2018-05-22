@@ -1,0 +1,71 @@
+_config:
+  _metadata:
+    description: elasticsearch-v5.6.3
+    name: elasticsearch
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v5.6.3"
+  controllers:
+  - containers:
+    - env:
+      - name: CLUSTER_NAME
+        value: esdblogging
+      - name: ES_JAVA_OPTS
+        value: -Xms2g -Xmx2g
+      - name: EXPECTED_NODES
+        value: '3'
+      image: '[[ registry_release ]]/elasticsearch:v5.6.3'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: elasticsearch
+        path: /data
+      ports:
+      - port: 9200
+        protocol: TCP
+      - port: 9300
+        protocol: TCP
+      securityContext:
+        privileged: true
+        capabilities:
+          add:
+          - IPC_LOCK
+          - SYS_RESOURCE
+      resources:
+        limits:
+          cpu: 2000m
+          memory: 8Gi
+        requests:
+          cpu: 100m
+          memory: 4Gi
+    controller:
+      replica: 3
+    schedule:
+      antiaffinity:
+        pod:
+          terms:
+          - selector:
+              labels:
+                k8s-app: elasticsearch
+            topologyKey: kubernetes.io/hostname
+            weight: 100
+          type: Prefered
+      labels:
+        k8s-app: elasticsearch
+    services:
+    - name: elasticsearch
+      ports:
+      - port: 9200
+        protocol: TCP
+      type: ClusterIP
+    - name: elasticsearch-discovery
+      ports:
+      - port: 9300
+        protocol: TCP
+      type: ClusterIP
+    type: StatefulSet
+    volumes:
+    - name: elasticsearch
+      source:
+        medium: ''
+      type: Scratch

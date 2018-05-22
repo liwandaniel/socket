@@ -1,0 +1,40 @@
+_config:
+  _metadata:
+    description: mongo-v3.0.15
+    name: mongo
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v3.0.15"
+  controllers:
+  - containers:
+    - args:
+      - mongod
+      - --smallfiles
+      image: '[[ registry_release ]]/mongo:v3.0.15'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: mongo-storage
+        path: /data/db
+      ports:
+      - port: 27017
+        protocol: TCP
+    controller:
+      replica: 1
+    services:
+    - name: monitoring-admin-mongo
+      ports:
+      - port: 27017
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment
+    volumes:
+    - name: mongo-storage
+      type: Dynamic
+      source:
+        class: heketi-storageclass
+        modes:
+        - ReadWriteMany
+      storage:
+        request: 4096Mi
+        limit: 4096Mi

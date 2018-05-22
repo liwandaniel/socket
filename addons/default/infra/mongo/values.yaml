@@ -1,0 +1,45 @@
+_config:
+  _metadata:
+    name: infra-mongo
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "3.6.4"
+  controllers:
+  - containers:
+    - name: mongo
+      image: '[[ registry_library ]]/mongo:3.6.4'
+      imagePullPolicy: Always
+      command:
+      - mongod
+      - "--replSet"
+      - rs0
+      - "--bind_ip"
+      - 0.0.0.0
+      - "--smallfiles"
+      - "--noprealloc"
+      mounts:
+      - name: mongo-storage
+        path: /data/db
+      ports:
+      - port: 27017
+        protocol: TCP
+    - name: mongo-sidecar
+      image: '[[ registry_library ]]/mongo-k8s-sidecar:v0.0.1'
+      imagePullPolicy: Always
+      env:
+      - name: MONGO_SIDECAR_POD_LABELS
+        value: "controller.caicloud.io/release=infra-mongo"
+      - name: MONGO_PORT
+        value: "27017"
+      - name: KUBERNETES_MONGO_SERVICE_NAME
+        value: mgo-cluster
+    controller:
+      replica: 3
+      domain: mgo-cluster
+    type: StatefulSet
+    volumes:
+    - name: mongo-storage
+      source:
+        path: /data/db
+      type: HostPath

@@ -1,0 +1,42 @@
+_config:
+  _metadata:
+    description: kube-state-metrics-release-v1.1.0
+    name: kube-state-metrics
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "release-v1.1.0"
+  controllers:
+  - containers:
+    - image: '[[ registry_release ]]/kube-state-metrics:release-v1.1.0'
+      imagePullPolicy: IfNotPresent
+      name: kube-state-metrics
+      ports:
+      - port: 8080
+        protocol: TCP
+      probe:
+        readiness:
+          delay: 5
+          handler:
+            method:
+              path: /healthz
+              port: 8080
+            type: HTTP
+          timeout: 5
+      resources:
+        limits:
+          cpu: 200m
+          memory: 500Mi
+        requests:
+          cpu: 100m
+          memory: 100Mi
+    controller:
+      replica: 1
+    services:
+    - name: kube-state-metrics
+      ports:
+      - port: 8080
+        protocol: TCP
+        targetPort: 8080
+      type: ClusterIP
+    type: Deployment

@@ -5,7 +5,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: 5.7.14
+    version: "5.7.14"
   controllers:
   - containers:
     - env:
@@ -13,12 +13,9 @@ _config:
         value: storage
       - name: DATADIR
         value: /var/lib/mysql
-      - from:
-          key: storage-manager-mysql.root-password
-          name: generic-config
-          type: Config
-        name: MYSQL_ROOT_PASSWORD
-      image: '[[ g_registry_prefix_library ]]/mysql:5.7.14'
+      - name: MYSQL_ROOT_PASSWORD
+        value: 1qaz@WSX
+      image: '[[ registry_library ]]/mysql:5.7.14'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: manager-data
@@ -27,7 +24,7 @@ _config:
       - port: 3306
         protocol: TCP
     controller:
-      replicas: 1
+      replica: 1
     services:
     - name: storage-manager-mysql
       ports:
@@ -37,6 +34,11 @@ _config:
     type: Deployment
     volumes:
     - name: manager-data
+      type: Dynamic
       source:
-        target: storage-manager-mysql
-      type: Static
+        class: heketi-storageclass
+        modes:
+        - ReadWriteMany
+      storage:
+        request: 4096Mi
+        limit: 4096Mi

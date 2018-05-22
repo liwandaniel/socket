@@ -1,76 +1,68 @@
 _config:
   _metadata:
-    description: kubeflow-admin-v0.3.0
+    description: kubeflow-admin-v1.0.1
     name: kubeflow-admin
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: v0.3.0
+    version: "v1.0.4"
   controllers:
   - containers:
     - env:
-      - from:
-          key: kubeflow-admin.db-conn-str
-          name: generic-config
-          type: Config
-        name: KUBEFLOW_ADMIN_POSTGRESQL
-      - from:
-          key: kubeflow-admin.app-admin
-          name: generic-config
-          type: Config
-        name: APP_ADMIN
-      - from:
-          key: kubeflow-admin.storage-manager
-          name: generic-config
-          type: Config
-        name: STORAGE_MANAGER
-      - from:
-          key: kubeflow-admin.k8s-host
-          name: generic-config
-          type: Config
-        name: KUBE_APISERVER
-      - from:
-          key: kubeflow-admin.k8s-username
-          name: generic-config
-          type: Config
-        name: KUBE_USERNAME
-      - from:
-          key: kubeflow-admin.k8s-password
-          name: generic-config
-          type: Config
-        name: KUBE_PASSWORD
-      image: '[[ g_registry_prefix_release ]]/kubeflow-admin:v0.3.0'
+      - name: KUBEFLOW_ADMIN_POSTGRESQL
+        value: postgres://postgres:7c6fa0e1ec027acc14afc0f0@kubeflow-admin-postgres:5432/postgres?sslmode=disable
+      - name: IMAGE_PREFIX
+        value: '[[ registry_release ]]'
+      - name: APP_ADMIN
+        value: http://app-admin:7799
+      - name: STORAGE_MANAGER
+        value: http://storage-manager:4500
+      - name: KUBE_ENDPOINT_IP
+        value: '[[ kube_apiserver_endpoint_ip ]]'
+      - name: KUBE_APISERVER
+        value: '[[ kube_apiserver_endpoint_ip ]]:6442'
+      - name: KUBE_USERNAME
+        value: '[[ kube_username ]]'
+      - name: KUBE_PASSWORD
+        value: '[[ kube_password ]]'
+      image: '[[ registry_release ]]/kubeflow-admin:v1.0.4'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 8080
         protocol: TCP
     controller:
-      replicas: 1
+      replica: 1
     initContainers:
     - args:
       - sh
       - -c
       - until nslookup kubeflow-admin-postgres; do echo waiting for mydb; sleep 2;
         done;
-      image: '[[ g_registry_prefix_release ]]/alpine:3.6'
+      image: '[[ registry_release ]]/alpine:3.6'
       imagePullPolicy: IfNotPresent
     - args:
       - admin
       - migrate
       - up
       env:
-      - from:
-          key: kubeflow-admin.db-conn-str
-          name: generic-config
-          type: Config
-        name: KUBEFLOW_ADMIN_POSTGRESQL
-      image: '[[ g_registry_prefix_release ]]/kubeflow-admin:v1.0.0'
+      - name: KUBEFLOW_ADMIN_POSTGRESQL
+        value: postgres://postgres:7c6fa0e1ec027acc14afc0f0@kubeflow-admin-postgres:5432/postgres?sslmode=disable
+      image: '[[ registry_release ]]/kubeflow-admin:v1.0.4'
       imagePullPolicy: IfNotPresent
     pod:
-      terms:
-        selector:
-          labels:
-            caicloud-app: kubeflow-admin
+      serviceAccountName: admin
+    schedule:
+      antiaffinity:
+        pod:
+          terms:
+          - selector:
+              labels:
+                caicloud-app: kubeflow-admin
+            topologyKey: kubernetes.io/hostname
+            weight: 100
+          type: Prefered
+      labels:
+        caicloud-app: kubeflow-admin
     services:
     - name: kubeflow-admin
       ports:

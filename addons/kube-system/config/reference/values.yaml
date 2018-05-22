@@ -1,0 +1,22 @@
+_config:
+  _metadata:
+    description: config-reference-v0.2.2
+    name: config-reference
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.2.2"
+  controllers:
+  - containers:
+    - image: '[[ registry_release ]]/config-reference:v0.2.2'
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 300m
+          memory: 300Mi
+        requests:
+          cpu: 200m
+          memory: 200Mi
+    controller:
+      replica: 1
+    type: Deployment

@@ -1,0 +1,41 @@
+_config:
+  _metadata:
+    description: license-v0.1.0
+    name: license
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.1.0"
+  controllers:
+  - containers:
+    - image: '[[ registry_release ]]/license:v0.1.0'
+      imagePullPolicy: IfNotPresent
+      name: license
+      resources:
+        limits:
+          cpu: 50m
+          memory: 50Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+    controller:
+      replica: 1
+    services:
+    - name: license
+      ports:
+      - port: 4243
+        protocol: TCP
+        targetPort: 4243
+      type: ClusterIP
+    configs:
+    - name: license
+      data:
+      - key: public
+        value: LS0tLS1CRUdJTiBwdWJsaWMtLS0tLQpNSUdmTUEwR0NTcUdTSWIzRFFFQkFRVUFBNEdOQURDQmlRS0JnUUROSnp4eWZsUFpzNVhoZzVxYnFiUVQyc1NXCjZISGFBSkp3NzJQQWlzdlZ6MHlpVWttWVZzY0ovQzJad1hEdnJseXZ6bThXTkxpdkorWVE2cHJuc0ZQNlpzZ0gKWG9OU2Q1eWZWUHN3b1Boc244RmpnQkhCOEh6MysreFRkWU5ScmQ2NERuM0xIOXJlb0RoZnludTRsUEQ3TVcrLwpqVFliaTR3V3E1ZTF4WGYxQndJREFRQUIKLS0tLS1FTkQgcHVibGljLS0tLS0K
+    secrets:
+    - name: license
+      type: Opaque
+      data:
+      - key: code
+        value: ZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXAzYXlJNmV5SnJkSGtpT2lKU1UwRWlMQ0p1SWpvaWVsTmpPR051TlZReVlrOVdORmxQWVcwMmJUQkZPWEpGYkhWb2VESm5RMU5qVHpscWQwbHlUREZqT1UxdmJFcEtiVVppU0VObWQzUnRZMFozTnpZMVkzSTROWFpHYWxNMGNubG1iVVZQY1dFMU4wSlVMVzFpU1VJeE5rUlZibVZqYmpGVU4wMUxSRFJpU2w5Q1dUUkJVbmRtUWpnNVgzWnpWVE5YUkZWaE0yVjFRVFU1ZVhoZllUTnhRVFJZT0hBM2RVcFVkeTE2Um5aMk5EQXlSelIxVFVaeGRWaDBZMVl6T1ZGaklpd2laU0k2SWtGUlFVSWlmWDAuZXlKdFpYUmhJanA3SW01aGJXVWlPaUpsZUdGdGNHeGxJaXdpYVdRaU9pSm1aakZqT0dRMllpMHpaVEpoTFRFeFpUZ3RPVFV4TlMxbU5EVmpPRGxqWWpKbVpqVWlMQ0pqY21WaGRHVlVhVzFsYzNSaGJYQWlPaUl5TURFNExUQTBMVEV5VkRFMk9qSTFPakF5TGpRMEt6QTRPakF3SW4wc0luTndaV01pT25zaVkyOXRjR0Z1ZVNJNmV5SnVZVzFsSWpvaVEyOXRjR0Z1ZVNCT1lXMWxJbjBzSW5Cc1lYUm1iM0p0Y3lJNld5SkRiMjF3WVhOeklpd2lRMnhsZG1WeUlsMHNJbXhwWTJWdWMyVlVlWEJsSWpvaVVFOURJaXdpYm05MFFtVm1iM0psSWpvaU1qQXhPQzB3TkMweE1sUXhNem95TmpvMU9TNHlORGNyTURnNk1EQWlMQ0p1YjNSQlpuUmxjaUk2SWpJd016Z3RNRFF0TVRKVU1UTTZNalk2TlRrdU1qUTNLekE0T2pBd0lpd2ljWFZ2ZEdFaU9uc2lZM0IxSWpvaU1UQXdJaXdpWjNCMUlqb2lNVEFpZlN3aWFXUmxiblJwWm5raU9pSkRiSFZ6ZEdWeUlFbGtaVzUwYVdaNUluMTkuTzJUWk9lZ21mQnBTX2JWdlFpZTV2NkJma0tkdGlrS2hhbFJoNVhod1AxZENoMF9qemxLWm9aX3A5M3NUb1FOVXh5YVRheGlqZExrLTRKMDVXcnlTdFBIblpTWXBTSENjejNYOGVvX21BaXY1SlFxRDc5aWNXTFlwM2Z5b0dHZ2luUmtTc0hCYm1EeGFzVUxBVDlUQmN4MkNxWk5MQ18zUUFVcnNGMV9SSzdv
+    type: Deployment
