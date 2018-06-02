@@ -7,7 +7,7 @@ release/keepalived:v1.2.19
 release/haproxy:v1.6.5
 release/loadbalancer-provider-ipvsdr:v0.4.0
 release/loadbalancer-provider-ingress:v0.4.0
-release/nginx-ingress-controller:0.13.0
+release/nginx-ingress-controller:0.15.0
 release/default-http-backend:v0.1.0
 release/calico-node:v3.1.0
 release/calico-cni:v3.1.0
