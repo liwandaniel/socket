@@ -1,0 +1,55 @@
+metadata:
+  name: gpu-manager
+  alias: GPU 管理插件
+spec:
+  class: gpu-manager
+  version: v0.1.1
+  compassRequirement: ">=v2.7.0"
+  description: GPU 管理插件
+  note: GPU 管理插件
+  author: caicloud.io
+  service:
+    port: 9999
+    image: harbor.caicloud.xyz/release/compass-plugins-gpu-manager:v0.1.1
+    configs:
+      envs:
+      - name: SERVER_GPU_MONITORING_ADMIN_CONN_TIMEOUT
+        value: '3000'
+        description: 连接 monitor admin 超时时间
+      - name: SERVER_GPU_MONITORING_ADMIN_HOST
+        value: monitoring-admin.default
+        description: monitor admin 地址
+      - name: SERVER_GPU_MONITORING_ADMIN_PORT
+        value: '8899'
+        description: monitor admin 端口
+      - name: SERVER_GPU_WATCHER_MAX_RETRY_TIMES
+        value: '0'
+        description: 后端信息获取错误重试次数(0 为无限)
+      - name: SERVER_GPU_WATCHER_THREADINESS
+        value: '1'
+        description: 后端信息获取并行线程数
+      - name: SERVER_PORT
+        value: '9999'
+        description: 监听端口
+      files: []
+    security:
+      privileged: false
+      clusterAccessible: true
+      apiAccessible: true
+    resources:
+      limits:
+        cpu: '0.5'
+        memory: 512Mi
+      requests:
+        cpu: '0.1'
+        memory: 512Mi
+  modules:
+  - name: gpu-manager
+    alias:
+      zh: GPU 管理
+      en: gpu-manager
+    icon: '/src/img/icon.svg'
+    sources:
+    - "/src/index.js"
+    slots:
+    - system.plugin_center
