@@ -18,3 +18,4 @@ library/google_containers_k8s-dns-dnsmasq-nanny-amd64:1.14.8
 library/google_containers_cluster-proportional-autoscaler-amd64:1.1.2-r2
 library/google_containers_k8s-dns-sidecar-amd64:1.14.8
 library/hyperkube:v1.10.1
+release/vaquita:v0.1.0
