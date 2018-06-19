@@ -52,7 +52,7 @@ compass-plugins-<plugin-name>-VERSION
 ### 发布流程
 
 使用目录 `release-plugins`，按以下流程由工程师发起 pull request，
-由 platform-release 小组同步镜像，由 infra 小组打包并上传。
+由 platform-release 小组同步镜像，并打包上传。
 
 #### 发起 pull request
 
@@ -71,7 +71,6 @@ compass-plugins-<plugin-name>-VERSION
   * 避免多个插件配置中槽位（ slots ）和端口冲突
 * pr 除了 `/cc @plugin-owner` 之外需要：
   * `/cc @supereagle` 以知会 platform-release 小组
-  * `/cc @pendoragon` 以知会 infra 小组
 
 #### 审核 pull request
 
@@ -82,19 +81,21 @@ compass-plugins-<plugin-name>-VERSION
 image(s) pushed to
 cargo.caicloudprivatetest.com/caicloud/compass-plugins-<plugin-name>:VERSION
 ...
-/queue patches-need-sync-image
+/queue working-image-pushed
 ```
 
-#### 同步镜像
+#### 同步镜像 & 打包上传
 
-platform-release 小组需查看 `label:queue/patches-need-sync-image label:kind/release` 的
+platform-release 小组需查看 `label:queue/working-image-pushed label:kind/release` 的
 pull requests；将所有镜像从 `cargo.caicloudprivatetest.com/caicloud` 同步到
-`harbor.caicloud.xyz/release` 后给出指令 `/queue patches-need-package` 。
-
-#### 打包上传
-
-infra 小组需查看 `label:queue/patches-need-package label:kind/release` 的
-pull requests；将所有镜像保存到 `tar.gz` 包；和 yaml 一起打包上传到 `oss://infra-release/plugins` 。
+`harbor.caicloud.xyz/release` ；将所有镜像保存到 `tar.gz` 包；和 yaml 一起打包上传到
+`oss://infra-release/plugins` ；确认上传完成后，需给出以下指令：
+```
+packages uploaded to
+oss://infra-release/plugins/<plugin-name>/compass-plugins-<plugin-name>-VERSION.tar.gz
+...
+/queue done-package-uploaded
+```
 
 ### 安装流程
 
@@ -123,7 +124,7 @@ compass-hotfixes-<addon-name>-HOTFIXVERSION
 ### 发布流程
 
 使用目录 `release-hotfixes`，按以下流程由工程师发起 pull request，
-由 platform-release 小组同步镜像，由 infra 小组打包并上传。
+由 platform-release 小组同步镜像，并打包上传。
 
 #### 发起 pull request
 
@@ -141,7 +142,6 @@ compass-hotfixes-<addon-name>-HOTFIXVERSION
   * 也有可能修改 `controllers[x]` 下的其他配置字段
 * pr 除了 `/cc @plugin-owner` 之外需要：
   * `/cc @supereagle` 以知会 platform-release 小组
-  * `/cc @pendoragon` 以知会 infra 小组
 
 #### 审核 pull request
 
@@ -152,19 +152,21 @@ compass-hotfixes-<addon-name>-HOTFIXVERSION
 image(s) pushed to
 cargo.caicloudprivatetest.com/caicloud/addon-component:HOTFIXVERSION
 ...
-/queue patches-need-sync-image
+/queue working-image-pushed
 ```
 
-#### 同步镜像
+#### 同步镜像 & 打包上传
 
-platform-release 小组需查看 `label:queue/patches-need-sync-image label:kind/release` 的
+platform-release 小组需查看 `label:queue/working-image-pushed label:kind/release` 的
 pull requests；将所有镜像从 `cargo.caicloudprivatetest.com/caicloud` 同步到
-`harbor.caicloud.xyz/release` 后给出指令 `/queue patches-need-package` 。
-
-#### 打包上传
-
-infra 小组需查看 `label:queue/patches-need-package label:kind/release` 的
-pull requests；将所有镜像保存到 `tar.gz` 包；和 yaml 一起打包上传到 `oss://infra-release/hotfixes` 。
+`harbor.caicloud.xyz/release` ；将所有镜像保存到 `tar.gz` 包；和 yaml 一起打包上传到
+`oss://infra-release/hotfixes` ；确认上传完成后，需给出以下指令：
+```
+packages uploaded to
+oss://infra-release/hotfixes/compass/v2.7.0/compass-hotfixes-<addon-name>-HOTFIXVERSION.tar.gz
+...
+/queue done-package-uploaded
+```
 
 ### 安装流程
 
