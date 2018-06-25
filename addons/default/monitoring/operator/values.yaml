@@ -1,17 +1,17 @@
 _config:
   _metadata:
-    description: monitoring-operator-v0.1.3
+    description: monitoring-operator-v0.1.4
     name: monitoring-operator
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.3"
+    version: "v0.1.5"
   controllers:
   - containers:
     - args:
       - --clusterAdminAddr=cluster-admin:2233
-      - --mongodbURL=mongodb://monitoring-admin-mongo:27017
-      image: '[[ registry_release ]]/monitoring-operator:v0.1.3'
+      - --mongodbURL=[[ platform_mongo_host ]]
+      image: '[[ registry_release ]]/monitoring-operator:v0.1.5'
       imagePullPolicy: IfNotPresent
     controller:
       replica: 1

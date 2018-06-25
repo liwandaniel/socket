@@ -5,7 +5,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.2.0"
+    version: "v1.2.4"
   controllers:
   - containers:
     - image: '[[ registry_release ]]/helm-registry:v0.2.0'

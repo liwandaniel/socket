@@ -5,10 +5,10 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.3.9"
+    version: "v0.3.17"
   controllers:
   - containers:
-    - image: '[[ registry_release ]]/cargo-admin:v0.3.9'
+    - image: '[[ registry_release ]]/cargo-admin:v0.3.17'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: cargo-admin-config

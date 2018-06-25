@@ -5,7 +5,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "4.1.1"
+    version: "v0.3.3"
   controllers:
   - containers:
     - env:
@@ -29,7 +29,7 @@ _config:
         requests:
           cpu: 100m
           memory: 100Mi
-    - image: '[[ registry_release ]]/grafana-setup-tool:v0.3.2'
+    - image: '[[ registry_release ]]/grafana-setup-tool:v0.3.3'
       imagePullPolicy: IfNotPresent
     controller:
       replica: 1

@@ -12,7 +12,7 @@ _config:
       - -config=/etc/alert-notifier/notifier.yaml
       env:
       - name: MONGO_ENDPOINT
-        value: monitoring-admin-mongo
+        value: '[[ platform_mongo_host ]]'
       image: '[[ registry_release ]]/alert-notifier:v0.4.1'
       imagePullPolicy: IfNotPresent
       mounts:

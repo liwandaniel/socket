@@ -5,7 +5,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.0.2-alpha.1"
+    version: "v0.0.2"
   controllers:
   - containers:
     - env:
@@ -27,7 +27,7 @@ _config:
         value: "15"
       - name: ENV_CLEAN_UP_INTERVAL_SECOND
         value: "600"
-      image: '[[ registry_release ]]/storage-nfs-multiple-provisioner:v0.0.2-alpha.1'
+      image: '[[ registry_release ]]/storage-nfs-multiple-provisioner:v0.0.2'
       imagePullPolicy: IfNotPresent
       securityContext:
         privileged: true

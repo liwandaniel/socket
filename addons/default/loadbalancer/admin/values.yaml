@@ -10,6 +10,8 @@ _config:
   - containers:
     - args:
       - --debug
+      - --min-valid-port=20000
+      - --max-valid-port=29999
       image: '[[ registry_release ]]/loadbalancer-admin:v0.4.1'
       imagePullPolicy: IfNotPresent
       resources:

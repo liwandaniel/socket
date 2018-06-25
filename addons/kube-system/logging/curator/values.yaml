@@ -8,7 +8,7 @@ _config:
     version: "v1.0.0"
   controllers:
   - containers:
-    - command:
+    - args:
       - --config
       - /etc/config/config.yml
       - /etc/config/action_file.yml

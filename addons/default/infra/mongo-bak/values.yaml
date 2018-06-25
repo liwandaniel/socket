@@ -1,0 +1,38 @@
+_config:
+  _metadata:
+    description: mongo-backup
+    name: mongo-bak
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v1.0.0"
+  controllers:
+  - containers:
+    - env:
+      - name: BACKUP_SERVERS
+        value: mgo-cluster
+      - name: BACKUP_SLEEP
+        value: "43200"
+      - name: BACKUP_DIR
+        value: /backup
+      image: '[[ registry_release ]]/mongo-backup:v1.0.0'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: bak-storage
+        path: /backup
+    controller:
+      replica: 1
+      strategy:
+        surge: 1
+        unavailable: 1
+    type: Deployment
+    volumes:
+    - name: bak-storage
+      type: Dynamic
+      source:
+        class: heketi-storageclass
+        modes:
+        - ReadWriteMany
+      storage:
+        request: 100Gi
+        limit: 100Gi

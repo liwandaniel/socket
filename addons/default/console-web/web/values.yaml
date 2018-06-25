@@ -5,10 +5,12 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v3.1.49"
+    version: "v3.1.53"
   controllers:
   - containers:
     - env:
+      - name: MONGODB_URL
+        value: '[[ platform_mongo_host ]]'
       - name: HIDE_MENU
         value: caas_circle
       - name: HIDE
@@ -26,7 +28,7 @@ _config:
       - name: EXTERNAL_HODOR
         value: ws://[[ kube_apiserver_endpoint_ip ]]:30069
       - name: MONITOR_SERVER
-        value: http://[[ kube_apiserver_endpoint_ip ]]:30040
+        value: http://monitoring-admin:8899/api/v1
       - name: MANUAL_URL
         value: http://[[ kube_apiserver_endpoint_ip ]]:30040
       - name: _CAAS_SERVER
@@ -44,13 +46,15 @@ _config:
       - name: OIDC_REDIRECT_URI
         value: /api/idToken
       - name: SHOW_LANG
-        value: 'true'
+        value: 'false'
+      - name: DEFAULT_LANG
+        value: 'zh-cn'
       # Following release info will be replaced by Makefile
       - name: PRODUCT_VERSION
         value: PLATFORM_RELEASE_VERSION
       - name: PRODUCT_RELEASE_TIME
         value: PLATFORM_RELEASE_TIME
-      image: '[[ registry_release ]]/console-web:v3.1.49'
+      image: '[[ registry_release ]]/console-web:v3.1.53'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 3000

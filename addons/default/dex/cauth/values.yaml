@@ -5,7 +5,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v2.1.0-alpha.9"
+    version: "v2.1.0"
   controllers:
   - containers:
     - args:
@@ -14,7 +14,7 @@ _config:
       - name: ENABLE_HOOK
         value: 'true'
       - name: MONGO_ADDR
-        value: dex-cauth-mongo:27017
+        value: '[[ platform_mongo_host ]]'
       - name: SKIP_VERIFY_EMAIL
         value: 'true'
       - name: SMTP_SERVER
@@ -29,7 +29,7 @@ _config:
         value: ""
       - name: MULTI_TENANT
         value: '[[ multi_tenant ]]'
-      image: '[[ registry_release ]]/cauth:v2.1.0-alpha.9'
+      image: '[[ registry_release ]]/cauth:v2.1.0'
       imagePullPolicy: IfNotPresent
       name: cauth
       resources:

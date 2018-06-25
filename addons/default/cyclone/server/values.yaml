@@ -5,7 +5,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.5.0-beta.5"
+    version: "v0.5.0"
   controllers:
   - containers:
     - command:
@@ -34,13 +34,13 @@ _config:
       - name: CYCLONE_SERVER
         value: http://[[ kube_apiserver_endpoint_ip ]]:30010
       - name: WORKER_IMAGE
-        value: '[[ registry_release ]]/cyclone-worker:v0.5.0-beta.5'
+        value: '[[ registry_release ]]/cyclone-worker:v0.5.0'
       - name: CLOUD_AUTO_DISCOVERY
         value: 'true'
       - name: LIMIT_MEMORY
-        value: 2Gi
+        value: 4Gi
       - name: LIMIT_CPU
-        value: '1'
+        value: '2'
       - name: REQUEST_MEMORY
         value: 1Gi
       - name: REQUEST_CPU
@@ -53,9 +53,11 @@ _config:
         value: smtp_server
       - name: SMTP_USERNAME
         value: smtp_username
+      - name: RECORD_ROTATION_THRESHOLD
+        value: "50"
       - name: CALLBACK_URL
         value: http://[[ kube_apiserver_endpoint_ip ]]:30069/apis/admin.devops.caicloud.io/v1/pipelines
-      image: '[[ registry_release ]]/cyclone-server:v0.5.0-beta.5'
+      image: '[[ registry_release ]]/cyclone-server:v0.5.0'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: cyclone-data

@@ -4,12 +4,12 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.0"
+    version: "v0.1.1"
   controllers:
   - containers:
     - args:
       - --mongo-host=[[ platform_mongo_host ]]
-      image: '[[ registry_release ]]/plugin-center-admin:v0.1.0'
+      image: '[[ registry_release ]]/plugin-center-admin:v0.1.1'
       imagePullPolicy: IfNotPresent
       resources:
         limits:
