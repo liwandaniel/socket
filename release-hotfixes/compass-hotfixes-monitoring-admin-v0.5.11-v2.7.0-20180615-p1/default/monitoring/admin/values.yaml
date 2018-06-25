@@ -13,7 +13,7 @@ _config:
       - --mongo-endpoint=$(MONGO_ENDPOINT)
       env:
       - name: MONGO_ENDPOINT
-        value: monitoring-admin-mongo
+        value: '[[ platform_mongo_host ]]'
       - name: CLUSTER_ADMIN
         value: cds-server:9000
       image: '[[ registry_release ]]/monitoring-admin:v0.5.11'
