@@ -16,16 +16,18 @@
       - [审核 pull request](#%E5%AE%A1%E6%A0%B8-pull-request-1)
       - [同步镜像 & 打包上传](#%E5%90%8C%E6%AD%A5%E9%95%9C%E5%83%8F--%E6%89%93%E5%8C%85%E4%B8%8A%E4%BC%A0-1)
     - [安装流程](#%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B-1)
+  - [产品组特殊补丁安装包](#%E4%BA%A7%E5%93%81%E7%BB%84%E7%89%B9%E6%AE%8A%E8%A1%A5%E4%B8%81%E5%AE%89%E8%A3%85%E5%8C%85)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # compass-release
 
-Compass 平台发布以安装包为最终介质，包含三类：
+Compass 平台发布以安装包为最终介质，包含四类：
 
 * 产品版本安装包，如 `compass-2.7.0/*` 版本
 * 产品组件热升级安装包，如 `compass-hotfixes-<desc>-<addon>-<VERSION>.tar.gz` 安装包
 * 产品插件安装包，如 `compass-plugins-<plugin>-<VERSION>.tar.gz` 安装包
+* 产品特殊补丁安装包
 
 ## 产品版本安装包
 
@@ -37,12 +39,20 @@ oss://infra-release/platform/
 │   ├── cargo-<VERSION>.tar.gz
 │   ├── compass-kernel-<VERSION>.tar.gz
 │   ├── compass-component-<VERSION>.tar.gz
-│   └── hotfixes
-│       ├── 20180701
-│       │    ├── compass-hotfixes-<desc>-<addon-name-1>-20180701-<VERSION>.tar.gz
-│       │    ├── ...
-│       │    └── compass-hotfixes-<desc>-<addon-name-x>-20180701-<VERSION>.tar.gz
-│       ├── 20180707
+│   ├── hotfixes
+│   │   ├── 20180701
+│   │   │   ├── compass-hotfixes-<desc>-<addon-name-1>-20180701-<VERSION>.tar.gz
+│   │   │   ├── ...
+│   │   │   └── compass-hotfixes-<desc>-<addon-name-x>-20180701-<VERSION>.tar.gz
+│   │   ├── 20180707
+│   │   │    └── ...
+│   │   └── ...
+│   └── manual-fixes
+│       ├── 20180801
+│       │   ├── fix01(.tar.gz|txt)
+│       │   ├── ...
+│       │   └── fix0x(.tar.gz|txt)
+│       ├── 20180808
 │       │    └── ...
 │       └── ...
 ├── compass-v2.7.0/
@@ -222,3 +232,38 @@ oss://infra-release/platform/plugins/<plugin-name>/compass-plugins-<plugin-name>
 ### 安装流程
 
 参考部署手册。
+
+## 产品组特殊补丁安装包
+
+```
+# Describe directory
+oss://infra-release/platform/
+├── compass-v2.7.0-ga/
+│   ├── ...
+│   └── manual-fixes
+│       ├── 20180801
+│       │   ├── fix01(.tar.gz|txt)
+│       │   ├── ...
+│       │   └── fix0x(.tar.gz|txt)
+│       ├── 20180808
+│       │    └── ...
+│       └── ...
+├── compass-v2.7.0/
+│   ├── ...
+│   └── manual-fixes
+│       └── ...
+└── compass-v2.7.1/
+    └── ...
+
+# Describe package - freestyle
+```
+
+* 凡是非组件热升级的修复安装包都可视作特殊补丁安装包，包括但不限于：
+  * infra 离线源修复，cargo 服务修复，k8s 修复等
+  * 产品组件的数据 migration
+* 安装包需由负责人自行取一个合理的名字
+* 安装包的形式，可以是安装资源加脚本，也可以是操作指导文档，甚至是支撑工程师的 oncall 电话
+
+安装包的源文件、发布打包版本流程也由负责工程师自行维护，
+**安装流程必须在安装包内有文档或文档链接可查**，
+包括操作步骤，是否可以重复执行，是否需要数据备份，以及出问题找哪个研发等信息。
