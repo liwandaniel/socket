@@ -1,18 +1,19 @@
 _config:
   _metadata:
-    description: console-web-v3.1.44
+    description: console-web-v3.1.54
     name: console-web
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v3.1.53"
+    version: "v3.1.54"
   controllers:
   - containers:
     - env:
       - name: MONGODB_URL
         value: '[[ platform_mongo_host ]]'
+      # 隐藏审计日志菜单
       - name: HIDE_MENU
-        value: caas_circle
+        value: manager_center.event_log
       - name: HIDE
         value: forget
       - name: CLOUD_ENV
@@ -49,12 +50,12 @@ _config:
         value: 'false'
       - name: DEFAULT_LANG
         value: 'zh-cn'
-      # Following release info will be replaced by Makefile
+      # Get release info from system-info ConfigMap
       - name: PRODUCT_VERSION
-        value: PLATFORM_RELEASE_VERSION
+        value: '[[ platform_release_version ]]'
       - name: PRODUCT_RELEASE_TIME
-        value: PLATFORM_RELEASE_TIME
-      image: '[[ registry_release ]]/console-web:v3.1.53'
+        value: '[[ platform_release_time ]]'
+      image: '[[ registry_release ]]/console-web:v3.1.54'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 3000

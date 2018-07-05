@@ -3,14 +3,14 @@ release/alert-notifier:v0.4.1
 release/app-admin:v0.3.7
 release/templates:v1.2.4
 release/cargo-admin:v0.3.17
-release/cluster-admin:v1.1.0
-release/cluster-controller:v1.1.0
-release/cluster-machine-controller:v1.1.0
+release/cluster-admin:v1.1.1
+release/cluster-controller:v1.1.1
+release/cluster-machine-controller:v1.1.1
 release/config-admin:v0.1.9
 release/config-gc:v0.2.2
 release/config-sync:v0.2.2
 release/redis:3.0.3
-release/console-web:v3.1.53
+release/console-web:v3.1.54
 release/cyclone-worker:v0.5.0
 release/cyclone-server:v0.5.0
 release/devops-admin:v0.4.0
@@ -28,7 +28,7 @@ release/kubernetes-admin:v1.1.5
 release/licensed:v0.1.2
 release/loadbalancer-admin:v0.4.1
 release/logging-admin:v2.0.8
-release/monitoring-admin:v0.5.10
+release/monitoring-admin:v0.5.11
 release/monitoring-operator:v0.1.5
 release/notify-admin:v0.0.4
 release/postgres:10.1-alpine
@@ -39,7 +39,7 @@ release/storage-admin-controller:v0.1.10
 release/tenant-admin:v1.1.0
 release/canary-nginx-proxy:v0.3.1
 release/canary-controller:v0.3.1
-release/cluster-addon:v1.1.0
+release/cluster-addon:v1.1.1
 release/config-admission:v0.2.2
 release/config-reference:v0.2.2
 release/app-exporter:v0.0.1
