@@ -5,7 +5,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.2.4"
+    version: "v1.2.5"
   controllers:
   - containers:
     - image: '[[ registry_release ]]/helm-registry:v0.2.0'
@@ -33,7 +33,7 @@ _config:
         value: /data/system-tenant_library
       - name: IMAGE_DOMAIN
         value: '[[ cargo_registry ]]'
-      image: '[[ registry_release ]]/charts:v1.2.4'
+      image: '[[ registry_release ]]/charts:v1.2.5'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: charts-storage

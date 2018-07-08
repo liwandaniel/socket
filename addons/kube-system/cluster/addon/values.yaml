@@ -5,7 +5,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.1.1"
+    version: "v1.2.0-alpha.0"
   controllers:
   - containers:
     - env:
@@ -27,7 +27,7 @@ _config:
         value: info
       - name: ENV_LOG_VERBOSITY
         value: '0'
-      image: '[[ registry_release ]]/cluster-addon:v1.1.1'
+      image: '[[ registry_release ]]/cluster-addon:v1.2.0-alpha.0'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 6666

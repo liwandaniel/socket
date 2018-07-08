@@ -1,7 +1,7 @@
 release/storage-manager:v1.4.2
 release/storage-fileserver:v1.3.1
 release/postgres:10-alpine
-release/clever-web:v2.1.19
+release/clever-web:v2.1.20
 release/kubeflow-admin:v1.0.4
 release/redis:3.0.3
 release/alpine:3.6

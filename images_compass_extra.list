@@ -7,4 +7,4 @@ release/release-controller:v0.2.3
 release/am_mysql:v2.0
 release/am_master:v0.0.1
 release/am_minion:v0.0.3
-release/pangolin:v2.7.0-GA
+release/pangolin:v2.7.1-pre01

@@ -5,7 +5,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.0.0"
+    version: "v1.0.2"
   controllers:
   - containers:
     - env:
@@ -13,7 +13,7 @@ _config:
         value: http://[[ kube_apiserver_endpoint_ip ]]:32000
       - name: OIDC_CLIENT_ID
         value: caicloud
-      image: '[[ registry_release ]]/hodor:v1.0.0'
+      image: '[[ registry_release ]]/hodor:v1.0.2'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: hodor

@@ -5,7 +5,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.4.0"
+    version: "v0.5.0-alpha.0"
   controllers:
   - containers:
     - env:
@@ -19,7 +19,9 @@ _config:
         value: '[[ platform_mongo_host ]]'
       - name: CARGO_ADMIN_SERVER
         value: cargo-admin:8080
-      image: '[[ registry_release ]]/devops-admin:v0.4.0'
+      - name: TENANT_ADMIN_SERVER
+        value: tenant-admin:8080
+      image: '[[ registry_release ]]/devops-admin:v0.5.0-alpha.0'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 7088

@@ -5,7 +5,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v2.1.0"
+    version: "v2.1.2"
   controllers:
   - containers:
     - args:
@@ -29,7 +29,7 @@ _config:
         value: ""
       - name: MULTI_TENANT
         value: '[[ multi_tenant ]]'
-      image: '[[ registry_release ]]/cauth:v2.1.0'
+      image: '[[ registry_release ]]/cauth:v2.1.2'
       imagePullPolicy: IfNotPresent
       name: cauth
       resources:

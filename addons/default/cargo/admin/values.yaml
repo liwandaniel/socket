@@ -5,16 +5,31 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.3.17"
+    version: "v0.3.18"
   controllers:
-  - containers:
-    - image: '[[ registry_release ]]/cargo-admin:v0.3.17'
+  - type: Deployment
+    controller:
+      replica: 1
+    containers:
+    - image: '[[ registry_release ]]/cargo-admin:v0.3.18'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: cargo-admin-config
         path: /app/etc
-    controller:
-      replica: 1
+      - name: cargo-admin-docker-sock
+        path: /var/run/dind
+    - image: '[[ registry_release ]]/docker:1.13.1-dind'
+      imagePullPolicy: IfNotPresent
+      securityContext:
+        privileged: true
+      args:
+        - dockerd
+        - -H unix:///var/run/dind/docker.sock
+      mounts:
+      - name: cargo-admin-docker
+        path: /var/lib/docker
+      - name: cargo-admin-docker-sock
+        path: /var/run/dind
     services:
     - name: cargo-admin-nodeport
       ports:
@@ -29,7 +44,6 @@ _config:
         protocol: TCP
         targetPort: 8080
       type: ClusterIP
-    type: Deployment
     volumes:
     - name: cargo-admin-config
       source:
@@ -40,6 +54,14 @@ _config:
           path: private_key.pem
         target: cargo-admin-config
       type: Config
+    - name: cargo-admin-docker
+      source:
+        medium: ''
+      type: Scratch
+    - name: cargo-admin-docker-sock
+      source:
+        medium: ''
+      type: Scratch
     configs:
     - name: cargo-admin-config
       data: 
