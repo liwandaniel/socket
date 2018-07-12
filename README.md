@@ -118,7 +118,7 @@ compass-hotfixes-<desc>-<addon-name-x>-<VERSION>.tar.gz
 /kind release
 /queue need-queue
 ```
-
+* 明确该 hotfix 针对的 Compass 版本，从本项目中该版本对应的 tag 中获得该组件的 values.yaml
 * 仅修改 `release-plugins/v2.7.0/<desc>-<addon-name>-<VERSION>/<namespace>/<addon-group-name>/<addon-name>/values.yaml`
   * 大部分时间仅修改 `_config.controllers[0].containers[0].image`, 格式为 `[[ registry_release ]]/<addon-component>:<VERSION>`
   * 也有可能修改 `controllers[x]` 下的其他配置字段
@@ -141,8 +141,12 @@ cargo.caicloudprivatetest.com/caicloud/addon-component:<VERSION>
 
 platform-release 小组需查看 `label:queue/working-image-pushed label:kind/release` 的
 pull requests；将所有镜像从 `cargo.caicloudprivatetest.com/caicloud` 同步到
-`harbor.caicloud.xyz/release` ；将所有镜像保存到 `tar.gz` 包；和 yaml 一起打包上传到
-`oss://infra-release/platform/**/hotfixes` ；确认上传完成后，需给出以下指令：
+`harbor.caicloud.xyz/release` ；将所有镜像保存到 `tar.gz` 包，并和 yaml 一起打成 hotfix 包。
+
+针对该 hotfix 对应的产品版本，准备相应的环境，严格按照部署文档中组件快速升级的步骤，安装 hotfix。最后验证升级组件是否成功被更新。
+如果需要测试业务，通知相关测试人员，并收集测试结果。测试通过后，将包上传到 OSS，并通知 PM。
+
+包上传到 `oss://infra-release/platform/**/hotfixes` ；确认上传完成后，需给出以下指令：
 ```
 packages uploaded to
 oss://infra-release/platform/compass-v2.7.0/hotfixes/compass-hotfixes-<desc>-<addon-name>-<VERSION>.tar.gz
