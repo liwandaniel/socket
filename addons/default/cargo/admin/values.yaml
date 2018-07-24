@@ -1,25 +1,35 @@
 _config:
   _metadata:
-    description: cargo-admin-v0.3.6
+    description: cargo-admin-v0.4.1
     name: cargo-admin
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.3.18"
+    version: "v0.4.1"
   controllers:
   - type: Deployment
     controller:
       replica: 1
     containers:
-    - image: '[[ registry_release ]]/cargo-admin:v0.3.18'
+    - image: '[[ registry_release ]]/cargo-admin:v0.4.1'
       imagePullPolicy: IfNotPresent
+      name: admin
       mounts:
       - name: cargo-admin-config
         path: /app/etc
+      - name: multi-tenant-config
+        path: /platform/etc
       - name: cargo-admin-docker-sock
         path: /var/run/dind
+    - image: '[[ registry_release ]]/cargo-token:v0.4.1'
+      imagePullPolicy: IfNotPresent
+      name: token
+      mounts:
+      - name: cargo-token-config
+        path: /app/etc
     - image: '[[ registry_release ]]/docker:1.13.1-dind'
       imagePullPolicy: IfNotPresent
+      name: docker
       securityContext:
         privileged: true
       args:
@@ -31,7 +41,7 @@ _config:
       - name: cargo-admin-docker-sock
         path: /var/run/dind
     services:
-    - name: cargo-admin-nodeport
+    - name: cargo-token
       ports:
       - nodePort: 30099
         port: 8081
@@ -50,9 +60,23 @@ _config:
         items:
         - key: cargo-admin-config.json
           path: cargo-admin-config.json
+        target: cargo-config
+      type: Config
+    - name: cargo-token-config
+      source:
+        items:
+        - key: cargo-token-config.json
+          path: cargo-token-config.json
         - key: private_key.pem
           path: private_key.pem
-        target: cargo-admin-config
+        target: cargo-config
+      type: Config
+    - name: multi-tenant-config
+      source:
+        items:
+        - key: tenantMode
+          path: multi_tenant
+        target: platform-config
       type: Config
     - name: cargo-admin-docker
       source:
@@ -63,50 +87,49 @@ _config:
         medium: ''
       type: Scratch
     configs:
-    - name: cargo-admin-config
+    - name: cargo-config
       data: 
       - key: cargo-admin-config.json
         value: |
           {
-            "mongo": {
-              "addrs": "[[ platform_mongo_host ]]",
-              "db": "cargo_admin",
-              "mode": "strong"
-            },
-            "tenant": {
-              "multi_tenant": "[[ multi_tenant ]]",
-              "system_tenant": "system-tenant"
-            },
-            "project": {
-              "default_public_projects": [
-                {
-                  "name": "library",
-                  "if_exists": "force",
-                  "harbor":"default"
-                },
-                {
-                  "name": "release",
-                  "if_exists": "force",
-                  "harbor":"default"
-                }
-              ]
-            },
-            "registry": {
-              "global": {
-                "private_key": "./etc/private_key.pem",
-                "cauth_host": "http://dex-cauth:8080",
-                "token_expiration": 30
-              },
-              "default": {
-                "host": "https://[[ cargo_registry ]]",
-                "username": "admin",
-                "password": "Pwd123456"
-              }
-            },
-            "service": {
-              "addr": "0.0.0.0:8080",
-              "service_token_addr": "0.0.0.0:8081"
-            }
+          	"address": "0.0.0.0:8080",
+          	"system_tenant": "system-tenant",
+          	"mongo": {
+          		"addrs": "[[ platform_mongo_host ]]",
+          		"db": "cargo_admin",
+          		"mode": "strong"
+          	},
+          	"default_public_projects": [
+          		{
+          			"name": "library",
+          			"if_exists": "force",
+          			"harbor": "default"
+          		},
+          		{
+          			"name": "release",
+          			"if_exists": "force",
+          			"harbor": "default"
+          		}
+          	],
+          	"default_registry": {
+          		"host": "https://[[ cargo_registry ]]",
+          		"username": "admin",
+          		"password": "Pwd123456"
+          	}
+          }
+      - key: cargo-token-config.json
+        value: |
+          {
+          	"address": "0.0.0.0:8081",
+          	"system_tenant": "system-tenant",
+          	"private_key": "./etc/private_key.pem",
+          	"cauth_addr": "http://dex-cauth:8080",
+          	"token_expiration": 30,
+          	"mongo": {
+          		"addrs": "[[ platform_mongo_host ]]",
+          		"db": "cargo_admin",
+          		"mode": "strong"
+          	}
           }
       - key: private_key.pem
         value: |

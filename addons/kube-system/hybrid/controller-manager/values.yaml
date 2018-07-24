@@ -5,12 +5,16 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.2.3"
+    version: "v1.2.4"
   controllers:
   - containers:
-    - image: '[[ registry_release ]]/controller-manager:v1.2.3'
-      args:
-      - '-clustercidr=[[ cluster_cidr ]]'
+    - image: '[[ registry_release ]]/controller-manager:v1.2.4'
+      env:
+      - name: "CLUSTER_CIDR"
+        from:
+          type: Config
+          name: cluster-info
+          key: "cidr"
       imagePullPolicy: IfNotPresent
       resources:
         limits:

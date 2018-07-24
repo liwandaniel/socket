@@ -1,34 +1,30 @@
 _config:
   _metadata:
-    description: notify-admin-v0.1.0
-    name: notify-admin
+    description: insight-mutating-webhook-0.0.1
+    name: hooks
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.0"
+    version: "0.0.1"
   controllers:
   - containers:
-    - args:
-      - /entrypoint
-      - --db-host=notify-admin-postgres
-      - --db-auto-migrate=true
-      image: '[[ registry_release ]]/notify-admin:v0.1.0'
+    - image: '[[ registry_release ]]/insight-mutating-webhook:v0.0.1'
       imagePullPolicy: IfNotPresent
       ports:
-      - port: 8080
+      - port: 443
         protocol: TCP
       resources:
         limits:
-          cpu: 500m
-          memory: 500Mi
+          cpu: 100m
+          memory: 100Mi
         requests:
           cpu: 50m
           memory: 50Mi
     services:
-    - name: notify-admin
+    - name: insight-mutating-webhook
       ports:
-      - port: 8900
-        targetPort: 8080
+      - port: 443
         protocol: TCP
+        targetPort: 443
       type: ClusterIP
     type: Deployment

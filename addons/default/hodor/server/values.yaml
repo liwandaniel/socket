@@ -1,19 +1,22 @@
 _config:
   _metadata:
-    description: hodor-v1.0.0
+    description: hodor-v1.0.4
     name: hodor
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.0.2"
+    version: "v1.0.4"
   controllers:
   - containers:
     - env:
       - name: OIDC_ISSUER
-        value: http://[[ kube_apiserver_endpoint_ip ]]:32000
+        from:
+          type: Config
+          name: platform-config
+          key: "oidcIssuer"
       - name: OIDC_CLIENT_ID
         value: caicloud
-      image: '[[ registry_release ]]/hodor:v1.0.2'
+      image: '[[ registry_release ]]/hodor:v1.0.4'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: hodor
@@ -67,8 +70,8 @@ _config:
             config:
               authn:
                 oidc:
-                  clientID: caicloud
-                  issuer: http://[[ kube_apiserver_endpoint_ip ]]:32000
+                  clientID: "<OIDC_CLIENT_ID>"
+                  issuer: "<OIDC_ISSUER>"
                 basic:
                   cauth:
                     url: http://dex-cauth:8080
@@ -80,4 +83,9 @@ _config:
               endpoint: "http://license:4243/api/stat"
               ttl: 1m
           - name: "metrics"
+          - name: "auditor"
+            config:
+              store:
+                driver: "mongo"
+                url: "mongodb://mgo-cluster:27017"
     type: Deployment

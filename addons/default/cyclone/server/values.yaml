@@ -5,7 +5,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.6.0-alpha.0"
+    version: "v0.6.0-beta.0"
   controllers:
   - containers:
     - command:
@@ -34,7 +34,7 @@ _config:
       - name: CYCLONE_SERVER
         value: http://[[ kube_apiserver_endpoint_ip ]]:30010
       - name: WORKER_IMAGE
-        value: '[[ registry_release ]]/cyclone-worker:v0.6.0-alpha.0'
+        value: '[[ registry_release ]]/cyclone-worker:v0.6.0-beta.0'
       - name: CLOUD_AUTO_DISCOVERY
         value: 'true'
       - name: LIMIT_MEMORY
@@ -57,7 +57,7 @@ _config:
         value: "50"
       - name: CALLBACK_URL
         value: http://[[ kube_apiserver_endpoint_ip ]]:30069/apis/admin.devops.caicloud.io/v1/pipelines
-      image: '[[ registry_release ]]/cyclone-server:v0.6.0-alpha.0'
+      image: '[[ registry_release ]]/cyclone-server:v0.6.0-beta.0'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: cyclone-data

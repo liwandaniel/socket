@@ -1,19 +1,18 @@
 _config:
   _metadata:
-    description: console-web-v3.1.54
+    description: console-web
     name: console-web
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v3.2.0"
+    version: "v3.2.1"
   controllers:
   - containers:
     - env:
       - name: MONGODB_URL
         value: '[[ platform_mongo_host ]]'
-      # 隐藏审计日志菜单
       - name: HIDE_MENU
-        value: manager_center.event_log
+        value: caas_circle
       - name: HIDE
         value: forget
       - name: CLOUD_ENV
@@ -27,7 +26,10 @@ _config:
       - name: HODOR_SERVER
         value: http://hodor:8080
       - name: EXTERNAL_HODOR
-        value: ws://[[ kube_apiserver_endpoint_ip ]]:30069
+        from:
+          type: Config
+          name: platform-config
+          key: "hodorEndpoint"
       - name: MONITOR_SERVER
         value: http://monitoring-admin:8899/api/v1
       - name: MANUAL_URL
@@ -35,11 +37,26 @@ _config:
       - name: _CAAS_SERVER
         value: '[[ kube_apiserver_endpoint_ip ]]:30000'
       - name: CAICLOUD_PRODUCT_CFG_STRING_MULTI_TENANCY
-        value: '[[ multi_tenant ]]'
+        from:
+          type: Config
+          name: platform-config
+          key: "tenantMode"
+      - name: CPS_ENDPOINT
+        from:
+          type: Config
+          name: platform-config
+          key: "compassWebEndpoint"
       - name: DEX_SERVER
-        value: http://[[ kube_apiserver_endpoint_ip ]]:32000
+        # should use internal dex server ip
+        from:
+          type: Config
+          name: platform-config
+          key: "oidcIssuer"
       - name: ISSUER
-        value: http://[[ kube_apiserver_endpoint_ip ]]:32000
+        from:
+          type: Config
+          name: platform-config
+          key: "oidcIssuer"
       - name: OIDC_CLIENT_ID
         value: caicloud
       - name: OIDC_CLIENT_SECRET
@@ -55,7 +72,7 @@ _config:
         value: '[[ platform_release_version ]]'
       - name: PRODUCT_RELEASE_TIME
         value: '[[ platform_release_time ]]'
-      image: '[[ registry_release ]]/console-web:v3.2.0'
+      image: '[[ registry_release ]]/console-web:v3.2.1'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 3000

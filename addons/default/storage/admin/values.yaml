@@ -5,7 +5,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.10"
+    version: "v0.2.0-alpha.0"
   controllers:
   - containers:
     - env:
@@ -15,7 +15,7 @@ _config:
         value: '2333'
       - name: ENV_LOG_LEVEL
         value: info
-      image: '[[ registry_release ]]/storage-admin:v0.1.10'
+      image: '[[ registry_release ]]/storage-admin:v0.2.0-alpha.0'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 2333

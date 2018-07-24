@@ -1,12 +1,12 @@
 release/nvidia-k8s-device-plugin:1.10
 release/local-volume-provisioner:e43f3f6
 release/heketi:v4.1.6
-release/templates:v1.2.4
-release/release-controller:v0.2.2
+release/templates:v1.2.5
+release/release-controller:v0.2.4
 release/keepalived:v1.2.19
 release/haproxy:v1.6.5
-release/loadbalancer-provider-ipvsdr:v0.4.0
-release/loadbalancer-provider-ingress:v0.4.0
+release/loadbalancer-provider-ipvsdr:v0.4.1
+release/loadbalancer-provider-ingress:v0.4.1
 release/nginx-ingress-controller:0.15.0
 release/default-http-backend:v0.1.0
 release/calico-node:v3.1.0
@@ -18,4 +18,4 @@ library/google_containers_k8s-dns-dnsmasq-nanny-amd64:1.14.8
 library/google_containers_cluster-proportional-autoscaler-amd64:1.1.2-r2
 library/google_containers_k8s-dns-sidecar-amd64:1.14.8
 library/hyperkube:v1.10.1
-release/vaquita:v0.1.1-alpha.1
+release/vaquita:v0.1.1-alpha.2

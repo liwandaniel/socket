@@ -1,0 +1,33 @@
+_config:
+  _metadata:
+    description: insight-logging-agent-0.0.1
+    name: agent
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "0.0.1"
+  controllers:
+  - containers:
+    - image: '[[ registry_release ]]/insight-logging-agent:v0.0.1'
+      mounts: 
+      - name: kubelet 
+        path: /var/lib/kubelet
+      args:
+      - /agent
+      - --esURL=http://elasticsearch:9200
+      - --logtostderr=true
+      - -v=6
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 100m
+          memory: 150Mi
+        requests:
+          cpu: 50m
+          memory: 100Mi
+    type: DaemonSet
+    volumes:
+    - name: kubelet
+      source:
+        path: /var/lib/kubelet
+      type: HostPath

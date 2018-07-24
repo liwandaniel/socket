@@ -1,14 +1,14 @@
 _config:
   _metadata:
-    description: caicloud-metrics-server-v0.1.1
+    description: caicloud-metrics-server-v0.1.2
     name: caicloud-metrics-server
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.1"
+    version: "v0.1.2"
   controllers:
   - containers:
-    - image: '[[ registry_release ]]/caicloud-metrics-server:v0.1.1'
+    - image: '[[ registry_release ]]/caicloud-metrics-server:v0.1.2'
       imagePullPolicy: IfNotPresent
     controller:
       replica: 3

@@ -1,19 +1,35 @@
 _config:
   _metadata:
-    description: caidex-v0.0.1
+    description: caidex-v2.6.2
     name: caidex
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.0.1"
+    version: "v2.6.2"
   controllers:
   - containers:
     - command:
       - /app/dex
       - serve
       - /etc/dex/cfg/config.yaml
-      image: '[[ registry_release ]]/caidex:v0.0.1'
+      image: '[[ registry_release ]]/caidex:v2.6.2'
       imagePullPolicy: IfNotPresent
+      env:
+      - name: ISSUER
+        from:
+          type: Config
+          name: platform-config
+          key: "oidcIssuer"
+      - name: CAICLOUD_REDIRECT_URI
+        from:
+          type: Config
+          name: platform-config
+          key: "oidcRedirectURIs"
+      - name: CLUSTER_REDIRECT_URI
+        from:
+          type: Config
+          name: platform-config
+          key: "oidcRedirectURIs"
       mounts:
       - name: config
         path: /etc/dex/cfg
@@ -48,7 +64,7 @@ _config:
       data:
       - key: config.yaml
         value: |
-            issuer: [[ dex.oidc_issuer ]]
+            issuer: "<ISSUER>"
             oauth2:
               skipApprovalScreen: true
               scopes:
@@ -71,23 +87,15 @@ _config:
             enablePasswordDB: false
             staticClients:
             - name: 'caicloud'
-              redirectURIs:
-              - http://[[ dex.oidc_vip_host ]][[ dex.oidc_redirect_path ]]
-              - http://[[ dex.oidc_domain_host ]][[ dex.oidc_redirect_path ]]
-              - http://[[ dex.clever_vip_host ]][[ dex.oidc_redirect_path ]]
-              - http://[[ dex.clever_domain_host ]][[ dex.oidc_redirect_path ]]
-              id: [[ dex.oidc_client_id ]]
-              secret: [[ dex.oidc_client_secret ]]
+              redirectURIs: ["<CAICLOUD_REDIRECT_URI>"]
+              id: caicloud
+              secret: caicloud
             - name: 'cluster'
-              redirectURIs:
-              - http://[[ dex.oidc_vip_host ]][[ dex.oidc_redirect_path ]]
-              - http://[[ dex.oidc_domain_host ]][[ dex.oidc_redirect_path ]]
-              - http://[[ dex.clever_vip_host ]][[ dex.oidc_redirect_path ]]
-              - http://[[ dex.clever_domain_host ]][[ dex.oidc_redirect_path ]]
+              redirectURIs: ["<CLUSTER_REDIRECT_URI>"]
               id: cluster
               secret: cluster
               trustedPeers:
-              - [[ dex.oidc_client_id ]]
+              - caicloud
             mainConnector: cauth
             connectors:
             # used to avoid a bug
