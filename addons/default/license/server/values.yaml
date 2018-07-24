@@ -1,14 +1,14 @@
 _config:
   _metadata:
-    description: license-v0.1.0
+    description: license-v0.1.3
     name: license
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.2"
+    version: "v0.1.3"
   controllers:
   - containers:
-    - image: '[[ registry_release ]]/licensed:v0.1.2'
+    - image: '[[ registry_release ]]/licensed:v0.1.3'
       args:
       - verify
       - --master-node-label=caicloud.io/role=master

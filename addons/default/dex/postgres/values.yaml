@@ -18,6 +18,18 @@ _config:
       - name: POSTGRES_DB
         value: dex_db
       image: '[[ registry_release ]]/postgres:9.5.8'
+      probe:
+        liveness:
+          threshold:
+            success: 1
+            failure: 3
+          delay: 15
+          period: 20
+          handler:
+            type: TCP
+            method:
+              port: 5432
+          timeout: 1
       imagePullPolicy: IfNotPresent
       mounts:
       - name: dex-storage

@@ -1,11 +1,11 @@
 _config:
   _metadata:
-    description: cauth-v2.1.0-alpha.6
+    description: cauth-v2.1.3
     name: cauth
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v2.1.2"
+    version: "v2.1.3"
   controllers:
   - containers:
     - args:
@@ -28,8 +28,11 @@ _config:
       - name: SMTP_PASSWORD
         value: ""
       - name: MULTI_TENANT
-        value: '[[ multi_tenant ]]'
-      image: '[[ registry_release ]]/cauth:v2.1.2'
+        from:
+          type: Config
+          name: platform-config
+          key: "tenantMode"
+      image: '[[ registry_release ]]/cauth:v2.1.3'
       imagePullPolicy: IfNotPresent
       name: cauth
       resources:

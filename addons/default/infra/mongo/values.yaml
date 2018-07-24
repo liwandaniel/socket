@@ -26,6 +26,18 @@ _config:
         protocol: TCP
     - name: mongo-sidecar
       image: '[[ registry_release ]]/mongo-k8s-sidecar:v0.0.2'
+      probe:
+        liveness:
+          threshold:
+            success: 1
+            failure: 3
+          delay: 15
+          period: 20
+          handler:
+            type: TCP
+            method:
+              port: 27017
+          timeout: 1
       imagePullPolicy: Always
       env:
       - name: MONGO_SIDECAR_POD_LABELS
