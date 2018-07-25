@@ -1,0 +1,34 @@
+_config:
+  _metadata:
+    description: loadbalancer-admin-v0.4.0
+    name: loadbalancer-admin
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.4.2"
+  controllers:
+  - containers:
+    - args:
+      - --debug
+      - --min-valid-port=20000
+      - --max-valid-port=29999
+      image: '[[ registry_release ]]/loadbalancer-admin:v0.4.2'
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 300m
+          memory: 300Mi
+        requests:
+          cpu: 200m
+          memory: 200Mi
+    controller:
+      replica: 1
+    services:
+    - name: loadbalancer-admin
+      ports:
+      - nodePort: 31236
+        port: 8080
+        protocol: TCP
+        targetPort: 8080
+      type: NodePort
+    type: Deployment
