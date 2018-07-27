@@ -119,6 +119,8 @@ compass-hotfixes-<desc>-<addon-name-x>-<VERSION>.tar.gz
 /queue need-queue
 ```
 * 明确该 hotfix 针对的 Compass 版本，从本项目中该版本对应的 tag 中获得该组件的 values.yaml
+* values.yaml的 `_metedata.version` 按照hotfix组件的镜像版本修改
+  * 例如更新 `console-web:v3.1.55`, `_metedata.version` 则需要改为`v3.1.55`
 * 仅修改 `release-plugins/v2.7.0/<desc>-<addon-name>-<VERSION>/<namespace>/<addon-group-name>/<addon-name>/values.yaml`
   * 大部分时间仅修改 `_config.controllers[0].containers[0].image`, 格式为 `[[ registry_release ]]/<addon-component>:<VERSION>`
   * 也有可能修改 `controllers[x]` 下的其他配置字段
