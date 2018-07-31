@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: postgres-9.5.8
-    name: postgres
+    name: dex-postgres
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0

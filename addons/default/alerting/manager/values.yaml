@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: alertmanager-v0.6.2
-    name: alertmanager
+    name: alerting-manager
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0

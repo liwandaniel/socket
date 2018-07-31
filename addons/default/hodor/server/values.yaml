@@ -1,11 +1,12 @@
 _config:
   _metadata:
-    description: hodor-v1.0.4
-    name: hodor
+    description: hodor
+    name: hodor-server
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.0.4"
+    version: "v1.1.0-alpha.1"
   controllers:
   - containers:
     - env:
@@ -16,7 +17,7 @@ _config:
           key: "oidcIssuer"
       - name: OIDC_CLIENT_ID
         value: caicloud
-      image: '[[ registry_release ]]/hodor:v1.0.4'
+      image: '[[ registry_release ]]/hodor:v1.1.0-alpha.1'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: hodor

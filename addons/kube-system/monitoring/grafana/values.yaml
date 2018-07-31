@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: grafana-4.1.1
-    name: grafana
+    name: monitoring-grafana
+    namespace: kube-system
     template:
       type: template.caicloud.io/application
       version: 1.0.0

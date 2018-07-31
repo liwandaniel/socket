@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: fluentd-elasticsearch-v2.0.1
-    name: fluentd-elasticsearch
+    name: logging-fluentd
+    namespace: kube-system
     template:
       type: template.caicloud.io/application
       version: 1.0.0

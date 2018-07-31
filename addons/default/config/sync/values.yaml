@@ -2,6 +2,7 @@ _config:
   _metadata:
     description: config-sync-v0.2.2
     name: config-sync
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0

@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: mysql-5.7.14
-    name: mysql
+    name: clever-mysql
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0

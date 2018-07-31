@@ -2,6 +2,7 @@ _config:
   _metadata:
     description: monitoring-admin-v0.5.8
     name: monitoring-admin
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0

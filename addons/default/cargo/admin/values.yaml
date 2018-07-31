@@ -1,17 +1,18 @@
 _config:
   _metadata:
-    description: cargo-admin-v0.4.1
+    description: cargo-admin
     name: cargo-admin
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.4.1"
+    version: "v0.4.3"
   controllers:
   - type: Deployment
     controller:
       replica: 1
     containers:
-    - image: '[[ registry_release ]]/cargo-admin:v0.4.1'
+    - image: '[[ registry_release ]]/cargo-admin:v0.4.3'
       imagePullPolicy: IfNotPresent
       name: admin
       mounts:
@@ -21,7 +22,7 @@ _config:
         path: /platform/etc
       - name: cargo-admin-docker-sock
         path: /var/run/dind
-    - image: '[[ registry_release ]]/cargo-token:v0.4.1'
+    - image: '[[ registry_release ]]/cargo-token:v0.4.3'
       imagePullPolicy: IfNotPresent
       name: token
       mounts:

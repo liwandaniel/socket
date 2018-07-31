@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: heapster-v1.2.0-v0.0.3
-    name: heapster
+    name: monitoring-heapster
+    namespace: kube-system
     template:
       type: template.caicloud.io/application
       version: 1.0.0

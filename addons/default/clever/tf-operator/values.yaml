@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: tf-operator-v1alpha2-v1.0.0
-    name: tf-operator
+    name: clever-tf-operator
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0

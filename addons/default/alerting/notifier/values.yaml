@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: alert-notifier-v0.4.1
-    name: alert-notifier
+    name: alerting-notifier
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0

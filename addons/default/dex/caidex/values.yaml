@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: caidex-v2.6.2
-    name: caidex
+    name: dex-caidex
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0

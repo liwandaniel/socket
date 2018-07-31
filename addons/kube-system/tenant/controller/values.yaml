@@ -2,13 +2,14 @@ _config:
   _metadata:
     description: tenant-controller
     name: tenant-controller
+    namespace: kube-system
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.1.0"
+    version: "v1.2.0-alpha.0"
   controllers:
   - containers:
-    - image: '[[ registry_release ]]/tenant-controller:v1.1.0'
+    - image: '[[ registry_release ]]/tenant-controller:v1.2.0-alpha.0'
       imagePullPolicy: IfNotPresent
       resources:
         limits:

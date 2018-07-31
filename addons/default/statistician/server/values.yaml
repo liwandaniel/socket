@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: statistician-v0.0.7
-    name: statistician
+    name: statistician-server
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0

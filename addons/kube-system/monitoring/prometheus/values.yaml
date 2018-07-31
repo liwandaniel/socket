@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: prometheus-release-v2.1.0
-    name: prometheus
+    name: monitoring-prometheus
+    namespace: kube-system
     template:
       type: template.caicloud.io/application
       version: 1.0.0

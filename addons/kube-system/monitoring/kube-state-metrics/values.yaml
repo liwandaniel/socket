@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: kube-state-metrics-release-v1.1.0
-    name: kube-state-metrics
+    name: monitoring-kube-state-metrics
+    namespace: kube-system
     template:
       type: template.caicloud.io/application
       version: 1.0.0

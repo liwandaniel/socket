@@ -1,6 +1,7 @@
 _config:
   _metadata:
     name: infra-mongo
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0

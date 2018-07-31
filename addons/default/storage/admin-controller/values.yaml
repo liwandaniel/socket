@@ -2,6 +2,7 @@ _config:
   _metadata:
     description: storage-admin-controller-v0.1.10-alpha.1
     name: storage-admin-controller
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0

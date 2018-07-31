@@ -1,11 +1,12 @@
 _config:
   _metadata:
-    description: app-admin-v0.3.1
+    description: app-admin
     name: app-admin
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.3.9"
+    version: "v0.3.11"
   controllers:
   - containers:
     - env:
@@ -13,7 +14,7 @@ _config:
         value: http://helm-registry:8099
       - name: CHART_TEMPLATE_PATH
         value: /data/templates
-      image: '[[ registry_release ]]/app-admin:v0.3.9'
+      image: '[[ registry_release ]]/app-admin:v0.3.11'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 7799

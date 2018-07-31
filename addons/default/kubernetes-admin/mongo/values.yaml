@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: mongo-v3.0.15
-    name: mongo
+    name: kubernetes-admin-mongo
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0

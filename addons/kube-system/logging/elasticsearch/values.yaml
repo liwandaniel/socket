@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: elasticsearch-v5.6.3
-    name: elasticsearch
+    name: logging-elasticsearch
+    namespace: kube-system
     template:
       type: template.caicloud.io/application
       version: 1.0.0

@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: postgres-10-alpine
-    name: postgres
+    name: clever-postgres
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0

@@ -2,6 +2,7 @@ _config:
   _metadata:
     description: loadbalancer-controller-v0.4.0
     name: loadbalancer-controller
+    namespace: kube-system
     template:
       type: template.caicloud.io/application
       version: 1.0.0

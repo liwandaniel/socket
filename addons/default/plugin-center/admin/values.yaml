@@ -1,6 +1,7 @@
 _config:
   _metadata:
-    name: plugin-center
+    name: plugin-center-admin
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0

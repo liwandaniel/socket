@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: caicloud-metrics-server-v0.1.2
-    name: caicloud-metrics-server
+    name: monitoring-metrics-server
+    namespace: kube-system
     template:
       type: template.caicloud.io/application
       version: 1.0.0

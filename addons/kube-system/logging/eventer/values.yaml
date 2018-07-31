@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: eventer-v0.0.2
-    name: eventer
+    name: logging-eventer
+    namespace: kube-system
     template:
       type: template.caicloud.io/application
       version: 1.0.0

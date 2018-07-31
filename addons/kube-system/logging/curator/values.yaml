@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: curator-v1.0.0
-    name: curator
+    name: logging-curator
+    namespace: kube-system
     template:
       type: template.caicloud.io/application
       version: 1.0.0

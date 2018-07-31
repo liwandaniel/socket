@@ -2,6 +2,7 @@ _config:
   _metadata:
     description: helm-registry-v0.2.0
     name: helm-registry
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0

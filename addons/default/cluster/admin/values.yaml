@@ -2,10 +2,11 @@ _config:
   _metadata:
     description: cluster-admin
     name: cluster-admin
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.2.0-alpha.2"
+    version: "v1.2.0-alpha.4"
   controllers:
   - containers:
     - env:
@@ -15,7 +16,7 @@ _config:
         value: info
       - name: ENV_MONGO_ADDR
         value: '[[ platform_mongo_host ]]'
-      image: '[[ registry_release ]]/cluster-admin:v1.2.0-alpha.2'
+      image: '[[ registry_release ]]/cluster-admin:v1.2.0-alpha.4'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 2233

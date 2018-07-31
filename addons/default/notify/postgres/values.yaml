@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: postgres-10.1-alpine
-    name: postgres
+    name: notify-postgres
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0

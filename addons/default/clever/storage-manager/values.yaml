@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: storage-manager-v1.4.2
-    name: storage-manager
+    name: clever-storage-manager
+    namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0

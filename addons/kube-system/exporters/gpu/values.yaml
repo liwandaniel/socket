@@ -1,7 +1,8 @@
 _config:
   _metadata:
     description: exporter-gpu-v0.1.4
-    name: gpu-exporter
+    name: exporters-gpu
+    namespace: kube-system
     template:
       type: template.caicloud.io/application
       version: 1.0.0
