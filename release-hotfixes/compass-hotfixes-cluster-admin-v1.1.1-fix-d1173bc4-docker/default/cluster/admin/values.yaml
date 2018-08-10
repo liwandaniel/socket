@@ -1,0 +1,42 @@
+_config:
+  _metadata:
+    description: cluster-admin
+    name: cluster-admin
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v1.1.1-fix-d1173bc4-docker"
+  controllers:
+  - containers:
+    - env:
+      - name: ENV_LISTEN_PORT
+        value: '2233'
+      - name: ENV_LOG_LEVEL
+        value: info
+      - name: ENV_MONGO_ADDR
+        value: '[[ platform_mongo_host ]]'
+      image: '[[ registry_release ]]/cluster-admin:v1.1.1-fix-d1173bc4-docker'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 2233
+        protocol: TCP
+    controller:
+      replica: 2
+      strategy:
+        surge: 1
+        unavailable: 0
+    pod:
+      serviceAccountName: admin
+    services:
+    - name: cds-server
+      ports:
+      - port: 9000
+        protocol: TCP
+        targetPort: 2233
+      type: ClusterIP
+    - name: cluster-admin
+      ports:
+      - port: 2233
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment
