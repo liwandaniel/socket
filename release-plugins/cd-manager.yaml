@@ -1,0 +1,44 @@
+metadata:
+  name: cd-manager
+  alias: 持续部署
+spec:
+  class: cd-manager
+  version: v0.1.0
+  compassRequirement: ">=v2.7.0"
+  description: 持续部署
+  note: 持续部署
+  author: caicloud.io
+  service:
+    port: 8080
+    image: harbor.caicloud.xyz/release/compass-plugins-cd-manager:v0.1.0
+    configs:
+      envs:
+      - name: SERVER_MONGO_HOST
+        value: 'mongodb://infra-mongo-mongo-v1-0-0.mgo-cluster,infra-mongo-mongo-v1-0-1.mgo-cluster,infra-mongo-mongo-v1-0-2.mgo-cluster'
+      - name: SERVER_CLUSTER_ADMIN_SERVER
+        value: 'cds-server:9000'
+      - name: SERVER_WEB_RESOURCE_PATH
+        value: '/caicloud/compass-plugins/static-resources'
+      files: []
+    security:
+      privileged: false
+      clusterAccessible: true
+      apiAccessible: true
+    resources:
+      limits:
+        cpu: '0.5'
+        memory: 512Mi
+      requests:
+        cpu: '0.1'
+        memory: 512Mi
+  modules:
+  - name: cd-manager
+    alias:
+      zh: 持续部署
+      en: cd-manager
+    icon: '/src/img/icon.svg'
+    sources:
+    - "/src/index.js"
+    slots:
+    # For multiple tenant mode, use `user.plugin_center`, for single tenant mode, use `system.plugin_center`.
+    - user.plugin_center
