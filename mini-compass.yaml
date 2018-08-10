@@ -1,0 +1,218 @@
+---
+metadata:
+  name: mini compass
+  version: 2.7.1
+  description: mini compass deployment config
+spec:
+  systemAddons:
+  - name: tenant-admin
+    description: Manage tenants
+  - name: cluster-admin
+    description: Manage clusters
+  - name: hodor-server
+    description: API Gateway
+  - name: license-server
+    description: Product license
+  - name: dex-cauth
+    description: Auth server
+  - name: dex-caidex
+    description: OIDC
+  - name: dex-postgres
+    description: DB of caidex
+  - name: infra-mongo
+    description: MongoDB Cluster
+  - name: infra-mongo-bak
+    description: Backup MongoDB Cluster
+  - name: hybrid-controller-manager
+    description: hybrid controller manager
+  modules:
+  - name: console
+    description: Console web
+    required: true
+    addons:
+    - name: console-web-web
+      description: Console web
+    - name: console-web-redis
+      description: Redis for console web
+  - name: devops
+    description: DevOps
+    required: false
+    addons:
+    - name: devops-admin
+      description: devops management
+      deps:
+      - storage-admin
+      - cargo-admin
+    - name: cyclone-server
+      description: Core of CI/CD
+  - name: cargo
+    description: Docker registry
+    required: true
+    addons:
+    - name: cargo-admin
+      description: cargo management
+  - name: cluster
+    description: cluster
+    required: false
+    addons:
+    - name: cluster-controller
+      description: cluster controller
+    - name: cluster-machine
+      description: cluster machine controller
+    - name: cluster-addon
+      description: cluster addon manager
+  - name: tenant
+    description: tenant
+    required: false
+    addons:
+    - name: tenant-controller
+      description: tenant controller
+  - name: plugin-center
+    description: plugin center
+    required: false
+    addons:
+    - name: plugin-center-admin
+      description: Plugin management
+  - name: statistician
+    description: statistician
+    required: false
+    addons:
+    - name: statistician-server
+      description: statistician
+  - name: alerting
+    description: alerting
+    required: false
+    addons:
+    - name: alerting-manager
+      description: Handle alert from promethus
+    - name: alerting-notifier
+      description: Send alert
+  - name: notify
+    description: notify
+    required: false
+    addons:
+    - name: notify-admin
+      description: Notify management
+    - name: notify-postgres
+      description: DB for notify
+  - name: app
+    description: app
+    required: true
+    addons:
+    - name: app-admin
+      description: App management
+    - name: helm-registry
+      description: Registry for app
+    - name: canary-release-controller
+      description: Controller for canary release
+  - name: loadbalancer
+    description: load balancer
+    required: false
+    addons:
+    - name: loadbalancer-admin
+      description: Load balance management
+    - name: loadbalancer-controller
+      description: Controller for load balancer
+  - name: kubernetes-admin
+    description: kubernetes admin
+    required: false
+    addons:
+    - name: kubernetes-admin-server
+      description: Kubernetes management
+    - name: kubernetes-admin-mongo
+      description: Mongo of kubernetes admin
+  - name: config
+    description: config center
+    required: false
+    addons:
+    - name: config-admin
+      description: Config management
+    - name: config-gc
+      description: GC of config
+    - name: config-sync
+      description: Sync controller for config
+    - name: config-admission
+      description: Admission controller for config
+    - name: config-reference
+      description: Controller for config reference
+  - name: storage
+    description: storage
+    required: false
+    addons:
+    - name: storage-admin
+      description: Storage management
+    - name: storage-admin-controller
+      description: Storage operations
+    - name: storage-admission
+      description: Admission controller for storage
+    - name: storage-controller
+      description: Controller for storage
+    - name: storage-provisioner-nfs
+      description: Provision nfs volume
+  - name: monitoring
+    description: monitoring
+    required: false
+    addons:
+    - name: monitoring-admin
+      description: Monitoring management
+    - name: monitoring-operator
+      description: Customized monitoring metrics
+    - name: monitoring-grafana
+      description: Display monitoring
+    - name: monitoring-heapster
+      description: Collect k8s metrics
+    - name: monitoring-kube-state-metrics
+      description: Collect k8s metrics
+    - name: monitoring-metrics-server
+      description: Metrics server
+    - name: monitoring-prometheus
+      description: Prometheus
+    - name: exporters-app
+      description: app exporter
+    - name: exporters-elasticsearch
+      description: elasticsearch exporter
+    - name: exporters-gpu
+      description: gpu exporter
+    - name: exporters-node
+      description: node exporter
+  - name: logging
+    description: logging
+    required: false
+    addons:
+    - name: logging-admin
+      description: Logging management
+    - name: logging-processor
+      description: Logging processor
+    - name: logging-curator
+      description: Logging curator
+    - name: logging-elasticsearch
+      description: Store and search log
+    - name: logging-eventer
+      description: Collect k8s events
+    - name: logging-fluentd
+      description: Collect log
+    - name: logging-kibana
+      description: Display log
+    - name: logging-agent
+      description: Logging agent
+    - name: logging-hooks
+      description: Logging hooks
+  extraAddons:
+  - name: monitoring-admin
+    description: Monitoring management
+  - name: cluster-addon
+    description: cluster addon manager
+  - name: exporters-app
+    description: app exporter
+  - name: exporters-gpu
+    description: gpu exporter
+  - name: exporters-node
+    description: node exporter
+  - name: logging-admin
+    description: Logging management
+  - name: monitoring-metrics-server
+    description: Metrics server
+  - name: monitoring-kube-state-metrics
+    description: Collect k8s metrics
+  - name: monitoring-prometheus
+    description: Prometheus
