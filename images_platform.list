@@ -70,7 +70,6 @@ release/insight-mutating-webhook:v0.0.3
 release/kibana:5.6.3
 release/grafana:4.1.1
 release/grafana-setup-tool:v0.3.3
-release/heapster:v1.2.0-v0.0.3
 release/kube-state-metrics:release-v1.1.0
 release/caicloud-metrics-server:v0.1.2
 release/prometheus:release-v2.1.0

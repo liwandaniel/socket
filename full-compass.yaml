@@ -159,8 +159,6 @@ spec:
       description: Customized monitoring metrics
     - name: monitoring-grafana
       description: Display monitoring
-    - name: monitoring-heapster
-      description: Collect k8s metrics
     - name: monitoring-kube-state-metrics
       description: Collect k8s metrics
     - name: monitoring-metrics-server
