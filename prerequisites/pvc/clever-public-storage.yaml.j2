@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    volume.beta.kubernetes.io/storage-class: heketi-storageclass
+    volume.beta.kubernetes.io/storage-privisioner: kubernetes.io/glusterfs
+  finalizers:
+  - kubernetes.io/pvc-protection
+  name: clever-kubeflow-admin-storage-public
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    limits:
+      storage: 100Gi
+    requests:
+      storage: 100Gi
+  storageClassName: heketi-storageclass
