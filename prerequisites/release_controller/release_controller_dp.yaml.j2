@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: release-controller
+  namespace: "kube-system"
+  labels:
+    k8s-app: release-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: release-controller
+  template:
+    metadata:
+      labels:
+        k8s-app: release-controller
+    spec:
+      containers:
+      - name: controller
+        image: [[ registry_release ]]/release-controller:v0.2.6
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi

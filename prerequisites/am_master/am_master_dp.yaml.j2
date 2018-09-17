@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: am-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      caicloud-app: am-master
+  template:
+    metadata:
+      labels:
+        caicloud-app: am-master
+    spec:
+      containers:
+      - name: am-master
+        image: [[ registry_release ]]/am_master:v0.0.3
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: SECRET_KEY
+          value: 'q*(7(ljz=i61)f_^6vu42u0i1cl4-txz@h6h79kn%c49w$j=n9'
+        - name: MYSQL_HOST
+          value: 'am-mysql'
+        - name: MYSQL_PASSWORD
+          value: 'my-secret-pw'
+        - name: MYSQL_PORT
+          value: '3306'
+        ports:
+        - containerPort: 8000
+      initContainers:
+        - name: check-mysql
+          image: [[ registry_release ]]/am_master:v0.0.3
+          command: ["/bin/sh", "-c", "until mysql -h am-mysql -pmy-secret-pw -e 'SELECT 1'; do echo waiting for mysql to be ready; sleep 5; done;"]

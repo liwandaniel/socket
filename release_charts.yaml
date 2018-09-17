@@ -1,0 +1,179 @@
+metadata:
+  name: collect set
+  description: A set of files to collect.
+spec:
+- repositoryFullName: caicloud/app-admin
+  tag: v0.3.17
+  resourcePaths:
+  - release/app-admin.yaml
+  targetPath: app
+- repositoryFullName: caicloud/helm-registry
+  tag: v0.2.2
+  resourcePaths:
+  - release/helm-registry.yaml
+  targetPath: app
+- repositoryFullName: caicloud/canary-release
+  tag: v0.3.1
+  resourcePaths:
+  - release/canary-release-controller.yaml
+  targetPath: app
+- repositoryFullName: caicloud/cargo-admin
+  tag: v0.4.7
+  resourcePaths:
+  - release/cargo-admin.yaml
+  targetPath: cargo
+- repositoryFullName: caicloud/cluster-admin
+  tag: v1.3.0-alpha.0
+  resourcePaths:
+  - release/cluster-admin.yaml
+  - release/cluster-controller.yaml
+  - release/cluster-machine.yaml
+  - release/cluster-addon.yaml
+  targetPath: cluster
+- repositoryFullName: caicloud/config-admin
+  tag: v0.1.11
+  resourcePaths:
+  - release/config-admin.yaml
+  targetPath: config
+- repositoryFullName: caicloud/config-controller
+  tag: v0.2.6
+  resourcePaths:
+  - release/config-gc.yaml
+  - release/config-sync.yaml
+  - release/config-admission.yaml
+  - release/config-reference.yaml
+  targetPath: config
+- repositoryFullName: caicloud/console-web
+  tag: v3.3.0-beta.3
+  resourcePaths:
+  - release/console-web.yaml
+  - release/console-web-redis.yaml
+  targetPath: console
+- repositoryFullName: caicloud/cyclone
+  tag: v0.7.0-alpha.0
+  resourcePaths:
+  - release/cyclone-server.yaml
+  targetPath: devops
+- repositoryFullName: caicloud/devops-admin
+  tag: v0.6.0-alpha.0
+  resourcePaths:
+  - release/devops-admin.yaml
+  targetPath: devops
+- repositoryFullName: caicloud/caidex
+  tag: test
+  resourcePaths:
+  - release/dex-caidex.yaml
+  - release/dex-postgres.yaml
+  targetPath: dex
+- repositoryFullName: caicloud/cauth
+  tag: test
+  resourcePaths:
+  - release/dex-cauth.yaml
+  targetPath: dex
+- repositoryFullName: caicloud/hodor
+  tag: v1.1.0-alpha.8
+  resourcePaths:
+  - release/hodor-server.yaml
+  targetPath: hodor-server
+- repositoryFullName: caicloud/mongo-k8s-sidecar
+  tag: v0.0.3
+  resourcePaths:
+  - release/infra-mongo.yaml
+  - release/infra-mongo-bak.yaml
+  targetPath: infra
+- repositoryFullName: caicloud/controller-manager
+  tag: v1.2.5
+  resourcePaths:
+  - release/hybrid-controller-manager.yaml
+  targetPath: hybrid-controller-manager
+- repositoryFullName: caicloud/license
+  tag: v0.1.7
+  resourcePaths:
+  - release/license-server.yaml
+  targetPath: license
+- repositoryFullName: caicloud/loadbalancer-admin
+  tag: v0.4.6
+  resourcePaths:
+  - release/loadbalancer-admin.yaml
+  targetPath: loadbalancer
+- repositoryFullName: caicloud/loadbalancer-controller
+  tag: v0.4.4
+  resourcePaths:
+  - release/loadbalancer-controller.yaml
+  targetPath: loadbalancer
+- repositoryFullName: caicloud/logging-admin
+  tag: v2.1.5
+  resourcePaths:
+  - release/logging-admin.yaml
+  - release/logging-processor.yaml
+  - release/logging-curator.yaml
+  - release/logging-elasticsearch.yaml
+  - release/logging-eventer.yaml
+  - release/logging-fluentd.yaml
+  - release/logging-kibana.yaml
+  targetPath: logging
+- repositoryFullName: caicloud/insight-agent
+  tag: v0.0.4
+  resourcePaths:
+  - release/logging-agent.yaml
+  targetPath: logging
+- repositoryFullName: caicloud/insight-hooks
+  tag: v0.0.4
+  resourcePaths:
+  - release/logging-hooks.yaml
+  targetPath: logging
+- repositoryFullName: caicloud/monitoring-admin
+  tag: v0.5.17
+  resourcePaths:
+  - release/monitoring-admin.yaml
+  - release/monitoring-operator.yaml
+  - release/monitoring-grafana.yaml
+  - release/monitoring-kube-state-metrics.yaml
+  - release/monitoring-metrics-server.yaml
+  - release/monitoring-prometheus.yaml
+  - release/alerting-manager.yaml
+  - release/alerting-notifier.yaml
+  targetPath: monitoring
+- repositoryFullName: caicloud/exporters
+  tag: v0.0.1
+  resourcePaths:
+  - release/exporters-app.yaml
+  - release/exporters-elasticsearch.yaml
+  - release/exporters-gpu.yaml
+  - release/exporters-node.yaml
+  targetPath: monitoring
+- repositoryFullName: caicloud/notify-admin
+  tag: v0.1.2
+  resourcePaths:
+  - release/notify-admin.yaml
+  - release/notify-postgres.yaml
+  targetPath: notify
+- repositoryFullName: caicloud/plugin-center
+  tag: v0.1.4
+  resourcePaths:
+  - release/plugin-center-admin.yaml
+  targetPath: plugin-center
+- repositoryFullName: caicloud/statistician
+  tag: v0.0.9-alpha.1
+  resourcePaths:
+  - release/statistician-server.yaml
+  targetPath: statistician
+- repositoryFullName: caicloud/storage-admin
+  tag: v0.3.0-alpha.0
+  resourcePaths:
+  - release/storage-admin.yaml
+  - release/storage-admin-controller.yaml
+  - release/storage-admission.yaml
+  - release/storage-controller.yaml
+  targetPath: storage
+- repositoryFullName: caicloud/external-storage
+  tag: v0.0.2
+  resourcePaths:
+  - release/storage-provisioner-nfs.yaml
+  targetPath: storage
+- repositoryFullName: caicloud/tenant-admin
+  tag: test
+  resourcePaths:
+  - release/tenant-admin.yaml
+  - release/tenant-controller.yaml
+  targetPath: tenant

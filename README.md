@@ -4,6 +4,13 @@
 
 - [compass-release](#compass-release)
   - [产品版本安装包](#%E4%BA%A7%E5%93%81%E7%89%88%E6%9C%AC%E5%AE%89%E8%A3%85%E5%8C%85)
+  - [产品完整安装包](#%E4%BA%A7%E5%93%81%E5%AE%8C%E6%95%B4%E5%AE%89%E8%A3%85%E5%8C%85)
+    - [打包流程](#%E6%89%93%E5%8C%85%E6%B5%81%E7%A8%8B)
+      - [更新组件 tag](#%E6%9B%B4%E6%96%B0%E7%BB%84%E4%BB%B6-tag)
+      - [确认组件 tag](#%E7%A1%AE%E8%AE%A4%E7%BB%84%E4%BB%B6-tag)
+      - [收集 chart](#%E6%94%B6%E9%9B%86-chart)
+      - [提交 addons](#%E6%8F%90%E4%BA%A4-addons)
+      - [构建 release 镜像](#%E6%9E%84%E5%BB%BA-release-%E9%95%9C%E5%83%8F)
   - [产品组件热升级安装包](#%E4%BA%A7%E5%93%81%E7%BB%84%E4%BB%B6%E7%83%AD%E5%8D%87%E7%BA%A7%E5%AE%89%E8%A3%85%E5%8C%85)
     - [发布流程](#%E5%8F%91%E5%B8%83%E6%B5%81%E7%A8%8B)
       - [发起 issue](#%E5%8F%91%E8%B5%B7-issue)
@@ -66,6 +73,46 @@ oss://infra-release/platform/
 ```
 
 安装包的格式说明详见[产品部署手册](https://drive.google.com/drive/folders/1b-GAQMDUpdOljADIMYHHtzjTY1gln4PI)，发布流程由 [platform-release](https://github.com/orgs/caicloud/teams/platform-release/members) 和 [infra](https://github.com/orgs/caicloud/teams/infra-all/members) 小组管理并提供工具。
+
+## 产品完整安装包
+
+### 打包流程
+
+#### 更新组件 tag
+
+读取 `charts_list.yaml`， 获取各个 repo 的最新 tag 并生成 `release_charts.yaml`
+
+```bash
+make update-tag
+```
+
+#### 确认组件 tag
+
+提 PR，由各个组件的负责人确认 `release_charts.yaml` 文件中的 tag
+
+#### 收集 chart
+
+确认 tag 之后，从每个 repo 收集 chart 文件，保存在 `addons` 目录下
+
+```bash
+make collect-charts
+```
+
+#### 提交 addons
+
+提 PR，将收集到的最新的 charts 归档
+
+#### 构建 release 镜像
+
+基于 pangolin 基础镜像，添加 addons，构建成为 release 镜像
+
+* RELEASE_VERSION 表示将要生成的 release 镜像的 tag
+* 镜像全名为 `cargo-infra.caicloud.xyz/devops_release/release:v2.7.x-prexx`
+
+```bash
+make release-image RELEASE_VERSION=v2.7.x-prexx
+```
+
 
 ## 产品组件热升级安装包
 
