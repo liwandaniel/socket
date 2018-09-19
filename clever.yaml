@@ -1,0 +1,35 @@
+---
+metadata:
+  name: clever
+  version: 1.2.0
+  description: clever deployment config
+spec:
+  systemAddons:
+  - name: app-admin
+    description: app admin
+  - name: clever-admin
+    description: clever admin
+  - name: clever-public-fileserver
+    description: clever public fileserver
+  - name: clever-web
+    description: Clever web
+  - name: dex-cauth
+    description: Auth server
+  - name: hodor-server
+    description: API Gateway
+  - name: clever-kubeflow-admin
+    description: clever kubeflow admin
+  - name: clever-pytorch-operator
+    description: clever pytorch operator
+  - name: clever-tf-operator
+    description: TF operator
+  - name: clever-labeler
+    description: Labeler
+  - name: clever-labeler-fileserver
+    description: File server for labeler
+  - name: clever-labelgres
+    description: Postgres for label
+  - name: clever-labelme
+    description: Labelme
+  - name: clever-user-web
+    description: User web
