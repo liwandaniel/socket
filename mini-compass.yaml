@@ -63,7 +63,7 @@ spec:
       description: cluster addon manager
   - name: tenant
     description: tenant
-    required: false
+    required: true
     addons:
     - name: tenant-controller
       description: tenant controller
