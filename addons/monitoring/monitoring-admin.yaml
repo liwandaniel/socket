@@ -1,0 +1,42 @@
+_config:
+  _metadata:
+    description: monitoring-admin
+    name: monitoring-admin
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.5.17"
+  controllers:
+  - containers:
+    - args:
+      - /admin
+      - --mongo-endpoint=$(MONGO_ENDPOINT)
+      env:
+      - name: MONGO_ENDPOINT
+        value: '[[ platform_mongo_host ]]'
+      - name: CLUSTER_ADMIN
+        value: cds-server:9000
+      image: '[[ registry_release ]]/monitoring-admin:v0.5.17'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 8899
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 500m
+          memory: 1.5Gi
+        requests:
+          cpu: 100m
+          memory: 256Mi
+    controller:
+      replica: 1
+    pod:
+      serviceAccountName: admin
+    services:
+    - name: monitoring-admin
+      ports:
+      - port: 8899
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment

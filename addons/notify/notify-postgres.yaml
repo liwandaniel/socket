@@ -1,0 +1,44 @@
+_config:
+  _metadata:
+    description: notify-postgres
+    name: notify-postgres
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "10.1-alpine"
+  controllers:
+  - containers:
+    - env:
+      - name: POSTGRES_USER
+        value: postgres
+      - name: POSTGRES_DB
+        value: postgres
+      - name: PGDATA
+        value: /var/lib/postgresql/data/pgdata
+      image: '[[ registry_release ]]/postgres:10.1-alpine'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: pg-storage
+        path: /var/lib/postgresql/data
+      name: postgres
+      ports:
+      - port: 5432
+        protocol: TCP
+    services:
+    - name: notify-admin-postgres
+      ports:
+      - port: 5432
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment
+    volumes:
+    - name: pg-storage
+      type: Dynamic
+      source:
+        class: heketi-storageclass
+        modes:
+        - ReadWriteMany
+      storage:
+        request: 4096Mi
+        limit: 4096Mi

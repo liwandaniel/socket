@@ -1,0 +1,34 @@
+_config:
+  _metadata:
+    description: license-server
+    name: license-server
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.1.7"
+  controllers:
+  - containers:
+    - image: '[[ registry_release ]]/licensed:v0.1.7'
+      args:
+      - verify
+      - --master-node-label=caicloud.io/role=master
+      imagePullPolicy: IfNotPresent
+      name: license
+      resources:
+        limits:
+          cpu: 50m
+          memory: 50Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+    controller:
+      replica: 3
+    services:
+    - name: license
+      ports:
+      - port: 4243
+        protocol: TCP
+        targetPort: 4243
+      type: ClusterIP
+    type: Deployment

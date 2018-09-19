@@ -1,0 +1,26 @@
+_config:
+  _metadata:
+    description: storage-controller
+    name: storage-controller
+    namespace: kube-system
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.3.0-alpha.0"
+  controllers:
+  - containers:
+    - env:
+      - name: ENV_LOG_LEVEL
+        value: info
+      image: '[[ registry_release ]]/storage-controller:v0.3.0-alpha.0'
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+    controller:
+      replica: 1
+    type: Deployment

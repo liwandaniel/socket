@@ -1,0 +1,49 @@
+_config:
+  _metadata:
+    description: cluster-addon
+    name: cluster-addon
+    namespace: kube-system
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v1.3.0-alpha.0"
+  controllers:
+  - containers:
+    - env:
+      - name: FLUENTD_ARGS
+        value: --no-supervisor -q
+      - name: SERVER_ENV_KUBE_HOST
+        value: ''
+      - name: SERVER_ENV_KUBE_CONFIG
+        value: ''
+      - name: SERVER_PORT
+        value: '6666'
+      - name: SERVER_ENV_CONFIG_DIR
+        value: /caicloud/cluster-admin/configs
+      - name: SERVER_ENV_RUNNING_NAMESPACE
+        value: default
+      - name: SERVER_ENV_APP_LABEL_KEY
+        value: k8s-app
+      image: '[[ registry_release ]]/cluster-addon:v1.3.0-alpha.0'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 6666
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 100m
+          memory: 128Mi
+        requests:
+          cpu: 25m
+          memory: 64Mi
+    controller:
+      replica: 1
+    services:
+    - name: cluster-addon
+      ports:
+      - nodePort: 30666
+        port: 6666
+        protocol: TCP
+        targetPort: 6666
+      type: NodePort
+    type: Deployment

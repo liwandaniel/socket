@@ -1,0 +1,32 @@
+_config:
+  _metadata:
+    name: plugin-center-admin
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.1.4"
+  controllers:
+  - containers:
+    - args:
+      - --mongo-host=[[ platform_mongo_host ]]
+      image: '[[ registry_release ]]/plugin-center-admin:v0.1.4'
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 300m
+          memory: 300Mi
+        requests:
+          cpu: 200m
+          memory: 200Mi
+    controller:
+      replica: 1
+    services:
+    - name: plugin-center
+      ports:
+      - nodePort: 31237
+        port: 8080
+        protocol: TCP
+        targetPort: 8080
+      type: NodePort
+    type: Deployment

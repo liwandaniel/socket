@@ -1,0 +1,35 @@
+_config:
+  _metadata:
+    description: storage-admin
+    name: storage-admin
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.3.0-alpha.0"
+  controllers:
+  - containers:
+    - env:
+      - name: SERVER_ENV_CLUSTER_ADMIN_HOST
+        value: http://cds-server:9000
+      - name: SERVER_PORT
+        value: '2333'
+      image: '[[ registry_release ]]/storage-admin:v0.3.0-alpha.0'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 2333
+        protocol: TCP
+    controller:
+      replica: 1
+      strategy:
+        surge: 1
+        unavailable: 0
+    pod:
+      serviceAccountName: admin
+    services:
+    - name: storage-admin
+      ports:
+      - port: 2333
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment
