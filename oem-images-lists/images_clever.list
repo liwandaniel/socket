@@ -1,0 +1,12 @@
+release/clever-admin:v0.0.1-alpha.0
+release/caicloud-droppy:v10.0.7
+release/clever-fileserver:v0.1.0
+release/kubeflow-admin:v1.1.0-alpha.0
+release/clever-web:v2.3.6-pre1
+release/user-web:v0.3.0-beta.2
+release/labeler:v0.1.1
+release/labelme:v0.1.5
+release/clever-fileserver:v0.2.2
+release/templates:v1.2.8
+release/cauth:v2.2.0-alpha.8
+release/hodor:v1.1.0-alpha.9

@@ -1,0 +1,62 @@
+_config:
+  _metadata:
+    description: user-web
+    name: clever-user-web
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.3.0-beta.2"
+  controllers:
+  - containers:
+    - env:
+      - name: CAUTH_SERVER
+        value: "http://cauth:8082/api/v1"
+      - name: CLOUD_ENV
+        value: "private"
+      - name: DEX_SERVER
+        value: 'http://[[ kube_apiserver_endpoint_ip ]]:3200'
+      - name: EXTERNAL_HODOR
+        value: 'ws://[[ kube_apiserver_endpoint_ip ]]:30069'
+      - name: HIDE
+        value: ""
+      - name: HIDE_MENU
+        value: ""
+      - name: HODOR_SERVER
+        value: "http://hodor:8080"
+      - name: ISSUER
+        value: "http://[[ kube_apiserver_endpoint_ip ]]:32000"
+      - name: OEM_ENV
+        value: "0"
+      - name: OEM_NAME_ENV
+        value: "Clever"
+      - name: OIDC_CLIENT_ID
+        value: caicloud
+      - name: OIDC_CLIENT_SECRET
+        value: caicloud
+      - name: OIDC_REDIRECT_URI
+        value: "/api/idToken"
+      - name: CLEVER_URL
+        value: "http://[[ kube_apiserver_endpoint_ip ]]:30006"
+      image: '[[ registry_release ]]/user-web:v0.3.0-beta.2'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 3006
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+    controller:
+      replica: 1
+    services:
+    - name: user-web
+      ports:
+      - nodePort: 30008
+        port: 3006
+        protocol: TCP
+      type: NodePort
+    type: Deployment

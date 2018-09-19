@@ -1,0 +1,72 @@
+_config:
+  _metadata:
+    description: clever-web
+    name: clever-web
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v2.3.6-pre1"
+  controllers:
+  - containers:
+    - env:
+      - name: CAUTH_SERVER
+        value: http://hodor:8081/api/v1
+      - name: CDS_SERVER
+        value: http://cds-server:9000/api/v0.1
+      - name: CLOUD_ENV
+        value: private
+      - name: DEX_SERVER
+        value: http://[[ kube_apiserver_endpoint_ip ]]:32000
+      - name: EXTERNAL_HODOR
+        value: ws://[[ kube_apiserver_endpoint_ip ]]:30069
+      - name: HIDE
+        value: signup,forget
+      - name: HIDE_MENU
+        value: ''
+      - name: HODOR_SERVER
+        value: http://hodor:8080
+      - name: ISSUER
+        value: http://[[ kube_apiserver_endpoint_ip ]]:32000
+      - name: LABELME_BASE_URL
+        value: http://[[ kube_apiserver_endpoint_ip ]]:32002
+      - name: LABELME_ORIGIN
+        value: http://[[ kube_apiserver_endpoint_ip ]]:32001
+      - name: LABELME_PATHNAME
+        value: /tool.html
+      - name: MONITORING_ADMIN
+        value: http://monitoring-admin:8899/api/v2
+      - name: OEM_ENV
+        value: '0'
+      - name: OEM_NAME_ENV
+        value: Clever 人工智能云平台
+      - name: OIDC_CLIENT_ID
+        value: caicloud
+      - name: OIDC_CLIENT_SECRET
+        value: caicloud
+      - name: OIDC_REDIRECT_URI
+        value: /api/idToken
+      - name: PARTITION_NAME
+        value: clever
+      - name: USER_URL
+        value: http://[[ kube_apiserver_endpoint_ip ]]:30008
+      image: '[[ registry_release ]]/clever-web:v2.3.6-pre1'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 4006
+        protocol: TCP
+      - port: 8080
+        protocol: TCP
+    controller:
+      replica: 1
+    services:
+    - name: clever-web
+      ports:
+      - nodePort: 30006
+        port: 4006
+        protocol: TCP
+      - nodePort: 30011
+        port: 8080
+        protocol: TCP
+      type: NodePort
+    type: Deployment

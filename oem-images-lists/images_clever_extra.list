@@ -1,0 +1,3 @@
+release/postgres:10-alpine
+release/redis:3.0.3
+release/alpine:3.6

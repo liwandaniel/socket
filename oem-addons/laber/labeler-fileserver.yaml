@@ -1,0 +1,52 @@
+_config:
+  _metadata:
+    description: labeler-fileserver-alpine
+    name: clever-labeler-fileserver
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.2.2"
+  controllers:
+  - containers:
+    - env:
+      - name: FILESERVER_THREAD
+        value: "true"
+      image: '[[ registry_release ]]/clever-fileserver:v0.2.2'
+      imagePullPolicy: Always
+      resources:
+        limits:
+          cpu: "2"
+          memory: 1024Mi
+        requests:
+          cpu: "1"
+          memory: 512Mi
+      mounts:
+      - name: labeler-fileserver
+        path: /clever/data
+      - name: labeler-storage
+        path: /clever/labels
+      ports:
+      - port: 8080
+        protocol: TCP
+    volumes:
+    - name: labeler-fileserver
+      type: Static
+      source:
+        target: "clever-kubeflow-admin-storage-public"
+        readonly: false
+    - name: labeler-storage
+      type: Static
+      source:
+        target: "clever-labeler-labeler-v1-0-labeler-storage"
+        readonly: false
+    controller:
+      replica: 1
+    services:
+    - name: labeler-fileserver
+      ports:
+      - port: 8080
+        protocol: TCP
+        nodePort: 32003
+      type: NodePort
+    type: Deployment
