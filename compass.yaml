@@ -113,14 +113,6 @@ spec:
       description: Load balance management
     - name: loadbalancer-controller
       description: Controller for load balancer
-  - name: kubernetes-admin
-    description: kubernetes admin
-    required: true
-    addons:
-    - name: kubernetes-admin-server
-      description: Kubernetes management
-    - name: kubernetes-admin-mongo
-      description: Mongo of kubernetes admin
   - name: config
     description: config center
     required: true
