@@ -59,11 +59,6 @@ spec:
     resourcePaths:
       - release/devops-admin.yaml
     targetPath: devops
-  - repositoryFullName: caicloud/caidex
-    resourcePaths:
-      - release/dex-caidex.yaml
-      - release/dex-postgres.yaml
-    targetPath: dex
   - repositoryFullName: caicloud/cauth
     resourcePaths:
       - release/dex-cauth.yaml

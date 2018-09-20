@@ -15,10 +15,8 @@ spec:
     description: Product license
   - name: dex-cauth
     description: Auth server
-  - name: dex-caidex
-    description: OIDC
-  - name: dex-postgres
-    description: DB of caidex
+  - name: auth-provider
+    description: caicloud auth provider
   - name: infra-mongo
     description: MongoDB Cluster
   - name: infra-mongo-bak
