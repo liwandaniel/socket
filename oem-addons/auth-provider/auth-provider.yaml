@@ -1,0 +1,81 @@
+_config:
+  _metadata:
+    description: caicloud auth provider
+    name: auth-provider
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.1.0-beta.4"
+  controllers:
+    - containers:
+      - image: '[[ registry_release ]]/auth-provider:v0.1.0-beta.4'
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: MONGODB_URL
+            value: '[[ platform_mongo_host ]]'
+          - name: DEBUG
+            value: 'oidc-provider:*,auth-provider:*'
+          - name: DEBUG_COLORS
+            value: yes
+        mounts:
+          - name: auth-provider
+            path: /usr/src/app/config/config-prod.yaml
+            subpath: config-prod.yaml
+      controller:
+        replica: 1
+      services:
+        - name: auth-provider
+          ports:
+            - port: 8020
+              protocol: TCP
+              targetPort: 8020
+          type: ClusterIP
+      volumes:
+        - name: auth-provider
+          source:
+            items:
+              - key: config-prod.yaml
+                path: config-prod.yaml
+            target: auth-provider
+          type: Config
+      configs:
+        - name: auth-provider
+          data:
+            - key: config-prod.yaml
+              value: |
+                clients:
+                  - client_id: 'compass-web'
+                    client_secret: 'compass-web'
+                    grant_types: ['authorization_code', 'refresh_token']
+                    response_types: ['code']
+                    redirect_uris: ['[[ compassWebEndpoint ]]/account/cb']
+                    frontchannel_logout_uri: '[[ compassWebEndpoint ]]/account/logout',
+                    post_logout_redirect_uris: ['[[ compassWebEndpoint ]]'],
+                  - client_id: 'clever-web'
+                    client_secret: 'clever-web'
+                    grant_types: ['authorization_code', 'refresh_token']
+                    response_types: ['code']
+                    redirect_uris: ['[[ cleverServer ]]/account/cb']
+                    frontchannel_logout_uri: '[[ cleverServer ]]/account/logout'
+                    post_logout_redirect_uris: ['[[ cleverServer ]]']
+                  - client_id: 'user-web'
+                    client_secret: 'user-web'
+                    grant_types: ['authorization_code', 'refresh_token']
+                    response_types: ['code']
+                    redirect_uris: ['[[ userwebServer ]]/account/cb']
+                    frontchannel_logout_uri: '[[ userwebServer ]]/account/logout'
+                    post_logout_redirect_uris: ['[[ userwebServer ]]']
+                  - client_id: 'kubernetes'
+                    client_secret: 'kubernetes'
+                    grant_types: ['authorization_code', 'refresh_token']
+                    response_types: ['code']
+                    redirect_uris: ['http://localhost:8080/callback']
+                    frontchannel_logout_uri: 'http://localhost:8080/logout'
+                    post_logout_redirect_uris: ['http://localhost:8080']
+                infrastructure_uris: {
+                  cauth_uri: 'http://dex-cauth:8080',
+                  license_uri: 'http://license:4243',
+                }
+                issuer: '[[ oidcIssuer ]]'
+      type: Deployment
