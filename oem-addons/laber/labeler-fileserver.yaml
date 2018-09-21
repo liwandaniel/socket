@@ -12,7 +12,7 @@ _config:
     - env:
       - name: FILESERVER_THREAD
         value: "true"
-      image: '[[ registry_release ]]/clever-fileserver:v0.2.2'
+      image: '[[ registry_release ]]/clever-fileserver:v1.4.2'
       imagePullPolicy: Always
       resources:
         limits:

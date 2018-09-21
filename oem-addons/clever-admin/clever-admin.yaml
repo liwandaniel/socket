@@ -28,6 +28,11 @@ _config:
         value: '7070'
       - name: DROPPY_IMAGE
         value: '[[ registry_release ]]/caicloud-droppy:v10.0.7'
+      - name: FILESERVER_IMAGE
+        value: '[[ registry_release ]]/clever-fileserver:v1.4.2'
+      mounts:
+      - name: clever-admin-config
+        path: /etc/clever-admin
     services:
     - name: clever-admin
       type: NodePort
@@ -82,7 +87,7 @@ _config:
               - name: basic
                 cpu: 1
                 gpu: 0
-                memory: 2018Mi
+                memory: 2048Mi
               - name: standard
                 cpu: 2
                 gpu: 0
@@ -105,7 +110,7 @@ _config:
               - name: basic
                 cpu: 1
                 gpu: 0
-                memory: 2018Mi
+                memory: 2048Mi
               - name: standard
                 cpu: 2
                 gpu: 1
@@ -116,9 +121,9 @@ _config:
                 memory: 4096Mi
             images:
               - name: Python2+PyTorch0.4
-                path: pythoch:v0.4.1-py27
+                path: pytorch:v0.4.1-py27
               - name: Python3+PyTorch0.4
-                path: pythoch:v0.4.1-py36
+                path: pytorch:v0.4.1-py36
       - key: serving
         value: |
           - name: tensorflow

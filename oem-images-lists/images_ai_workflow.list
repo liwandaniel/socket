@@ -16,6 +16,5 @@ release/anaconda:v4.2.0
 release/anaconda:v4.2.0-gpu
 release/tf-operator:v1alpha2-v1.2.0
 release/pytorch-operator:v1alpha2-v1.2.0
-release/pytorch:init-container-v0.1
 release/graphpipe-onnx:v1.0.0
 release/graphpipe-onnx:v1.0.0-gpu

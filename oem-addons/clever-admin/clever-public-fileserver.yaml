@@ -12,7 +12,7 @@ _config:
       replica: 1
     containers:
     - name: fileserver
-      image: '[[ registry_release ]]/clever-fileserver:v0.1.0'
+      image: '[[ registry_release ]]/clever-fileserver:v1.4.2'
       resources:
         requests:
           cpu: 50m
@@ -23,7 +23,7 @@ _config:
       - name: time
         path: "/etc/localtime"
     - name: droppy
-      image: '[[ registry_release ]]/droppy:v10.0.6'
+      image: '[[ registry_release ]]/caicloud-droppy:v10.0.7'
       command:
       - "/bin/sh"
       - "-c"
