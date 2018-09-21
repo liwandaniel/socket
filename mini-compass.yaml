@@ -32,6 +32,12 @@ spec:
       description: Console web
     - name: console-web-redis
       description: Redis for console web
+  - name: user-web
+    description: User web
+    required: true
+    addons:
+    - name: user-web
+      description: User web
   - name: devops
     description: DevOps
     required: false
@@ -149,6 +155,10 @@ spec:
       description: Controller for storage
     - name: storage-provisioner-nfs
       description: Provision nfs volume
+    - name: s3-gateway
+      description: simple-static-file-server
+    - name: cephfs-provisioner
+      description: cephfs-provisioner
   - name: monitoring
     description: monitoring
     required: false
