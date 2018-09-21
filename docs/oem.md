@@ -12,6 +12,7 @@
     - [oem.yaml](#oemyaml)
   - [OEM 配置修改](#oem-%E9%85%8D%E7%BD%AE%E4%BF%AE%E6%94%B9)
   - [OEM Rebase](#oem-rebase)
+  - [OEM PRs](#oem-prs)
   - [OEM 添加 pvc](#oem-%E6%B7%BB%E5%8A%A0-pvc)
   - [OEM 打包](#oem-%E6%89%93%E5%8C%85)
 
@@ -78,6 +79,12 @@ OEM owner 可以根据是否需要选择性地部署部分组件，来选择是�
 ## OEM Rebase
 
 OEM 负责人根据 Compass 发布情况，择机 rebase。
+
+## OEM PRs
+
+OEM 研发过程中，可能需要对主线版本 Compass 组件（即 [addons](../addons)）做出修改以支持新特性或 bug 修复，对于这些修改，需要评估是否需要进入主线 Compass。
+
+若修改需要进入主线 Compass，则 PR 应该提到 master 分支，再通过 cherry-pick 或者 rebase 进入 OEM 分支。
 
 ## OEM 添加 pvc
 
