@@ -1,7 +1,7 @@
 ---
 metadata:
   name: mini compass
-  version: 2.7.1
+  version: 2.7.2
   description: mini compass deployment config
 spec:
   systemAddons:
@@ -49,6 +49,8 @@ spec:
     addons:
     - name: cargo-admin
       description: cargo management
+    - name: cargo-auth-controller
+      description: cargo auth controller
   - name: cluster
     description: cluster
     required: false

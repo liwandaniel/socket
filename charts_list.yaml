@@ -28,6 +28,10 @@ spec:
     resourcePaths:
       - release/cargo-admin.yaml
     targetPath: cargo
+  - repositoryFullName: caicloud/cargo-auth-controller
+    resourcePaths:
+      - release/cargo-auth-controller.yaml
+    targetPath: cargo
   - repositoryFullName: caicloud/cluster-admin
     resourcePaths:
       - release/cluster-admin.yaml
@@ -76,11 +80,6 @@ spec:
     resourcePaths:
       - release/hybrid-controller-manager.yaml
     targetPath: hybrid-controller-manager
-  - repositoryFullName: caicloud/kubernetes-admin
-    resourcePaths:
-      - release/kubernetes-admin-server.yaml
-      - release/kubernetes-admin-mongo.yaml
-    targetPath: kubernetes-admin
   - repositoryFullName: caicloud/license
     resourcePaths:
       - release/license-server.yaml
