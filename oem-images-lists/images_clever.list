@@ -8,6 +8,6 @@ release/user-web:v0.3.0-beta.2
 release/labeler:v0.1.1
 release/labelme:v0.1.5
 release/templates:v1.2.8
-release/cauth:v2.2.0-alpha.9
+release/cauth:v2.2.0-alpha.10
 release/hodor:v1.1.0-alpha.9
 release/auth-provider:v0.1.0-beta.4

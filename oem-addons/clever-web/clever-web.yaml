@@ -16,8 +16,6 @@ _config:
         value: http://cds-server:9000/api/v0.1
       - name: CLOUD_ENV
         value: private
-      - name: DEX_SERVER
-        value: http://[[ kube_apiserver_endpoint_ip ]]:32000
       - name: EXTERNAL_HODOR
         value: ws://[[ kube_apiserver_endpoint_ip ]]:30069
       - name: HIDE
@@ -27,7 +25,7 @@ _config:
       - name: HODOR_SERVER
         value: http://hodor:8080
       - name: ISSUER
-        value: http://[[ kube_apiserver_endpoint_ip ]]:30070
+        value: [[ oidcIssuer ]]
       - name: LABELME_BASE_URL
         value: http://[[ kube_apiserver_endpoint_ip ]]:32002
       - name: LABELME_ORIGIN

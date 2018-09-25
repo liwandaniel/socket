@@ -30,7 +30,8 @@ _config:
             - port: 8020
               protocol: TCP
               targetPort: 8020
-          type: ClusterIP
+              nodePort: 32000
+          type: NodePort
       volumes:
         - name: auth-provider
           source:
