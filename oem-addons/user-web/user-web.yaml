@@ -91,6 +91,8 @@ _config:
     - name: user-web
       ports:
       - protocol: TCP
+        nodePort: 30008
+        targetPort: 3006
         port: 3006
-      type: ClusterIP
+      type: NodePort
     type: Deployment
