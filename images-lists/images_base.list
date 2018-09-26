@@ -22,3 +22,6 @@ library/python:2.7.14-alpine3.6
 library/python:3.6.5-alpine3.6
 library/redis:3.2.11-alpine
 library/redis:4.0.9-alpine
+library/gradle:3.4.1
+library/node:9-alpine
+library/php/7.1-apache
