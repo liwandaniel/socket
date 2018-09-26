@@ -12,6 +12,6 @@ library/rabbitmq:3.7.2-alpine
 library/redis:4.0.6-alpine
 library/redmine:3.4.4
 library/wordpress:4.9.1
-release/hystrix-dashboard:2.0.0.RELEASE
-release/eureka:2.0.0.RELEASE
-release/zipkin:latest
+release/hystrix-dashboard:1.5.12
+release/eureka:1.9.2
+library/zipkin:2.9.3
