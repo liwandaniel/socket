@@ -11,3 +11,18 @@ tenantMode="enabled"
 
 # 默认从 system-info 中获取，如果 config 此处配置了 systemEndpoint，就会使用此处的值
 systemEndpoint=""
+
+# compass web 地址
+compassWebEndpoint=""
+
+# clever web 地址
+cleverServer=""
+
+# auth provider sso 登录
+oidcIssuer=""
+
+# user web 地址
+userwebServer=""
+
+# hodorEndpoint
+hodorEndpoint=""

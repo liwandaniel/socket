@@ -5,7 +5,8 @@ metadata:
 data:
   # 配置单租户模式还是多租户模式，默认 enabled 为多租户，disabled 单租户
   tenantMode: "{{ tenantMode }}"
-  compassWebEndpoint: "http://{{ systemEndpoint }}:30000"
-  oidcIssuer: "http://{{ systemEndpoint }}:32000"
-  hodorEndpoint: "http://{{ systemEndpoint }}:30069"
-  oidcRedirectURIs: "http://{{ systemEndpoint }}:30000/api/idToken,http://{{ systemEndpoint }}:30006/api/idToken"
+  compassWebEndpoint: "http://{{ systemEndpoint }}:6060"
+  cleverServer: "http://{{ systemEndpoint }}:6061"
+  oidcIssuer: "http://{{ systemEndpoint }}:6062"
+  userwebServer: "http://{{ systemEndpoint }}:6063"
+  hodorEndpoint: "http://{{ systemEndpoint }}:6002"
