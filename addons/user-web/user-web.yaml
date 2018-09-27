@@ -1,12 +1,12 @@
 _config:
   _metadata:
-    description: console-web
-    name: console-web-web
+    description: user-web
+    name: user-web
     namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v3.3.0-alpha.5"
+    version: "v0.3.4"
   controllers:
   - containers:
     - env:
@@ -22,6 +22,10 @@ _config:
         value: forget
       - name: CLOUD_ENV
         value: private
+      - name: CLUSTER_ENV
+        value: '50'
+      - name: FORNAX_LOG_ENV
+        value: ws://[[ kube_apiserver_endpoint_ip ]]:30070
       - name: OEM_ENV
         value: '0'
       - name: HODOR_SERVER
@@ -33,6 +37,8 @@ _config:
           key: "hodorEndpoint"
       - name: MONITOR_SERVER
         value: http://monitoring-admin:8899/api/v1
+      - name: MANUAL_URL
+        value: http://[[ kube_apiserver_endpoint_ip ]]:30040
       - name: CAICLOUD_PRODUCT_CFG_STRING_MULTI_TENANCY
         from:
           type: Config
@@ -44,9 +50,9 @@ _config:
           name: platform-config
           key: "oidcIssuer"
       - name: OIDC_CLIENT_ID
-        value: compass-web
+        value: user-web
       - name: OIDC_CLIENT_SECRET
-        value: compass-web
+        value: user-web
       - name: COMPASS_SERVER
         from:
           type: Config
@@ -65,16 +71,16 @@ _config:
       - name: SHOW_LANG
         value: 'false'
       - name: DEFAULT_LANG
-        value: 'zh-CN'
+        value: 'zh-cn'
       # Get release info from system-info ConfigMap
       - name: PRODUCT_VERSION
         value: '[[ platform_release_version ]]'
       - name: PRODUCT_RELEASE_TIME
         value: '[[ platform_release_time ]]'
-      image: '[[ registry_release ]]/console-web:v3.3.0-alpha.5'
+      image: '[[ registry_release ]]/user-web:v0.3.4'
       imagePullPolicy: IfNotPresent
       ports:
-      - port: 3000
+      - port: 3006
         protocol: TCP
     controller:
       replica: 1
@@ -82,9 +88,9 @@ _config:
         surge: 1
         unavailable: 0
     services:
-    - name: console-web
+    - name: user-web
       ports:
       - protocol: TCP
-        port: 3000
+        port: 3006
       type: ClusterIP
     type: Deployment

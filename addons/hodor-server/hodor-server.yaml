@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.1.0-alpha.9"
+    version: "v1.1.0-alpha.10"
   controllers:
   - containers:
     - env:
@@ -17,7 +17,7 @@ _config:
           key: "oidcIssuer"
       - name: OIDC_CLIENT_ID
         value: caicloud
-      image: '[[ registry_release ]]/hodor:v1.1.0-alpha.9'
+      image: '[[ registry_release ]]/hodor:v1.1.0-alpha.10'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: hodor
@@ -34,11 +34,12 @@ _config:
     services:
     - name: hodor-nodeport
       ports:
-      - nodePort: 30069
-        port: 8080
+      - port: 8080
+        # nodePort: 30069
         protocol: TCP
         targetPort: 8080
-      type: NodePort
+      # type: NodePort
+      type: ClusterIP
     - name: hodor
       ports:
       - port: 8080

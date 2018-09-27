@@ -15,7 +15,7 @@ AMCTL := $(BIN_DIR)/amctl
 TAG = $(shell git describe --tags --always --dirty)
 
 # RELEASE_VERSION is the version of the release
-PANGOLIN_VERSION           ?= v0.0.1
+PANGOLIN_VERSION           ?= v0.0.2
 RELEASE_VERSION            ?= $(TAG)
 
 # Build and push specific variables.

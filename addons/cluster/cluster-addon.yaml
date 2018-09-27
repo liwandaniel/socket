@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.3.0-alpha.0"
+    version: "v1.3.0-alpha.1"
   controllers:
   - containers:
     - env:
@@ -24,7 +24,7 @@ _config:
         value: default
       - name: SERVER_ENV_APP_LABEL_KEY
         value: k8s-app
-      image: '[[ registry_release ]]/cluster-addon:v1.3.0-alpha.0'
+      image: '[[ registry_release ]]/cluster-addon:v1.3.0-alpha.1'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 6666
@@ -41,9 +41,10 @@ _config:
     services:
     - name: cluster-addon
       ports:
-      - nodePort: 30666
-        port: 6666
+      - port: 6666
+        # nodePort: 30666
         protocol: TCP
         targetPort: 6666
-      type: NodePort
+      # type: NodePort
+      type: ClusterIP
     type: Deployment

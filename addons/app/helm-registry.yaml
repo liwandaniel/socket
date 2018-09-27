@@ -6,10 +6,10 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.2.3-experiment"
+    version: "v0.2.5-experiment"
   controllers:
   - containers:
-    - image: '[[ registry_release ]]/helm-registry:v0.2.3-experiment'
+    - image: '[[ registry_release ]]/helm-registry:v0.2.5-experiment'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: charts-storage

@@ -6,10 +6,10 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: 'v0.1.0-beta.2'
+    version: 'v1.0.0-alpha.3'
   controllers:
     - containers:
-      - image: '[[ registry_release ]]/auth-provider:v0.1.0-beta.2'
+      - image: '[[ registry_release ]]/auth-provider:v1.0.0-alpha.3'
         imagePullPolicy: IfNotPresent
         env:
           - name: MONGODB_URL
@@ -20,18 +20,11 @@ _config:
             value: yes
         mounts:
           - name: auth-provider
-            path: /config/config-prod.js
-            subpath: config-prod.js
+            path: /usr/src/app/config/config-prod.yaml
+            subpath: config-prod.yaml
       controller:
         replica: 1
       services:
-        - name: auth-provider-nodeport
-          ports:
-            - nodePort: 30069
-              port: 8020
-              protocol: TCP
-              targetPort: 8020
-          type: NodePort
         - name: auth-provider
           ports:
             - port: 8020
@@ -42,58 +35,51 @@ _config:
         - name: auth-provider
           source:
             items:
-              - key: config-prod.js
-                path: config-prod.js
+              - key: config-prod.yaml
+                path: config-prod.yaml
             target: auth-provider
           type: Config
       configs:
         - name: auth-provider
           data:
-            - key: config-prod.js
+            - key: config-prod.yaml
               value: |
-                module.exports = {
-                  clients: [
-                    {
-                      client_id: 'compass-web',
-                      client_secret: 'compass-web',
-                      grant_types: ['authorization_code', 'refresh_token'],
-                      response_types: ['code'],
-                      redirect_uris: ['[[ compassWebEndpoint ]]/account/cb'],
-                      frontchannel_logout_uri: '[[ compassWebEndpoint ]]/account/logout',
-                      post_logout_redirect_uris: [[ compassWebEndpoint ]],
-                    },
-                    {
-                      client_id: 'clever-web',
-                      client_secret: 'clever-web',
-                      grant_types: ['authorization_code', 'refresh_token'],
-                      response_types: ['code'],
-                      redirect_uris: [[ CLEVER_WEB_REDIRECT_URI ]],
-                      frontchannel_logout_uri: [[ CLEVER_WEB_LOGOUT_URI ]],
-                      post_logout_redirect_uris: [[ CLEVER_WEB_LOGOUT_REDIRECT_URI ]],
-                    },
-                    {
-                      client_id: 'user-web',
-                      client_secret: 'user-web',
-                      grant_types: ['authorization_code', 'refresh_token'],
-                      response_types: ['code'],
-                      redirect_uris: ['[[ userwebServer ]]/account/cb'],
-                      frontchannel_logout_uri: '[[ userwebServer ]]/account/logout',
-                      post_logout_redirect_uris: '[[ userwebServer ]]',
-                    },
-                    {
-                      client_id: 'kubernetes',
-                      client_secret: 'kubernetes',
-                      grant_types: ['authorization_code', 'refresh_token'],
-                      response_types: ['code'],
-                      redirect_uris: ['http://localhost:8080/callback'],
-                      frontchannel_logout_uri: 'http://localhost:8080/logout',
-                      post_logout_redirect_uris: ['http://localhost:8080'],
-                    },
-                  ],
-                  infrastructure_uris: {
-                    cauth_uri: 'dex-cauth:8080',
-                    license_uri: 'license:4243',
-                  },
-                  issuer: [[ oidcIssuer ]],
-                };
+                clients:
+                  - client_id: 'compass-web'
+                    client_secret: 'compass-web'
+                    grant_types: ['authorization_code', 'refresh_token']
+                    response_types: ['code']
+                    redirect_uris: ['[[ compassWebEndpoint ]]/account/cb']
+                    frontchannel_logout_uri: '[[ compassWebEndpoint ]]/account/logout'
+                    post_logout_redirect_uris: ['[[ compassWebEndpoint ]]']
+
+                  - client_id: 'clever-web'
+                    client_secret: 'clever-web'
+                    grant_types: ['authorization_code', 'refresh_token']
+                    response_types: ['code']
+                    redirect_uris: ['[[ cleverServer ]]/account/cb']
+                    frontchannel_logout_uri: '[[ cleverServer ]]/account/logout'
+                    post_logout_redirect_uris: ['[[ cleverServer ]]']
+
+                  - client_id: 'user-web'
+                    client_secret: 'user-web'
+                    grant_types: ['authorization_code', 'refresh_token']
+                    response_types: ['code']
+                    redirect_uris: ['[[ userwebServer ]]/account/cb']
+                    frontchannel_logout_uri: '[[ userwebServer ]]/account/logout'
+                    post_logout_redirect_uris: ['[[ userwebServer ]]']
+
+                  - client_id: 'kubernetes'
+                    client_secret: 'kubernetes'
+                    grant_types: ['authorization_code', 'refresh_token']
+                    response_types: ['code']
+                    redirect_uris: ['http://localhost:8080/callback']
+                    frontchannel_logout_uri: 'http://localhost:8080/logout'
+                    post_logout_redirect_uris: ['http://localhost:8080']
+
+                infrastructure_uris: {
+                  cauth_uri: 'http://dex-cauth:8080',
+                  license_uri: 'http://license:4243',
+                }
+                issuer: '[[ oidcIssuer ]]'
       type: Deployment

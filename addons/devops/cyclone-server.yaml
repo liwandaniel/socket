@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.7.0-alpha.0"
+    version: "v0.7.0-alpha.1"
   controllers:
   - containers:
     - command:
@@ -25,7 +25,7 @@ _config:
       - name: CLIENTIDSECRET
         value: clientidsecret
       - name: CONSOLE_WEB_ENDPOINT
-        value: http://[[ kube_apiserver_endpoint_ip ]]:30000
+        value: [[ compassWebEndpoint ]]
       - name: CLIENTID_GITLAB
         value: clientid_gitlab
       - name: CLIENTIDSECRET_GITLAB
@@ -35,7 +35,7 @@ _config:
       - name: CYCLONE_SERVER
         value: http://[[ kube_apiserver_endpoint_ip ]]:6008
       - name: WORKER_IMAGE
-        value: '[[ registry_release ]]/cyclone-worker:v0.7.0-alpha.0'
+        value: '[[ registry_release ]]/cyclone-worker:v0.7.0-alpha.1'
       - name: CLOUD_AUTO_DISCOVERY
         value: 'true'
       - name: LIMIT_MEMORY
@@ -58,9 +58,11 @@ _config:
         value: "50"
       - name: NOTIFICATION_URL
         value: http://devops-admin:7088/api/v1/notification
+      - name: RECORD_WEB_URL_TEMPLATE
+        value: '[[ compassWebEndpoint ]]/devops/pipeline/{{.Pipeline.Name}}/record/{{.PipelineRecord.ID}}?workspace={{.Project.Name}}&tenant={{index .Pipeline.Annotations "tenant"}}'
       - name: CALLBACK_URL
-        value: http://[[ kube_apiserver_endpoint_ip ]]:30069/apis/admin.devops.caicloud.io/v1/pipelines
-      image: '[[ registry_release ]]/cyclone-server:v0.7.0-alpha.0'
+        value: '[[ hodorEndpoint ]]/apis/admin.devops.caicloud.io/v1/pipelines'
+      image: '[[ registry_release ]]/cyclone-server:v0.7.0-alpha.1'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: cyclone-data

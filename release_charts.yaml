@@ -91,7 +91,7 @@ spec:
   - release/hybrid-controller-manager.yaml
   targetPath: hybrid-controller-manager
 - repositoryFullName: caicloud/license
-  tag: v0.1.7
+  tag: v0.1.9
   resourcePaths:
   - release/license-server.yaml
   targetPath: license
