@@ -17,7 +17,7 @@ _config:
           key: "oidcIssuer"
       - name: OIDC_CLIENT_ID
         value: caicloud
-      image: '[[ registry_release ]]/hodor:v1.1.0-alpha.9'
+      image: '[[ registry_release ]]/hodor:v1.1.0-alpha.9-clever'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: hodor

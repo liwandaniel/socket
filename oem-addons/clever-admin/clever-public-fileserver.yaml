@@ -23,7 +23,7 @@ _config:
       - name: time
         path: "/etc/localtime"
     - name: droppy
-      image: '[[ registry_release ]]/caicloud-droppy:v10.0.7'
+      image: '[[ registry_release ]]/caicloud-droppy:v10.0.9'
       command:
       - "/bin/sh"
       - "-c"

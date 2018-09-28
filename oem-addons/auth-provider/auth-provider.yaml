@@ -6,10 +6,10 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.0-beta.4"
+    version: "v1.0.0-alpha.2"
   controllers:
     - containers:
-      - image: '[[ registry_release ]]/auth-provider:v0.1.0-beta.4'
+      - image: '[[ registry_release ]]/auth-provider:v1.0.0-alpha.2'
         imagePullPolicy: IfNotPresent
         env:
           - name: MONGODB_URL
@@ -51,8 +51,8 @@ _config:
                     grant_types: ['authorization_code', 'refresh_token']
                     response_types: ['code']
                     redirect_uris: ['[[ compassWebEndpoint ]]/account/cb']
-                    frontchannel_logout_uri: '[[ compassWebEndpoint ]]/account/logout',
-                    post_logout_redirect_uris: ['[[ compassWebEndpoint ]]'],
+                    frontchannel_logout_uri: '[[ compassWebEndpoint ]]/account/logout'
+                    post_logout_redirect_uris: ['[[ compassWebEndpoint ]]']
                   - client_id: 'clever-web'
                     client_secret: 'clever-web'
                     grant_types: ['authorization_code', 'refresh_token']

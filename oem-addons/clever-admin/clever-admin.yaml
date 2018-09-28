@@ -5,19 +5,21 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.0.1-alpha.0"
+    version: "v0.0.1-alpha.3"
   controllers:
   - type: Deployment
     controller:
       replica: 1
     containers:
     - name: clever-admin
-      image: '[[ registry_release ]]/clever-admin:v0.0.1-alpha.0'
+      image: '[[ registry_release ]]/clever-admin:v0.0.1-alpha.3'
       resources:
         requests:
           cpu: 100m
           memory: 100Mi
       env:
+      - name: KUBEFLOW_ADMIN_ENDPOINT
+        value: http://kubeflow-admin:8080
       - name: CLUSTER_ADMIN_ENDPOINT
         value: http://cluster-admin:2233
       - name: APP_ADMIN_ENDPOINT
@@ -27,7 +29,7 @@ _config:
       - name: CLEVER_ADMIN_PORT
         value: '7070'
       - name: DROPPY_IMAGE
-        value: '[[ registry_release ]]/caicloud-droppy:v10.0.7'
+        value: '[[ registry_release ]]/caicloud-droppy:v10.0.9'
       - name: FILESERVER_IMAGE
         value: '[[ registry_release ]]/clever-fileserver:v1.4.2'
       mounts:
@@ -54,6 +56,8 @@ _config:
           path: serving
         - key: visualization
           path: visualization
+        - key: others
+          path: others
         target: clever-admin-config
       type: Config
     configs:
@@ -167,3 +171,17 @@ _config:
             images:
               - name: TensorBoard
                 path: tensorflow:v1.9.0-py36
+      - key: others
+        value: |
+          - name: labelme
+            images:
+              - name: Labelme
+                path: labelme:v0.1.7
+          - name: labeler
+            images:
+              - name: Labeler
+                path: labeler:v0.1.4
+          - name: thumbnails
+            images:
+              - name: Thumbnails
+                path: clever-fileserver:v1.4.2

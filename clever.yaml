@@ -25,13 +25,7 @@ spec:
     description: clever pytorch operator
   - name: clever-tf-operator
     description: TF operator
-  - name: clever-labeler
-    description: Labeler
-  - name: clever-labeler-fileserver
-    description: File server for labeler
   - name: clever-labelgres
     description: Postgres for label
-  - name: clever-labelme
-    description: Labelme
   - name: clever-user-web
     description: User web

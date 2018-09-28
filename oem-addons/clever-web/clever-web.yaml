@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v2.3.7"
+    version: "v2.4.2"
   controllers:
   - containers:
     - env:
@@ -26,10 +26,6 @@ _config:
         value: http://hodor:8080
       - name: ISSUER
         value: [[ oidcIssuer ]]
-      - name: LABELME_BASE_URL
-        value: http://[[ kube_apiserver_endpoint_ip ]]:32002
-      - name: LABELME_ORIGIN
-        value: http://[[ kube_apiserver_endpoint_ip ]]:32001
       - name: LABELME_PATHNAME
         value: /tool.html
       - name: MONITORING_ADMIN
@@ -48,7 +44,7 @@ _config:
         value: clever
       - name: USER_URL
         value: http://[[ kube_apiserver_endpoint_ip ]]:30008
-      image: '[[ registry_release ]]/clever-web:v2.3.7'
+      image: '[[ registry_release ]]/clever-web:v2.4.2'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 4006
