@@ -27,5 +27,7 @@ spec:
     description: TF operator
   - name: clever-labelgres
     description: Postgres for label
-  - name: clever-user-web
+  - name: user-web
     description: User web
+  - name: tenant-controller
+    description: Tenant Controller

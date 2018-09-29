@@ -1,0 +1,10 @@
+release/postgres:10-alpine
+release/redis:3.0.3
+release/alpine:3.6
+release/tenant-controller:v1.2.0-alpha.2
+release/app-admin:v0.3.16
+release/templates:v1.2.8
+release/cauth:v2.2.0-alpha.10
+release/hodor:v1.1.0-alpha.9-clever
+release/user-web:v0.3.3
+release/auth-provider:v1.0.0-alpha.2

@@ -25,7 +25,7 @@ _config:
       - name: HODOR_SERVER
         value: http://hodor:8080
       - name: ISSUER
-        value: [[ oidcIssuer ]]
+        value: '[[ oidcIssuer ]]'
       - name: LABELME_PATHNAME
         value: /tool.html
       - name: MONITORING_ADMIN
