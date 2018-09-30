@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.3.0-alpha.1"
+    version: "v1.3.0-alpha.2"
   controllers:
   - containers:
     - env:
@@ -18,7 +18,7 @@ _config:
         value: info
       - name: MONGO_ADDR
         value: '[[ platform_mongo_host ]]'
-      image: '[[ registry_release ]]/cluster-controller:v1.3.0-alpha.1'
+      image: '[[ registry_release ]]/cluster-controller:v1.3.0-alpha.2'
       imagePullPolicy: IfNotPresent
     controller:
       replica: 1

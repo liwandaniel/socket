@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.3.0-alpha.1"
+    version: "v0.3.0-alpha.2"
   controllers:
   - containers:
     - env:
@@ -24,7 +24,7 @@ _config:
         value: info
       - name: ENV_LISTEN_PORT
         value: '2333'
-      image: '[[ registry_release ]]/storage-admission:v0.3.0-alpha.1'
+      image: '[[ registry_release ]]/storage-admission:v0.3.0-alpha.2'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 2333

@@ -5,12 +5,12 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.4"
+    version: "v0.1.5"
   controllers:
   - containers:
     - args:
       - --mongo-host=[[ platform_mongo_host ]]
-      image: '[[ registry_release ]]/plugin-center-admin:v0.1.4'
+      image: '[[ registry_release ]]/plugin-center-admin:v0.1.5'
       imagePullPolicy: IfNotPresent
       resources:
         limits:
@@ -24,9 +24,8 @@ _config:
     services:
     - name: plugin-center
       ports:
-      - nodePort: 31237
-        port: 8080
+      - port: 8080
         protocol: TCP
         targetPort: 8080
-      type: NodePort
+      type: ClusterIP
     type: Deployment

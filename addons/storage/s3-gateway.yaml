@@ -6,11 +6,11 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.0.1-alpha.0"
+    version: "v0.0.1-alpha.2"
   controllers:
   - containers:
     - name: gateway
-      image: '[[ registry_release ]]/simple-static-file-server-gateway:v0.0.1-alpha.0'
+      image: '[[ registry_release ]]/simple-static-file-server-gateway:v0.0.1-alpha.2'
       imagePullPolicy: IfNotPresent
       env:
       - name: SERVER_ENV_DATABASE_STRING
@@ -22,11 +22,11 @@ _config:
       - name: SERVER_PORT
         value: "80"
       ports:
-      - containerPort: 80
+      - port: 80
         name: ssfs-port
         protocol: TCP
       mounts:
-      - name: simple-static-file-storage-gfs-single
+      - name: s3-gfs-single
         path: /caicloud/simple-static-file-server/mnt/glusterfs-single
     controller:
       replica: 1
@@ -41,7 +41,7 @@ _config:
       type: ClusterIP
     type: Deployment
     volumes:
-    - name: simple-static-file-storage-gfs-single
+    - name: s3-gfs-single
       type: Dynamic
       source:
         class: heketi-storageclass
