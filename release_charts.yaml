@@ -3,7 +3,7 @@ metadata:
   description: A set of files to collect.
 spec:
 - repositoryFullName: caicloud/app-admin
-  tag: v0.3.17
+  tag: v0.3.19
   resourcePaths:
   - release/app-admin.yaml
   targetPath: app
@@ -18,7 +18,7 @@ spec:
   - release/canary-release-controller.yaml
   targetPath: app
 - repositoryFullName: caicloud/cargo-admin
-  tag: v0.4.10
+  tag: v0.4.11
   resourcePaths:
   - release/cargo-admin.yaml
   targetPath: cargo
@@ -28,7 +28,7 @@ spec:
   - release/cargo-auth-controller.yaml
   targetPath: cargo
 - repositoryFullName: caicloud/cluster-admin
-  tag: v1.3.0-alpha.1
+  tag: v1.3.0-alpha.2
   resourcePaths:
   - release/cluster-admin.yaml
   - release/cluster-controller.yaml
@@ -49,18 +49,18 @@ spec:
   - release/config-reference.yaml
   targetPath: config
 - repositoryFullName: caicloud/console-web
-  tag: v3.3.0-alpha.5
+  tag: v3.3.1-alpha.0
   resourcePaths:
   - release/console-web.yaml
   - release/console-web-redis.yaml
   targetPath: console
 - repositoryFullName: caicloud/user-web
-  tag: v0.3.4
+  tag: v0.3.7
   resourcePaths:
   - release/user-web.yaml
   targetPath: user-web
 - repositoryFullName: caicloud/cyclone
-  tag: v0.7.0-alpha.1
+  tag: v0.7.0-beta
   resourcePaths:
   - release/cyclone-server.yaml
   targetPath: devops
@@ -96,7 +96,7 @@ spec:
   - release/license-server.yaml
   targetPath: license
 - repositoryFullName: caicloud/loadbalancer-admin
-  tag: v0.4.7
+  tag: v0.4.8
   resourcePaths:
   - release/loadbalancer-admin.yaml
   targetPath: loadbalancer
@@ -106,7 +106,7 @@ spec:
   - release/loadbalancer-controller.yaml
   targetPath: loadbalancer
 - repositoryFullName: caicloud/logging-admin
-  tag: v2.1.6
+  tag: v2.1.7
   resourcePaths:
   - release/logging-admin.yaml
   - release/logging-processor.yaml
@@ -127,7 +127,7 @@ spec:
   - release/logging-hooks.yaml
   targetPath: logging
 - repositoryFullName: caicloud/monitoring-admin
-  tag: v0.5.19
+  tag: v0.5.20
   resourcePaths:
   - release/monitoring-admin.yaml
   - release/monitoring-operator.yaml
@@ -153,7 +153,7 @@ spec:
   - release/notify-postgres.yaml
   targetPath: notify
 - repositoryFullName: caicloud/plugin-center
-  tag: v0.1.4
+  tag: v0.1.5
   resourcePaths:
   - release/plugin-center-admin.yaml
   targetPath: plugin-center
@@ -163,7 +163,7 @@ spec:
   - release/statistician-server.yaml
   targetPath: statistician
 - repositoryFullName: caicloud/storage-admin
-  tag: v0.3.0-alpha.1
+  tag: v0.3.0-alpha.2
   resourcePaths:
   - release/storage-admin.yaml
   - release/storage-admin-controller.yaml
@@ -177,7 +177,7 @@ spec:
   - release/storage-provisioner-nfs.yaml
   targetPath: storage
 - repositoryFullName: caicloud/simple-static-file-server
-  tag: v0.0.1-alpha.0
+  tag: v0.0.1-alpha.2
   resourcePaths:
   - release/s3-gateway.yaml
   targetPath: storage
@@ -188,7 +188,7 @@ spec:
   - release/tenant-controller.yaml
   targetPath: tenant
 - repositoryFullName: caicloud/auth-provider
-  tag: v1.0.0-alpha.3
+  tag: v1.0.0-alpha.6
   resourcePaths:
   - release/auth-provider.yaml
   targetPath: auth-provider
