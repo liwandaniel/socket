@@ -3,7 +3,7 @@ release/templates:v1.2.12
 release/canary-nginx-proxy:v0.3.1
 release/canary-controller:v0.3.1
 release/helm-registry:v0.2.5-experiment
-release/charts:v1.2.7
+release/charts:v1.2.12
 release/auth-provider:v1.0.0-alpha.6
 release/cargo-admin:v0.4.11
 release/cargo-token:v0.4.11
