@@ -3,7 +3,7 @@ release/mongodb_exporter:v0.2.0
 release/redis_exporter:v0.2.0
 release/tomcat_exporter:v0.2.0
 release/tail-sidecar:v0.0.1
-release/release-controller:v0.2.6
+release/release-controller:v0.2.9
 release/am_mysql:v3.0
 release/am_master:v0.0.4
 release/am_minion:v0.0.6
