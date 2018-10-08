@@ -41,11 +41,11 @@
 
 该目录存放定制化的 [addons](../addons), 语法请参考 [Chart 模版配置规范定义](https://github.com/caicloud/charts#chart-%E6%A8%A1%E7%89%88%E9%85%8D%E7%BD%AE%E8%A7%84%E8%8C%83%E5%AE%9A%E4%B9%89v100)
 
-同时，部署时会读取 [platform-info.yaml.j2](../platform-info.yaml.j2) 与 [platform-config.yaml.j2](../platform-config.yaml.j2) 生成 k8s configmap 并替换 addons 中格式为 `[[ variable name ]]` 的变量，具体实现可参考 [addons](../addons)。
+同时，部署时会读取 [platform-info.yaml.j2](../platform-info.yaml.j2) 与 [platform-config.yaml.j2](../platform-config.yaml.j2) 生成 k8s configmap 并替换 addons 中格式为 `[[ variable name ]]` 的变量，具体实现可参考 [configMap.md](./configMap.md)。
 
 ### oem-hotfixes
 
-该目录存放定制化的 [hotfixes](../release-hotfixes)，制作流程请参考 [产品组件热升级安装包](https://github.com/caicloud/compass-release#%E4%BA%A7%E5%93%81%E7%BB%84%E4%BB%B6%E7%83%AD%E5%8D%87%E7%BA%A7%E5%AE%89%E8%A3%85%E5%8C%85)
+该目录存放定制化的 [hotfixes](../release-hotfixes)，制作流程请参考 [产品组件热升级安装包](./hotfix.md)
 
 ### oem-images-lists
 
@@ -62,7 +62,7 @@
 
 ### oem-plugins
 
-该目录存放定制化的 [release-plugins](../release-plugins)， 制作流程请参考 [产品插件安装包](https://github.com/caicloud/compass-release#%E4%BA%A7%E5%93%81%E6%8F%92%E4%BB%B6%E5%AE%89%E8%A3%85%E5%8C%85)
+该目录存放定制化的 [release-plugins](../release-plugins)， 制作流程请参考 [产品插件安装包](./plugin.md)
 
 ### oem.yaml
 
@@ -74,7 +74,7 @@ OEM owner 可以根据是否需要选择性地部署部分组件，来选择是�
 
 ## OEM 配置修改
 
-若要修改产品全局配置，参考 // TODO
+若要修改产品全局配置，参考 [平台配置修改](./configMap.md)
 
 ## OEM Rebase
 
@@ -92,4 +92,4 @@ OEM 研发过程中，可能需要对主线版本 Compass 组件（即 [addons](
 
 ## OEM 打包
 
-// TODO
+参考 [OEM 打包流程](./oem-package.md)

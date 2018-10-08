@@ -7,4 +7,3 @@ release/release-controller:v0.2.9
 release/am_mysql:v3.0
 release/am_master:v0.0.4
 release/am_minion:v0.0.6
-release/release:v2.7.2-alpha.1
