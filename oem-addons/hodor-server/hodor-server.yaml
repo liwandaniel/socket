@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "clever1.2.0-v0.1"
+    version: "clever1.2.0-rc1"
   controllers:
   - containers:
     - env:
@@ -17,7 +17,7 @@ _config:
           key: "oidcIssuer"
       - name: OIDC_CLIENT_ID
         value: caicloud
-      image: '[[ registry_release ]]/hodor:v1.1.0-alpha.9-clever'
+      image: '[[ registry_release ]]/hodor:v1.1.0-alpha.11'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: hodor
