@@ -1,0 +1,55 @@
+_config:
+  _metadata:
+    description: app-admin
+    name: app-admin
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "[[ imageTagFromGitTag ]]"
+  controllers:
+  - containers:
+    - env:
+      - name: HELM_REGISTRY_HOST
+        value: http://helm-registry:8099
+      - name: CHART_TEMPLATE_PATH
+        value: /data/templates
+      image: '[[ registry_release ]]/app-admin:[[ imageTagFromGitTag ]]'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 7799
+        protocol: TCP
+      mounts:
+      - name: data
+        path: /data
+    controller:
+      replica: 1
+    services:
+    - name: app-admin
+      ports:
+      - port: 7799
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment
+    initContainers:
+    - env:
+      - name: OUTPUT_DIR
+        value: /data/templates
+      name: template
+      image: '[[ registry_release ]]/templates:v1.2.7'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: data
+        path: /data
+      resources:
+        limits:
+          cpu: 100m
+          memory: 100Mi
+        requests:
+          cpu: 100m
+          memory: 100Mi
+    volumes:
+    - name: data
+      type: Scratch
+      source:
+        medium: ""
