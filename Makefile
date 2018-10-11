@@ -9,10 +9,6 @@
 #   make convert-images  - convert images from charts into target file
 #
 
-# Golang standard bin directory.
-BIN_DIR := $(GOPATH)/bin
-AMCTL := $(BIN_DIR)/amctl
-
 # commitish
 TAG = $(shell git describe --tags --always --dirty)
 
@@ -42,6 +38,11 @@ release-image:
 	docker tag "$(REGISTRY)/$(PROJECT)/release:$(RELEASE_VERSION)" "release:$(RELEASE_VERSION)"
 	docker save "release:$(RELEASE_VERSION)" -o release.tar.gz
 
+# Golang standard bin directory.
+BIN_DIR := $(GOPATH)/bin
+
+RELEASELINT := $(BIN_DIR)/release-cli
+
 $(RELEASELINT):
 	go get -u github.com/caicloud/rudder/cmd/release-cli
 
@@ -50,6 +51,8 @@ lint: $(RELEASELINT)
 	@git submodule update
 	@./hack/lint/lint.sh addons
 	@./hack/lint/lint.sh oem_addons
+
+AMCTL := $(BIN_DIR)/amctl
 
 $(AMCTL):
 	go get github.com/caicloud/pangolin/cmd/amctl
