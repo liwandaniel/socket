@@ -30,8 +30,6 @@ function getdir() {
     done
 }
 
-cd ${GOPATH}/src/github.com/caicloud/product-release
-
 ADDONS_PATH=$1
 
 if [ -d $1 ]
