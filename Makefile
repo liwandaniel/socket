@@ -3,6 +3,7 @@
 # Usage:
 #   make                 - default to 'release-image' target
 #   make release-image   - build and push release image
+#   make lint            - lint all charts
 #   make update-tag      - get latest tag from repo and generate release_charts.yaml
 #   make collect-charts  - collect charts from all repos
 #   make convert-images  - convert images from charts into target file
@@ -41,6 +42,15 @@ release-image:
 	docker tag "$(REGISTRY)/$(PROJECT)/release:$(RELEASE_VERSION)" "release:$(RELEASE_VERSION)"
 	docker save "release:$(RELEASE_VERSION)" -o release.tar.gz
 
+$(RELEASELINT):
+	go get -u github.com/caicloud/rudder/cmd/release-cli
+
+lint: $(RELEASELINT)
+	@git submodule init
+	@git submodule update
+	@./hack/lint/lint.sh addons
+	@./hack/lint/lint.sh oem_addons
+
 $(AMCTL):
 	go get github.com/caicloud/pangolin/cmd/amctl
 	amctl --help &> /dev/null
@@ -57,4 +67,4 @@ collect-charts: $(AMCTL)
 convert-images: $(AMCTL)
 	amctl convert --addons-path=$(ADDONS_PATH) --export=$(TARGET_FILE)
 
-.PHONY: release-image update-tag collect-charts convert-images
+.PHONY: release-image lint update-tag collect-charts convert-images

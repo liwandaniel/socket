@@ -1,0 +1,3 @@
+[submodule "hack/lint/charts"]
+	path = hack/lint/charts
+	url = https://github.com/caicloud/charts

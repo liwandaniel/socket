@@ -17,7 +17,7 @@ _config:
           - name: DEBUG
             value: 'oidc-provider:*,auth-provider:*'
           - name: DEBUG_COLORS
-            value: yes
+            value: 'yes'
         mounts:
           - name: auth-provider
             path: /usr/src/app/config/config-prod.yaml

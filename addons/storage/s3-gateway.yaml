@@ -23,7 +23,6 @@ _config:
         value: "80"
       ports:
       - port: 80
-        name: ssfs-port
         protocol: TCP
       mounts:
       - name: s3-gfs-single

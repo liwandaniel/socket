@@ -21,7 +21,8 @@ _config:
       args:
         - "-id=cephfs-provisioner-1"
     controller:
-      replicas: 1
+      replica: 1
       strategy:
-        type: Recreate
+        surge: 1
+        unavailable: 1
     type: Deployment
