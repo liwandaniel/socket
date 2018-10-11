@@ -57,8 +57,7 @@ image: '[[ registry_release ]]/hodor:[[ imageTagFromGitTag ]]'
 
 ### 打包流程
 
-参考 [标准产品打包发布流程](./package.md)
-参考 [ OEM 打包发布流程](./oem-package.md)
+参考 [产品打包发布流程](./package.md)
 
 ### 测试发布
 

@@ -14,7 +14,10 @@
   - [OEM Rebase](#oem-rebase)
   - [OEM PRs](#oem-prs)
   - [OEM 添加 pvc](#oem-%E6%B7%BB%E5%8A%A0-pvc)
+  - [OEM 发版](#oem-%E5%8F%91%E7%89%88)
   - [OEM 打包](#oem-%E6%89%93%E5%8C%85)
+  - [上传发布包](#%E4%B8%8A%E4%BC%A0%E5%8F%91%E5%B8%83%E5%8C%85)
+  - [产品部署](#%E4%BA%A7%E5%93%81%E9%83%A8%E7%BD%B2)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -28,7 +31,7 @@
 
 分支拉取后，在根目录下，按以下结构创建相应的文件夹以及文件：
 
-```
+```txt
 .
 ├── oem-addons
 ├── oem-hotfixes
@@ -90,6 +93,18 @@ OEM 研发过程中，可能需要对主线版本 Compass 组件（即 [addons](
 
 若需要添加独立于 addons 之外的 pvc，请将 pvc 描述文件添加到 [../prerequisites/pvc/](../prerequisites/pvc), 部署时会自动安装上。
 
+## OEM 发版
+
+参考 [OEM release](./release.md)
+
 ## OEM 打包
 
-参考 [OEM 打包流程](./oem-package.md)
+参考 [OEM 打包流程](./package.md)
+
+## 上传发布包
+
+参考 [OSS 使用文档](https://forum.caicloud.xyz/t/topic/100)，相关问题咨询 @ijumps
+
+## 产品部署
+
+OEM 部署是在已完成部署的 Compass 基础上的，部署流程可参考[产品安装文档](./product-installation.md)

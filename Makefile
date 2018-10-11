@@ -15,8 +15,11 @@ TAG = $(shell git describe --tags --always --dirty)
 # RELEASE_VERSION is the version of the release
 PANGOLIN_VERSION           ?= v0.0.2
 RELEASE_VERSION            ?= $(TAG)
-ADDONS_PATH                ?= addons
-TARGET_FILE                ?= images-lists/images_platform.list
+ADDONS_PATH                ?= ./addons
+CHART_LIST_PATH            ?= ./charts_list.yaml
+TARGET_IMGAES_LIST_PATH    ?= ./images-lists/images_platform.list
+TARGET_COLLECT_TAG_PATH    ?= ./release_charts.yaml
+GITHUB_TOKEN_PATH          ?= ./token
 
 # Build and push specific variables.
 REGISTRY ?= cargo-infra.caicloud.xyz
@@ -60,14 +63,14 @@ $(AMCTL):
 
 # update tags in charts_list.yaml
 update-tag: $(AMCTL)
-	amctl update --config-path=charts_list.yaml --github-token-file=token --target-path=release_charts.yaml
+	amctl update --config-path=$(CHART_LIST_PATH) --github-token-file=$(GITHUB_TOKEN_PATH) --target-path=$(TARGET_COLLECT_TAG_PATH)
 
 # collect chart from repos
 collect-charts: $(AMCTL)
-	amctl collect --config-path=release_charts.yaml --github-token-file=token --root-dir=$(ADDONS_PATH)
+	amctl collect --config-path=$(TARGET_COLLECT_TAG_PATH) --github-token-file=$(GITHUB_TOKEN_PATH) --root-dir=$(ADDONS_PATH)
 
 # convert images from charts into image.list
 convert-images: $(AMCTL)
-	amctl convert --addons-path=$(ADDONS_PATH) --export=$(TARGET_FILE)
+	amctl convert --addons-path=$(ADDONS_PATH) --export=$(TARGET_IMGAES_LIST_PATH)
 
 .PHONY: release-image lint update-tag collect-charts convert-images
