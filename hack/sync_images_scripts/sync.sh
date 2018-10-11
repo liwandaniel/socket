@@ -10,7 +10,7 @@
 
 function usage {
   echo -e "Usage:"
-  echo -e " bash sync.sh [SOURCE_REGISTRY] [TARGET_REGISTRY] [TARGET_PROJECT]"
+  echo -e " bash sync.sh [SOURCE_REGISTRY] [TARGET_REGISTRY] [IMAGE_LISTS_PATH]"
   echo -e ""
   echo -e " The script sync all images which in the *.list files"
   echo -e " pull from SOURCE_REGISTRY and push to TARGET_REGISTRY"
@@ -18,9 +18,10 @@ function usage {
   echo -e "Parameter:"
   echo -e " SOURCE_REGISTRY\tpull images from this registry."
   echo -e " TARGET_REGISTRY\tpush images to this registry."
+  echo -e " IMAGE_LISTS_PATH\tpath of images lists to sync."
   echo -e ""
   echo -e "Example:"
-  echo -e " bash sync.sh cargo-infra.caicloud.xyz harbor.caicloud.xyz"
+  echo -e " bash sync.sh cargo-infra.caicloud.xyz harbor.caicloud.xyz ./oem-images-lists"
 }
 
 # -----------------------------------------------------------------------------
@@ -29,7 +30,8 @@ function usage {
 #
 SOURCE_REGISTRY=$1
 TARGET_REGISTRY=$2
-
+IMAGE_LISTS_PATH=$3
+IMAGE_LISTS_PATH=${IMAGE_LISTS_PATH:=`pwd`}
 IMAGE_LISTS_SUFFIX=".list"
 
 GREEN_COL="\\033[32;1m"         # green color
@@ -44,11 +46,15 @@ if [[ "$#" == "1" ]]; then
   fi
 fi
 
-IMAGE_LISTS=$(ls | grep "${IMAGE_LISTS_SUFFIX}" | xargs )
+cd ${IMAGE_LISTS_PATH}
+
+IMAGE_LISTS=$( ls | grep "${IMAGE_LISTS_SUFFIX}" | xargs )
+
+echo -e "$GREEN_COL Got image lists ${IMAGE_LISTS} $NORMAL_COL"
 
 for IMAGE_LIST_FILE in ${IMAGE_LISTS[@]}
 do
-    echo "handling file ${IMAGE_LIST_FILE}"
+    echo -e "$GREEN_COL handling file ${IMAGE_LIST_FILE} $NORMAL_COL"
     for line in `cat ${IMAGE_LIST_FILE} | grep -v ^# | grep -v ^$`
     do
         # get IMAGE_PROJECT and IMAGE_NAME from image.list
