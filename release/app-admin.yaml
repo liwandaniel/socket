@@ -36,7 +36,7 @@ _config:
       - name: OUTPUT_DIR
         value: /data/templates
       name: template
-      image: '[[ registry_release ]]/templates:v1.2.7'
+      image: '[[ registry_release ]]/templates:[[ TagOfRepo(charts) ]]'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: data
