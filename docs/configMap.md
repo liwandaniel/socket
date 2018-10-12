@@ -81,10 +81,10 @@ variable-name="value"
 
 ```yaml
 - name: CAICLOUD_PRODUCT_CFG_STRING_MULTI_TENANCY
-from:
-  type: Config
-  name: platform-config
-  key: "tenantMode"
+  from:
+    type: Config
+    name: platform-config
+    key: "tenantMode"
 ```
 
 如果 configMap 发生改动，需要重启挂载了 configMap 的 pod 以获取配置信息
