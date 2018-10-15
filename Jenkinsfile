@@ -31,7 +31,7 @@ spec:
     - name: PROJECT
       value: "${DOCKER_PROJECT}"
     name: golang-docker
-    image: "${DOCKER_REGISTRY_PREFIX}/golang-docker:1.10-17.09"
+    image: "${DOCKER_REGISTRY_PREFIX}/golang-docker:1.10-17.09-product-release"
     imagePullPolicy: IfNotPresent
     tty: true
   - name: jnlp

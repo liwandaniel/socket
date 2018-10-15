@@ -42,13 +42,18 @@ release-image:
 	docker tag "$(REGISTRY)/$(PROJECT)/release:$(RELEASE_VERSION)" "release:$(RELEASE_VERSION)"
 	docker save "release:$(RELEASE_VERSION)" -o release.tar.gz
 
+build-image:
+	@echo "There are some prerequesties, please read the Dockerfile for more details."
+	docker build --build-arg SSH_ID_RSA="$$(cat ~/.ssh/id_rsa)" -t "$(REGISTRY)/$(PROJECT)/golang-docker:1.10-17.09-product-release" $(DOCKER_LABELS) -f build/jenkinsfile-base/Dockerfile .
+	$(PUSH) "$(REGISTRY)/$(PROJECT)/golang-docker:1.10-17.09-product-release"
+
 # Golang standard bin directory.
 BIN_DIR := $(GOPATH)/bin
 
 RELEASELINT := $(BIN_DIR)/release-cli
 
 $(RELEASELINT):
-	go get -u github.com/caicloud/rudder/cmd/release-cli
+	go get github.com/caicloud/rudder/cmd/release-cli
 
 lint: $(RELEASELINT)
 	@git submodule init
