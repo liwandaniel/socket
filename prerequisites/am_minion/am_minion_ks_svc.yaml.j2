@@ -8,9 +8,8 @@ metadata:
 spec:
   ports:
   - port: 8000
-    nodePort: 30998
     protocol: TCP
     targetPort: 8000
   selector:
     caicloud-app: am-minion
-  type: NodePort
+  type: ClusterIp
