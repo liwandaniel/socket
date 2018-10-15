@@ -24,6 +24,7 @@ spec:
     resourcePaths:
       - release/canary-release-controller.yaml
     targetPath: app
+  - repositoryFullName: caicloud/charts
   - repositoryFullName: caicloud/cargo-admin
     resourcePaths:
       - release/cargo-admin.yaml
