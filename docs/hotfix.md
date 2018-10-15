@@ -7,7 +7,8 @@
     - [发起 issue](#%E5%8F%91%E8%B5%B7-issue)
     - [发起 pull request & 制作 README.md](#%E5%8F%91%E8%B5%B7-pull-request--%E5%88%B6%E4%BD%9C-readmemd)
     - [审核 pull request](#%E5%AE%A1%E6%A0%B8-pull-request)
-    - [同步镜像 & 打包上传](#%E5%90%8C%E6%AD%A5%E9%95%9C%E5%83%8F--%E6%89%93%E5%8C%85%E4%B8%8A%E4%BC%A0)
+    - [merge pull requests](#merge-pull-requests)
+    - [打包上传](#%E6%89%93%E5%8C%85%E4%B8%8A%E4%BC%A0)
     - [安装包](#%E5%AE%89%E8%A3%85%E5%8C%85)
     - [紧急情况](#%E7%B4%A7%E6%80%A5%E6%83%85%E5%86%B5)
   - [安装流程](#%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B)
@@ -105,15 +106,37 @@ cargo.caicloudprivatetest.com/caicloud/addon-component:<VERSION>
 /queue working-image-pushed
 ```
 
-#### 同步镜像 & 打包上传
+#### merge pull requests
 
 platform-release 小组需查看 `label:queue/working-image-pushed label:kind/release` 的
-pull requests；将所有镜像从 `cargo.caicloudprivatetest.com/caicloud` 同步到
-`harbor.caicloud.xyz/release` ；将所有镜像保存到 `tar.gz` 包，并和 yaml、README.md 一起打成 hotfix 包。
+pull requests，待确认 pull requests 之后，将 pull requests merge，开始打包上传
 
-针对该 hotfix 对应的产品版本，准备相应的环境，严格按照部署文档中组件快速升级的步骤，安装 hotfix 并验证升级组件是否成功被更新（如果修复内容需要特殊复现环境，则开发自行准备自验环境），最终将包上传到 OSS。
+#### 打包上传
 
-包上传到 `oss://infra-release/platform/**/hotfixes` ；确认上传完成后，需给出以下指令：
+Step 1, 配置 oss 上传的工具，确保 `~` 目录，即 `/root` 下配置了正确的上传工具
+
+参考 [OSS 使用文档](https://forum.caicloud.xyz/t/topic/100)，相关问题咨询 @ijumps
+
+Step 2， 执行以下命令：
+
+```bash
+docker login harbor.caicloud.xyz -u admin -p $HARBOR_PASSWORD
+docker login cargo-infra.caicloud.xyz -u admin -p $CARGO_PASSWORD
+```
+
+Step 3，执行脚本:
+
+确认参数
+
+1. `[HOTFIX_YAML_PATH]`: hotfix yaml 的路径，例如 `./release-hotfixes/2.7.1/20180905/`
+2. `[UPLOAD_OSS_PATH]`: 上传 oss 的路径， 只需要给出上传至哪个版本的目录下即可，例如 `compass-v2.7.1/` --> `oss://infra-release/platform/compass-v2.7.1/hotfixes/20180905/compass-hotfixes-2.7.1-20181015-logging-admin-v2.1.4.tar.gz`
+
+```bash
+./hack/hotfix_scripts/sync_hotfix_images.sh ./release-hotfixes/2.7.1/20180905/ compass-v2.7.2/
+```
+
+确认上传完成后，需给出以下指令：
+
 ```
 packages uploaded to
 oss://infra-release/platform/compass-v2.7.0/hotfixes/compass-hotfixes-<desc>-<addon-name>-<VERSION>.tar.gz
@@ -121,7 +144,7 @@ oss://infra-release/platform/compass-v2.7.0/hotfixes/compass-hotfixes-<desc>-<ad
 /queue done-package-uploaded
 ```
 
-注：如果一个安装包要针对多个版本，需在每个版本对应的 hotfixes 目录都上传一遍。
+注：如果一个安装包要针对多个版本，需手动在每个版本对应的 hotfixes 目录都上传一遍。
 
 #### 安装包
 
