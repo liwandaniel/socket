@@ -13,8 +13,9 @@
 TAG = $(shell git describe --tags --always --dirty)
 
 # RELEASE_VERSION is the version of the release
-PANGOLIN_VERSION           ?= v0.0.2
 RELEASE_VERSION            ?= $(TAG)
+PANGOLIN_VERSION           ?= v0.0.2
+
 ADDONS_PATH                ?= ./addons
 CHART_LIST_PATH            ?= ./charts_list.yaml
 TARGET_IMGAES_LIST_PATH    ?= ./images-lists/images_platform.list
@@ -28,7 +29,7 @@ PUSH     ?= docker push
 
 PANGOLIN_IMAGE ?= $(REGISTRY)/$(PROJECT)/pangolin:$(PANGOLIN_VERSION)
 
-DOCKER_LABELS=--label compass-release.git-describe="$(shell date -u +v%Y%m%d)-$(shell git describe --tags --always --dirty)"
+DOCKER_LABELS=--label product-release.git-describe="$(shell date -u +v%Y%m%d)-$(shell git describe --tags --always --dirty)"
 
 release-image:
 	# set platform release info in platform-info
