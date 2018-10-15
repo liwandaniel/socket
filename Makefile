@@ -23,8 +23,8 @@ TARGET_COLLECT_TAG_PATH    ?= ./release_charts.yaml
 GITHUB_TOKEN_PATH          ?= ./token
 
 # Build and push specific variables.
-REGISTRY ?= cargo-infra.caicloud.xyz
-PROJECT  ?= devops_release
+REGISTRY ?= cargo.caicloudprivatetest.com
+PROJECT  ?= caicloud
 PUSH     ?= docker push
 
 PANGOLIN_IMAGE ?= $(REGISTRY)/$(PROJECT)/pangolin:$(PANGOLIN_VERSION)
