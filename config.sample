@@ -29,3 +29,12 @@ hodorEndpoint=""
 
 # GitHub、GitLab webhook 回调 compass-devops 的 url，方便配置外网访问代理
 devopsWebhookURL=""
+
+# 统一域名，user-web 服务的路径前缀
+userwebBasePath: ""
+
+# 统一域名，console-web 服务的路径前缀
+consoleBasePath: ""
+
+# 统一域名，auth-provider 服务的路径前缀
+ssoBasePath: ""
