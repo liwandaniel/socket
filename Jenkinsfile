@@ -39,7 +39,7 @@ spec:
       value: "${GIT_EMAIL}"
     name: golang-docker
     image: "${DOCKER_REGISTRY_PREFIX}/golang-docker:1.10-17.09-product-release"
-    imagePullPolicy: IfNotPresent
+    imagePullPolicy: Always
     tty: true
   - name: jnlp
     args: ["\$(JENKINS_SECRET)", "\$(JENKINS_NAME)"]
@@ -117,9 +117,11 @@ spec:
 
                                     # Collect Charts
                                     make collect-charts ADDONS_PATH=./addons GITHUB_TOKEN_PATH=./token TARGET_COLLECT_TAG_PATH=./release_charts.yaml
+                                    # Update images
+                                    make convert-images ADDONS_PATH=./addons TARGET_FILE=./images-lists/images_platform.list
 
                                     # Make PR
-                                    git add addons
+                                    git add addons images-lists/images_platform.list
                                     git commit -m "chore(*): update addons"
                                     git push --set-upstream origin ${RELEASE_VERSION} --force
 

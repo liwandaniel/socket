@@ -3,6 +3,7 @@
 # Usage:
 #   make                 - default to 'release-image' target
 #   make release-image   - build and push release image
+#   make build-image     - build ci base image
 #   make lint            - lint all charts
 #   make update-tag      - get latest tag from repo and generate release_charts.yaml
 #   make collect-charts  - collect charts from all repos
@@ -44,7 +45,7 @@ release-image:
 
 build-image:
 	@echo "There are some prerequesties, please read the Dockerfile for more details."
-	docker build --build-arg SSH_ID_RSA="$$(cat ~/.ssh/id_rsa)" -t "$(REGISTRY)/$(PROJECT)/golang-docker:1.10-17.09-product-release" $(DOCKER_LABELS) -f build/jenkinsfile-base/Dockerfile .
+	docker build --no-cache --build-arg SSH_ID_RSA="$$(cat ~/.ssh/id_rsa)" -t "$(REGISTRY)/$(PROJECT)/golang-docker:1.10-17.09-product-release" $(DOCKER_LABELS) -f build/jenkinsfile-base/Dockerfile .
 	$(PUSH) "$(REGISTRY)/$(PROJECT)/golang-docker:1.10-17.09-product-release"
 
 # Golang standard bin directory.
