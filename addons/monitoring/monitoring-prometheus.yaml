@@ -14,6 +14,7 @@ _config:
       - --storage.tsdb.path=/prometheus
       - --storage.tsdb.retention=7d
       - --web.enable-lifecycle
+      - --web.enable-admin-api
       image: '[[ registry_release ]]/prometheus:release-v2.1.0'
       imagePullPolicy: IfNotPresent
       mounts:
@@ -21,6 +22,8 @@ _config:
         path: /etc/prometheus
       - name: prometheus-data
         path: /prometheus
+      - name: etcd-tls-secret
+        path: /secrets/etcd
       ports:
       - port: 9090
         protocol: TCP
@@ -57,6 +60,10 @@ _config:
       type: ClusterIP
     type: StatefulSet
     volumes:
+    - name: etcd-tls-secret
+      source:
+        target: etcd-tls-secret
+      type: Secret
     - name: prometheus-config
       source:
         target: prometheus-config
@@ -105,7 +112,12 @@ _config:
 
             - job_name: 'etcd-k8s-cluster'
 
-              scheme: http
+              scheme: https
+              tls_config:
+                ca_file: /secrets/etcd/ca
+                key_file: /secrets/etcd/key
+                cert_file: /secrets/etcd/cert
+
               kubernetes_sd_configs:
               - role: node
 
@@ -120,7 +132,12 @@ _config:
 
             - job_name: 'etcd-k8s-events'
 
-              scheme: http
+              scheme: https
+              tls_config:
+                ca_file: /secrets/etcd/ca
+                key_file: /secrets/etcd/key
+                cert_file: /secrets/etcd/cert
+
               kubernetes_sd_configs:
               - role: node
 

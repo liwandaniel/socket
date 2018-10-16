@@ -6,13 +6,13 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.4.11"
+    version: "v0.4.13"
   controllers:
   - type: Deployment
     controller:
       replica: 1
     containers:
-    - image: '[[ registry_release ]]/cargo-admin:v0.4.11'
+    - image: '[[ registry_release ]]/cargo-admin:v0.4.13'
       imagePullPolicy: IfNotPresent
       name: admin
       mounts:
@@ -22,7 +22,7 @@ _config:
         path: /platform/etc
       - name: cargo-admin-docker-sock
         path: /var/run/dind
-    - image: '[[ registry_release ]]/cargo-token:v0.4.11'
+    - image: '[[ registry_release ]]/cargo-token:v0.4.13'
       imagePullPolicy: IfNotPresent
       name: token
       mounts:
@@ -44,11 +44,10 @@ _config:
     services:
     - name: cargo-token
       ports:
-      - nodePort: 30099
-        port: 8081
+      - port: 8081
         protocol: TCP
         targetPort: 8081
-      type: NodePort
+      type: ClusterIP
     - name: cargo-admin
       ports:
       - port: 8080

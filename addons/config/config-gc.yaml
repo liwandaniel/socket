@@ -6,13 +6,13 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.2.6"
+    version: "v0.2.7"
   controllers:
   - containers:
     - env:
       - name: CONFIG_ADMIN_URL
         value: http://config-admin:8080
-      image: '[[ registry_release ]]/config-gc:v0.2.6'
+      image: '[[ registry_release ]]/config-gc:v0.2.7'
       imagePullPolicy: IfNotPresent
       resources:
         limits:

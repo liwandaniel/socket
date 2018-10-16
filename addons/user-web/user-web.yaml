@@ -6,10 +6,12 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.3.7"
+    version: "v0.3.15"
   controllers:
   - containers:
     - env:
+      - name: NODE_TLS_REJECT_UNAUTHORIZED
+        value: '0'
       - name: GRAFANA_PORT
         value: '6104'
       - name: KIBANA_PORT
@@ -49,20 +51,22 @@ _config:
           type: Config
           name: platform-config
           key: "oidcIssuer"
+      - name: ISSUER_PORT
+        value: "6062"
       - name: OIDC_CLIENT_ID
         value: user-web
       - name: OIDC_CLIENT_SECRET
         value: user-web
+      - name: USERWEB_BASE_PATH
+        from:
+          type: Config
+          name: platform-config
+          key: "userwebBasePath"
       - name: COMPASS_SERVER
         from:
           type: Config
           name: platform-config
           key: "compassWebEndpoint"
-      - name: CLEVER_SERVER
-        from:
-          type: Config
-          name: platform-config
-          key: "cleverServer"
       - name: 'USERWEB_SERVER'
         from:
           type: Config
@@ -77,7 +81,7 @@ _config:
         value: '[[ platform_release_version ]]'
       - name: PRODUCT_RELEASE_TIME
         value: '[[ platform_release_time ]]'
-      image: '[[ registry_release ]]/user-web:v0.3.7'
+      image: '[[ registry_release ]]/user-web:v0.3.15'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 3006

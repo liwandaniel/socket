@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: 'v0.7.0-beta'
+    version: 'v0.7.0-beta.1'
   controllers:
   - containers:
     - command:
@@ -35,7 +35,7 @@ _config:
       - name: CYCLONE_SERVER
         value: 'http://[[ kube_apiserver_endpoint_ip ]]:6008'
       - name: WORKER_IMAGE
-        value: '[[ registry_release ]]/cyclone-worker:v0.7.0-beta'
+        value: '[[ registry_release ]]/cyclone-worker:v0.7.0-beta.1'
       - name: CLOUD_AUTO_DISCOVERY
         value: 'true'
       - name: LIMIT_MEMORY
@@ -61,8 +61,11 @@ _config:
       - name: RECORD_WEB_URL_TEMPLATE
         value: '[[ compassWebEndpoint ]]/devops/pipeline/{{.Pipeline.Name}}/record/{{.PipelineRecord.ID}}?workspace={{.Project.Name}}&tenant={{index .Pipeline.Annotations "tenant"}}'
       - name: CALLBACK_URL
-        value: '[[ hodorEndpoint ]]/apis/admin.devops.caicloud.io/v1/pipelines'
-      image: '[[ registry_release ]]/cyclone-server:v0.7.0-beta'
+        from:
+          type: Config
+          name: platform-config
+          key: "devopsWebhookURL"
+      image: '[[ registry_release ]]/cyclone-server:v0.7.0-beta.1'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: cyclone-data

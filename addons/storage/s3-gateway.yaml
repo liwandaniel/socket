@@ -6,11 +6,11 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.0.1-alpha.2"
+    version: "v0.0.1-alpha.3"
   controllers:
   - containers:
     - name: gateway
-      image: '[[ registry_release ]]/simple-static-file-server-gateway:v0.0.1-alpha.2'
+      image: '[[ registry_release ]]/simple-static-file-server-gateway:v0.0.1-alpha.3'
       imagePullPolicy: IfNotPresent
       env:
       - name: SERVER_ENV_DATABASE_STRING

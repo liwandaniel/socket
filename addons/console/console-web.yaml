@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v3.3.1-alpha.0"
+    version: "v3.3.1-alpha.5"
   controllers:
   - containers:
     - env:
@@ -43,10 +43,17 @@ _config:
           type: Config
           name: platform-config
           key: "oidcIssuer"
+      - name: ISSUER_PORT
+        value: "6062"
       - name: OIDC_CLIENT_ID
         value: compass-web
       - name: OIDC_CLIENT_SECRET
         value: compass-web
+      - name: CONSOLE_BASE_PATH
+        from:
+          type: Config
+          name: platform-config
+          key: "consoleBasePath"
       - name: COMPASS_SERVER
         from:
           type: Config
@@ -66,12 +73,14 @@ _config:
         value: 'false'
       - name: DEFAULT_LANG
         value: 'zh-CN'
+      - name: NODE_TLS_REJECT_UNAUTHORIZED
+        value: '0'
       # Get release info from system-info ConfigMap
       - name: PRODUCT_VERSION
         value: '[[ platform_release_version ]]'
       - name: PRODUCT_RELEASE_TIME
         value: '[[ platform_release_time ]]'
-      image: '[[ registry_release ]]/console-web:v3.3.1-alpha.0'
+      image: '[[ registry_release ]]/console-web:v3.3.1-alpha.5'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 3000

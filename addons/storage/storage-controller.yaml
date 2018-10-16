@@ -6,13 +6,13 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.3.0-alpha.2"
+    version: "v0.3.0-alpha.3"
   controllers:
   - containers:
     - env:
       - name: ENV_LOG_LEVEL
         value: info
-      image: '[[ registry_release ]]/storage-controller:v0.3.0-alpha.2'
+      image: '[[ registry_release ]]/storage-controller:v0.3.0-alpha.3'
       imagePullPolicy: IfNotPresent
       resources:
         limits:
