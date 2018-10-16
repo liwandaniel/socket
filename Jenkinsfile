@@ -150,7 +150,7 @@ spec:
 
                                         # Git tag
                                         git tag ${RELEASE_VERSION}
-                                        git push upstream ${RELEASE_VERSION} --tags
+                                        git push upstream --tags
 
                                         # Env will replace params in Makefile.
                                         make release-image
