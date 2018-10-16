@@ -31,10 +31,10 @@ hodorEndpoint=""
 devopsWebhookURL=""
 
 # 统一域名，user-web 服务的路径前缀
-userwebBasePath: ""
+userwebBasePath=""
 
 # 统一域名，console-web 服务的路径前缀
-consoleBasePath: ""
+consoleBasePath=""
 
 # 统一域名，auth-provider 服务的路径前缀
-ssoBasePath: ""
+ssoBasePath=""
