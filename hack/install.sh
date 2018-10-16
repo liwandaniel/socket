@@ -50,7 +50,6 @@ function load_release_image() {
 
 function load_all_images() {
     # Untar cargo resource
-    cd $CARGO_ROOT && bash $CARGO_ROOT/stop.sh
     cd $PANGOLIN_ROOT && tar -xvf "$PANGOLIN_ROOT/pangolin-deploy-images.tar.gz" -C "$COMMON_ROOT/cargo-registry"
     docker restart harbor-ui
     cd $PANGOLIN_ROOT
