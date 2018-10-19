@@ -11,14 +11,14 @@ def GITHUB_CREDENTIAL_ID = "${params.github_credential_id}"
 // docker registry prefix
 def DOCKER_REGISTRY_PREFIX = "cargo.caicloudprivatetest.com/caicloud"
 // this guarantees the node will use this template
-def PROJECT_NAME = "product-release-${UUID.randomUUID().toString()}"
+def POD_NAME = "product-release-${UUID.randomUUID().toString()}"
 
 // Kubernetes pod template to run.
 podTemplate(
     cloud: "dev-cluster",
     namespace: "kube-system",
-    name: PROJECT_NAME,
-    label: PROJECT_NAME,
+    name: POD_NAME,
+    label: POD_NAME,
     yaml: """
 apiVersion: v1
 kind: Pod
@@ -55,7 +55,7 @@ spec:
     tty: true
 """,
 ) {
-    node(PROJECT_NAME) {
+    node(POD_NAME) {
         container("golang-docker") {
             ansiColor("xterm") {
                 stage("Checkout") {
@@ -73,7 +73,7 @@ spec:
                     if (params.release) {
                         withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIAL_ID}", passwordVariable: "GITHUB_TOKEN", usernameVariable: "GITHUB_USERNAME")]) {
                             sh """
-                                echo 'Prepare GitHub OAuth Token'
+                                # Prepare GitHub OAuth Token
                                 echo ${GITHUB_TOKEN} > ./token
 
                                 # Init repo
@@ -86,15 +86,16 @@ spec:
                                 # Prepare git email for CLA.
                                 git config --global user.email ${GIT_EMAIL}
 
-                                echo 'Collect & Update tags'
+                                # Collect & Update tags
                                 make update-tag CHART_LIST_PATH=./charts_list.yaml GITHUB_TOKEN_PATH=./token TARGET_COLLECT_TAG_PATH=./release_charts.yaml
 
-                                # Make PR
+                                # Make commit.
                                 git checkout -B ${RELEASE_VERSION}
                                 git add release_charts.yaml
                                 git commit -m "chore(*): update release_charts.yaml"
                                 git push --set-upstream origin ${RELEASE_VERSION} --force
 
+                                # Make PR with curl.
                                 curl -X POST \
                                 https://api.github.com/repos/caicloud/product-release/pulls \
                                 -H 'Authorization: Bearer ${GITHUB_TOKEN}' \
@@ -120,11 +121,12 @@ spec:
                                     # Update images
                                     make convert-images ADDONS_PATH=./addons TARGET_FILE=./images-lists/images_platform.list
 
-                                    # Make PR
+                                    # Make commit.
                                     git add addons images-lists/images_platform.list
                                     git commit -m "chore(*): update addons"
                                     git push --set-upstream origin ${RELEASE_VERSION} --force
 
+                                    # Make PR with curl.
                                     curl -X POST \
                                     https://api.github.com/repos/caicloud/product-release/pulls \
                                     -H 'Authorization: Bearer ${GITHUB_TOKEN}' \
