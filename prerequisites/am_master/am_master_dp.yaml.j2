@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: am-master
-        image: [[ registry_release ]]/am_master:v0.0.4
+        image: [[ registry_release ]]/am_master:v0.0.5
         imagePullPolicy: IfNotPresent
         env:
         - name: SECRET_KEY
@@ -29,5 +29,5 @@ spec:
         - containerPort: 8000
       initContainers:
         - name: check-mysql
-          image: [[ registry_release ]]/am_master:v0.0.4
+          image: [[ registry_release ]]/am_master:v0.0.5
           command: ["/bin/sh", "-c", "until mysql -h am-mysql -pmy-secret-pw -e 'SELECT 1'; do echo waiting for mysql to be ready; sleep 5; done;"]
