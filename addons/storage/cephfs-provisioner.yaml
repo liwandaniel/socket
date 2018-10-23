@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v2.1.0-k8s1.11-20181010"
+    version: "v2.1.0-k8s1.11-20181017"
   controllers:
   - containers:
     - env:
@@ -20,7 +20,7 @@ _config:
         - "/usr/local/bin/cephfs-provisioner"
       args:
         - "-id=cephfs-provisioner-1"
-        - "disable-ceph-namespace-isolation=true"
+        - "-disable-ceph-namespace-isolation=true"
     controller:
       replica: 1
       strategy:

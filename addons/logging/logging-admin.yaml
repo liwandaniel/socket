@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v2.1.7"
+    version: "v2.1.9"
   controllers:
   - containers:
     - env:
@@ -14,7 +14,7 @@ _config:
         value: cds-server
       - name: CDS_SERVER_PORT
         value: '9000'
-      image: '[[ registry_release ]]/logging-admin:v2.1.7'
+      image: '[[ registry_release ]]/logging-admin:v2.1.9'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 7800

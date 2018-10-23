@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.3.20"
+    version: "v0.3.21"
   controllers:
   - containers:
     - env:
@@ -14,7 +14,7 @@ _config:
         value: http://helm-registry:8099
       - name: CHART_TEMPLATE_PATH
         value: /data/templates
-      image: '[[ registry_release ]]/app-admin:v0.3.20'
+      image: '[[ registry_release ]]/app-admin:v0.3.21'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 7799
@@ -36,7 +36,7 @@ _config:
       - name: OUTPUT_DIR
         value: /data/templates
       name: template
-      image: '[[ registry_release ]]/templates:v1.2.13'
+      image: '[[ registry_release ]]/templates:v1.2.14'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: data

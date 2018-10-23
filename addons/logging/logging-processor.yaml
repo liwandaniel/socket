@@ -6,11 +6,11 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.0.1"
+    version: "v2.1.9"
   controllers:
   - containers:
     - env:
-      image: '[[ registry_release ]]/auditlog-processor:v0.0.1'
+      image: '[[ registry_release ]]/auditlog-processor:v2.1.9'
       imagePullPolicy: IfNotPresent
     controller:
       replica: 1
