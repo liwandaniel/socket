@@ -97,6 +97,7 @@ spec:
     resourcePaths:
       - release/loadbalancer-controller.yaml
     targetPath: loadbalancer
+  - repositoryFullName: caicloud/loadbalancer-provider
   - repositoryFullName: caicloud/logging-admin
     resourcePaths:
       - release/logging-admin.yaml

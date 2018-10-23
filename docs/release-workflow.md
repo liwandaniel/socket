@@ -41,7 +41,15 @@
 image: '[[ registry_release ]]/hodor:[[ imageTagFromGitTag ]]'
 ```
 
-也可使用其他 repo 的 tag 替换镜像 tag，只需在 yaml 中加上环境变量 `[[ TagOfRepo(charts) ]]` 即可替换
+也可使用其他 repo 的 tag 替换镜像 tag
+
+在 charts_list.yaml 中添加需要用来替换的 repo
+
+```yaml
+- repositoryFullName: caicloud/charts
+```
+
+同时在 release 的 yaml 中加上环境变量 `[[ TagOfRepo(charts) ]]` 即可替换
 
 - 括号中填写 repo 的名字， `[[ TagOfRepo(charts) ]]` 表示使用 `caicloud/charts` 的 tag 来替换
 
