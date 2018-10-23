@@ -26,20 +26,3 @@ data:
   sc_heketi_resturl: "{{ glusterHeketiURL }}"
   sc_heketi_restuserkey: "{{ glusterHeketiUserKey }}"
   download_url: "{{ downloadURL }}"
-
-  # dex setting
-  dex.oidc_issuer: "http://{{ systemEndpoint|urlsplit }}:32000"
-  dex.oidc_client_id: "caicloud"
-  dex.oidc_client_secret: "caicloud"
-  dex.oidc_redirect_path: "/api/idToken"
-  dex.oidc_vip_host: "{{ systemEndpoint|urlsplit }}:30000"
-  dex.oidc_domain_host: "{{ clusterName  }}.{{ g_base_domain_name  }}:30000"
-  dex.disable_cauth_connector: ""
-  dex.clever_vip_host: "{{ systemEndpoint|urlsplit }}:30006"
-  dex.clever_domain_host: "{{ clusterName }}.{{ g_base_domain_name }}:30006"
-
-  ## haier connector config
-  dex.disable_haier_connector: "#"
-  dex.haier_client_id: ""
-  dex.haier_client_secret: ""
-  dex.haier_host: ""
