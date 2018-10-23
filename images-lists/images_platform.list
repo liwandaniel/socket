@@ -1,5 +1,5 @@
 release/app-admin:v0.3.20
-release/templates:v1.2.13
+release/templates:v1.2.14
 release/canary-nginx-proxy:v0.3.1
 release/canary-controller:v0.3.1
 release/helm-registry:v0.2.7-experiment
