@@ -3,12 +3,12 @@ metadata:
   description: A set of files to collect.
 spec:
 - repositoryFullName: caicloud/app-admin
-  tag: v0.3.20
+  tag: v0.3.21
   resourcePaths:
   - release/app-admin.yaml
   targetPath: app
 - repositoryFullName: caicloud/helm-registry
-  tag: v0.2.7-experiment
+  tag: v0.2.8-experiment
   resourcePaths:
   - release/helm-registry.yaml
   targetPath: app
@@ -18,9 +18,9 @@ spec:
   - release/canary-release-controller.yaml
   targetPath: app
 - repositoryFullName: caicloud/charts
-  tag: v1.2.13
+  tag: v1.2.14
 - repositoryFullName: caicloud/cargo-admin
-  tag: v0.4.13
+  tag: v0.4.14
   resourcePaths:
   - release/cargo-admin.yaml
   targetPath: cargo
@@ -30,7 +30,7 @@ spec:
   - release/cargo-auth-controller.yaml
   targetPath: cargo
 - repositoryFullName: caicloud/cluster-admin
-  tag: v1.3.0-alpha.4
+  tag: v1.3.0-alpha.6
   resourcePaths:
   - release/cluster-admin.yaml
   - release/cluster-controller.yaml
@@ -38,7 +38,7 @@ spec:
   - release/cluster-addon.yaml
   targetPath: cluster
 - repositoryFullName: caicloud/config-admin
-  tag: v0.1.12
+  tag: v0.1.13
   resourcePaths:
   - release/config-admin.yaml
   targetPath: config
@@ -51,13 +51,13 @@ spec:
   - release/config-reference.yaml
   targetPath: config
 - repositoryFullName: caicloud/console-web
-  tag: v3.3.1-alpha.5
+  tag: v3.3.1-alpha.11
   resourcePaths:
   - release/console-web.yaml
   - release/console-web-redis.yaml
   targetPath: console
 - repositoryFullName: caicloud/user-web
-  tag: v0.3.15
+  tag: v0.3.18
   resourcePaths:
   - release/user-web.yaml
   targetPath: user-web
@@ -67,12 +67,12 @@ spec:
   - release/cyclone-server.yaml
   targetPath: devops
 - repositoryFullName: caicloud/devops-admin
-  tag: v0.6.0-beta
+  tag: v0.6.0-beta.1
   resourcePaths:
   - release/devops-admin.yaml
   targetPath: devops
 - repositoryFullName: caicloud/cauth
-  tag: v2.2.0-alpha.12
+  tag: v2.2.0-alpha.13
   resourcePaths:
   - release/dex-cauth.yaml
   targetPath: dex
@@ -88,7 +88,7 @@ spec:
   - release/infra-mongo-bak.yaml
   targetPath: infra
 - repositoryFullName: caicloud/controller-manager
-  tag: v1.2.5
+  tag: v1.2.6
   resourcePaths:
   - release/hybrid-controller-manager.yaml
   targetPath: hybrid-controller-manager
@@ -103,12 +103,14 @@ spec:
   - release/loadbalancer-admin.yaml
   targetPath: loadbalancer
 - repositoryFullName: caicloud/loadbalancer-controller
-  tag: v0.4.4
+  tag: v0.4.5
   resourcePaths:
   - release/loadbalancer-controller.yaml
   targetPath: loadbalancer
+- repositoryFullName: caicloud/loadbalancer-provider
+  tag: v0.4.5
 - repositoryFullName: caicloud/logging-admin
-  tag: v2.1.7
+  tag: v2.1.9
   resourcePaths:
   - release/logging-admin.yaml
   - release/logging-processor.yaml
@@ -165,7 +167,7 @@ spec:
   - release/statistician-server.yaml
   targetPath: statistician
 - repositoryFullName: caicloud/storage-admin
-  tag: v0.3.0-alpha.3
+  tag: v0.3.0-alpha.4
   resourcePaths:
   - release/storage-admin.yaml
   - release/storage-admin-controller.yaml
@@ -190,7 +192,7 @@ spec:
   - release/tenant-controller.yaml
   targetPath: tenant
 - repositoryFullName: caicloud/auth-provider
-  tag: v1.0.1-alpha.1
+  tag: v1.0.1-alpha.4
   resourcePaths:
   - release/auth-provider.yaml
   targetPath: auth-provider
