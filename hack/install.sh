@@ -35,18 +35,19 @@ COMMON_ROOT=$(cd ../common && pwd -P )
 PANGOLIN_HOTFIX=$PANGOLIN_ROOT/hotfixes
 RELEASE_REGISTRY="harbor.caicloud.xyz"
 HOTFIX_REGEX=".*hotfixes.*.tar.gz$"
+CARGO_PROJECT="release"
 
-function load_release_image() {
-    # Load image
-    IMAGE_TARS=$(ls "$PANGOLIN_ROOT/image/"| grep "${IMAGE_TAR_SUFFIX}" | xargs )
+# Load image
+IMAGE_TARS=$(ls "$PANGOLIN_ROOT/image/"| grep "${IMAGE_TAR_SUFFIX}" | xargs )
 
-        for IMAGE_TAR in ${IMAGE_TARS[@]}
-        do
-            IMAGE_NAME=`docker load -i "$PANGOLIN_ROOT/image/$IMAGE_TAR" | grep 'Loaded image: ' | sed 's/Loaded image://g'`
-        done
+echo -e "$GREEN_COL loading image, please wait...... $NORMAL_COL"
 
-    echo $IMAGE_NAME
-}
+for IMAGE_TAR in ${IMAGE_TARS[@]}
+do
+    RELEASE_IMAGE=`docker load -i "$PANGOLIN_ROOT/image/$IMAGE_TAR" | grep "Loaded image:" | sed 's/Loaded image: //g'`
+    docker tag ${RELEASE_IMAGE} "${CARGO_CFG_DOMAIN}/${CARGO_PROJECT}/${RELEASE_IMAGE}"
+    docker push "${CARGO_CFG_DOMAIN}/${CARGO_PROJECT}/${RELEASE_IMAGE}" > /dev/null
+done
 
 function load_all_images() {
     # Untar cargo resource
@@ -86,7 +87,6 @@ case $input in
   # install standard components
   install )
     echo -e "$GREEN_COL installing component $NORMAL_COL"
-    RELEASE_IMAGE=$(load_release_image)
     if [ ! -n "$COMPONENT_LIST" ] ; then
         deploy_yaml='compass.yaml'
     else
@@ -114,8 +114,6 @@ case $input in
   # install hotfixes
   hotfix )
     echo -e "$GREEN_COL installing hotfixes $NORMAL_COL"
-    RELEASE_IMAGE=$(load_release_image)
-
     if [ ! -d "./hotfixes" ] ; then
     echo -e "$RED_COL hotfixes not exist $NORMAL_COL"
     exit 1
@@ -135,7 +133,6 @@ case $input in
   # debug mode
   debug )
     echo -e "$GREEN_COL running debug mode $NORMAL_COL"
-    RELEASE_IMAGE=$(load_release_image)
     docker run -it \
       -v `pwd`/../.kubectl.kubeconfig:/root/.kube/config \
       -v `pwd`/config:/pangolin/config \
