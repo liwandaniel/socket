@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v2.2.0-alpha.13"
+    version: "v2.2.0-alpha.14"
   controllers:
   - containers:
     - args:
@@ -33,7 +33,7 @@ _config:
           type: Config
           name: platform-config
           key: "tenantMode"
-      image: '[[ registry_release ]]/cauth:v2.2.0-alpha.13'
+      image: '[[ registry_release ]]/cauth:v2.2.0-alpha.14'
       imagePullPolicy: IfNotPresent
       name: cauth
       resources:
