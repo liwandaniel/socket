@@ -12,7 +12,7 @@ _config:
     controller:
       replica: 1
     containers:
-    - image: '[[ registry_release ]]/cargo-auth-controller:v0.1.1'
+    - image: '[[ registry_release ]]/cargo-auth-controller:v0.1.2'
       imagePullPolicy: IfNotPresent
       name: controller
       command:
