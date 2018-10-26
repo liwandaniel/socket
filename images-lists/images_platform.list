@@ -1,4 +1,4 @@
-release/app-admin:v0.3.21
+release/app-admin:v0.3.21-hotfix
 release/templates:v1.2.14
 release/canary-nginx-proxy:v0.3.1
 release/canary-controller:v0.3.1
