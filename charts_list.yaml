@@ -24,9 +24,14 @@ spec:
     resourcePaths:
       - release/canary-release-controller.yaml
     targetPath: app
+  - repositoryFullName: caicloud/charts
   - repositoryFullName: caicloud/cargo-admin
     resourcePaths:
       - release/cargo-admin.yaml
+    targetPath: cargo
+  - repositoryFullName: caicloud/cargo-auth-controller
+    resourcePaths:
+      - release/cargo-auth-controller.yaml
     targetPath: cargo
   - repositoryFullName: caicloud/cluster-admin
     resourcePaths:
@@ -51,6 +56,10 @@ spec:
       - release/console-web.yaml
       - release/console-web-redis.yaml
     targetPath: console
+  - repositoryFullName: caicloud/user-web
+    resourcePaths:
+      - release/user-web.yaml
+    targetPath: user-web
   - repositoryFullName: caicloud/cyclone
     resourcePaths:
       - release/cyclone-server.yaml
@@ -76,11 +85,6 @@ spec:
     resourcePaths:
       - release/hybrid-controller-manager.yaml
     targetPath: hybrid-controller-manager
-  - repositoryFullName: caicloud/kubernetes-admin
-    resourcePaths:
-      - release/kubernetes-admin-server.yaml
-      - release/kubernetes-admin-mongo.yaml
-    targetPath: kubernetes-admin
   - repositoryFullName: caicloud/license
     resourcePaths:
       - release/license-server.yaml
@@ -93,6 +97,7 @@ spec:
     resourcePaths:
       - release/loadbalancer-controller.yaml
     targetPath: loadbalancer
+  - repositoryFullName: caicloud/loadbalancer-provider
   - repositoryFullName: caicloud/logging-admin
     resourcePaths:
       - release/logging-admin.yaml
@@ -148,10 +153,15 @@ spec:
       - release/storage-admin-controller.yaml
       - release/storage-admission.yaml
       - release/storage-controller.yaml
+      - release/cephfs-provisioner.yaml
     targetPath: storage
   - repositoryFullName: caicloud/external-storage
     resourcePaths:
       - release/storage-provisioner-nfs.yaml
+    targetPath: storage
+  - repositoryFullName: caicloud/simple-static-file-server
+    resourcePaths:
+    - release/s3-gateway.yaml
     targetPath: storage
   - repositoryFullName: caicloud/tenant-admin
     resourcePaths:

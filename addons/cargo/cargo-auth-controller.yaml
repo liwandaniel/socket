@@ -1,0 +1,27 @@
+_config:
+  _metadata:
+    description: cargo auth controller
+    name: cargo-auth-controller
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.1.1"
+  controllers:
+  - type: Deployment
+    controller:
+      replica: 1
+    containers:
+    - image: '[[ registry_release ]]/cargo-auth-controller:v0.1.2'
+      imagePullPolicy: IfNotPresent
+      name: controller
+      command:
+        - /cargo-auth-controller
+        - -logtostderr=true
+      resources:
+        limits:
+          cpu: 500m
+          memory: 500Mi
+        requests:
+          cpu: 200m
+          memory: 200Mi

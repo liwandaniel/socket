@@ -1,0 +1,28 @@
+# 选择安装的描述文件，默认为 "compass.yaml"
+# 标准产品，可选择安装 FULL-COMPASS 和 MINI-COMPASS，选择填写 "compass.yaml" 和 "mini-compass.yaml"
+# oem 产品，则填写 oem.yaml
+COMPONENT_LIST="compass.yaml"
+
+# 选择安装的 chart 路径，标准产品默认填写 "addons", oem 产品填写 "oem-addons"
+ADDONS_PATH="addons"
+
+# 配置单租户模式还是多租户模式，默认 enabled 为多租户，disabled 单租户
+tenantMode="enabled"
+
+# 默认从 system-info 中获取，如果 config 此处配置了 systemEndpoint，就会使用此处的值
+systemEndpoint=""
+
+# compass web 地址
+compassWebEndpoint=""
+
+# clever web 地址
+cleverServer=""
+
+# auth provider sso 登录
+oidcIssuer=""
+
+# user web 地址
+userwebServer=""
+
+# hodorEndpoint
+hodorEndpoint=""

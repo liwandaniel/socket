@@ -180,7 +180,7 @@ _config:
           - name: labeler
             images:
               - name: Labeler
-                path: labeler:v0.1.4
+                path: labeler:v0.1.10
           - name: thumbnails
             images:
               - name: Thumbnails

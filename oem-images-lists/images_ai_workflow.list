@@ -12,12 +12,12 @@ release/pytorch:v0.4.1-py36-gpu
 release/pytorch:v0.4.1-py36
 release/pytorch:v0.4.1-py27-gpu
 release/pytorch:v0.4.1-py27
-release/anaconda:5.2.0
+release/anaconda:v5.2.0
 release/anaconda:v5.2.0-gpu
 release/tf-operator:v1alpha2-v1.2.0
 release/pytorch-operator:v1alpha2-v1.2.0
 release/graphpipe-onnx:v1.0.1-initcontainer
 release/graphpipe-onnx:v1.0.1
 release/graphpipe-onnx:v1.0.1-gpu
-release/labeler:v0.1.6
+release/labeler:v0.1.10
 release/labelme:v0.1.7

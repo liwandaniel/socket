@@ -1,7 +1,7 @@
 ---
 metadata:
   name: full compass
-  version: 2.7.1
+  version: 2.7.2
   description: full compass deployment config
 spec:
   systemAddons:
@@ -32,6 +32,12 @@ spec:
       description: Console web
     - name: console-web-redis
       description: Redis for console web
+  - name: user-web
+    description: User web
+    required: true
+    addons:
+    - name: user-web
+      description: User web
   - name: devops
     description: DevOps
     required: true
@@ -49,6 +55,8 @@ spec:
     addons:
     - name: cargo-admin
       description: cargo management
+    - name: cargo-auth-controller
+      description: cargo auth controller
   - name: cluster
     description: cluster
     required: true
@@ -111,14 +119,6 @@ spec:
       description: Load balance management
     - name: loadbalancer-controller
       description: Controller for load balancer
-  - name: kubernetes-admin
-    description: kubernetes admin
-    required: true
-    addons:
-    - name: kubernetes-admin-server
-      description: Kubernetes management
-    - name: kubernetes-admin-mongo
-      description: Mongo of kubernetes admin
   - name: config
     description: config center
     required: true
@@ -147,6 +147,10 @@ spec:
       description: Controller for storage
     - name: storage-provisioner-nfs
       description: Provision nfs volume
+    - name: s3-gateway
+      description: simple-static-file-server
+    - name: cephfs-provisioner
+      description: cephfs-provisioner
   - name: monitoring
     description: monitoring
     required: true

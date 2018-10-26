@@ -1,7 +1,7 @@
 ---
 metadata:
   name: mini compass
-  version: 2.7.1
+  version: 2.7.2
   description: mini compass deployment config
 spec:
   systemAddons:
@@ -32,6 +32,12 @@ spec:
       description: Console web
     - name: console-web-redis
       description: Redis for console web
+  - name: user-web
+    description: User web
+    required: true
+    addons:
+    - name: user-web
+      description: User web
   - name: devops
     description: DevOps
     required: false
@@ -49,6 +55,8 @@ spec:
     addons:
     - name: cargo-admin
       description: cargo management
+    - name: cargo-auth-controller
+      description: cargo auth controller
   - name: cluster
     description: cluster
     required: false
@@ -61,7 +69,7 @@ spec:
       description: cluster addon manager
   - name: tenant
     description: tenant
-    required: false
+    required: true
     addons:
     - name: tenant-controller
       description: tenant controller
@@ -147,6 +155,10 @@ spec:
       description: Controller for storage
     - name: storage-provisioner-nfs
       description: Provision nfs volume
+    - name: s3-gateway
+      description: simple-static-file-server
+    - name: cephfs-provisioner
+      description: cephfs-provisioner
   - name: monitoring
     description: monitoring
     required: false

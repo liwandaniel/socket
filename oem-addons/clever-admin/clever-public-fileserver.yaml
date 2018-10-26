@@ -37,7 +37,7 @@ _config:
       - name: public
         path: "/clever/public"
       - name: time
-        path: "/clever/localtime"
+        path: "/etc/localtime"
     volumes:
     - name: public
       type: Static

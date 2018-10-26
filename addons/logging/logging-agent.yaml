@@ -1,0 +1,35 @@
+_config:
+  _metadata:
+    description: logging-agent
+    name: logging-agent
+    namespace: kube-system
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.0.4"
+  controllers:
+  - containers:
+    - image: '[[ registry_release ]]/insight-logging-agent:v0.0.4'
+      mounts: 
+      - name: kubelet 
+        path: /var/lib/kubelet
+        propagation: HostToContainer
+      args:
+      - /agent
+      - --esURL=http://elasticsearch:9200
+      - --logtostderr=true
+      - -v=6
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 100m
+          memory: 150Mi
+        requests:
+          cpu: 50m
+          memory: 100Mi
+    type: DaemonSet
+    volumes:
+    - name: kubelet
+      source:
+        path: /var/lib/kubelet
+      type: HostPath

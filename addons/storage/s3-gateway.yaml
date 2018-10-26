@@ -1,0 +1,51 @@
+_config:
+  _metadata:
+    description: s3-gateway
+    name: s3-gateway
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.0.1-alpha.3"
+  controllers:
+  - containers:
+    - name: gateway
+      image: '[[ registry_release ]]/simple-static-file-server-gateway:v0.0.1-alpha.3'
+      imagePullPolicy: IfNotPresent
+      env:
+      - name: SERVER_ENV_DATABASE_STRING
+        value: /caicloud/simple-static-file-server/mnt/glusterfs-single
+      - name: SERVER_ENV_STORAGE_STRING
+        value: /caicloud/simple-static-file-server/mnt/glusterfs-single
+      - name: SERVER_ENV_ROOT_ALLOWED
+        value: "false"
+      - name: SERVER_PORT
+        value: "80"
+      ports:
+      - port: 80
+        protocol: TCP
+      mounts:
+      - name: s3-gfs-single
+        path: /caicloud/simple-static-file-server/mnt/glusterfs-single
+    controller:
+      replica: 1
+      strategy:
+        surge: 1
+        unavailable: 0
+    services:
+    - name: simple-static-file-server-gateway
+      ports:
+      - port: 80
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment
+    volumes:
+    - name: s3-gfs-single
+      type: Dynamic
+      source:
+        class: heketi-storageclass
+        modes:
+        - ReadWriteMany
+      storage:
+        request: 64Gi
+        limit: 64Gi

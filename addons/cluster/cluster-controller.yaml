@@ -1,0 +1,30 @@
+_config:
+  _metadata:
+    description: cluster-controller
+    name: cluster-controller
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v1.3.0-alpha.6"
+  controllers:
+  - containers:
+    - env:
+      - name: ENV_CONTROLLER_MAX_RETRY_TIMES
+        value: '0'
+      - name: ENV_CONTROLLER_RESYNC_PERIOD_SECOND
+        value: '60'
+      - name: ENV_LOG_LEVEL
+        value: info
+      - name: MONGO_ADDR
+        value: '[[ platform_mongo_host ]]'
+      image: '[[ registry_release ]]/cluster-controller:v1.3.0-alpha.6'
+      imagePullPolicy: IfNotPresent
+    controller:
+      replica: 1
+      strategy:
+        surge: 1
+        unavailable: 0
+    pod:
+      serviceAccountName: admin
+    type: Deployment

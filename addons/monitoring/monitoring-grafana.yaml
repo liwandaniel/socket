@@ -1,0 +1,47 @@
+_config:
+  _metadata:
+    description: monitoring-grafana
+    name: monitoring-grafana
+    namespace: kube-system
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v4.1.1-upgrade"
+  controllers:
+  - containers:
+    - env:
+      - name: GF_AUTH_BASIC_ENABLED
+        value: 'false'
+      - name: GF_AUTH_ANONYMOUS_ENABLED
+        value: 'true'
+      - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+        value: Admin
+      image: '[[ registry_release ]]/grafana:4.1.1'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: grafana-persistent-storage
+        path: /var
+      resources:
+        limits:
+          cpu: 100m
+          memory: 100Mi
+        requests:
+          cpu: 100m
+          memory: 100Mi
+    - image: '[[ registry_release ]]/grafana-setup-tool:v0.3.3'
+      imagePullPolicy: IfNotPresent
+    controller:
+      replica: 1
+    services:
+    - name: monitoring-grafana
+      ports:
+      - port: 3000
+        protocol: TCP
+        targetPort: 3000
+      type: ClusterIP
+    type: Deployment
+    volumes:
+    - name: grafana-persistent-storage
+      source:
+        medium: ''
+      type: Scratch

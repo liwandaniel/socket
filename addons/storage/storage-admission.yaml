@@ -1,0 +1,48 @@
+_config:
+  _metadata:
+    description: storage-admission
+    name: storage-admission
+    namespace: kube-system
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.3.0-alpha.4"
+  controllers:
+  - containers:
+    - env:
+      - name: ENV_APP_NAME_PATH
+        value: kube-system/storage-admission
+      - name: ENV_CERT_NAME_PATH
+        value: kube-system/extension-apiserver-authentication
+      - name: ENV_SECRET_NAME_PATH
+        value: kube-system/apiserver-tls-secret
+      - name: ENV_IGNORED_NAMESPACES
+        value: default,kube-system
+      - name: ENV_IGNORED_CLASSES
+        value: ''
+      - name: ENV_LOG_LEVEL
+        value: info
+      - name: ENV_LISTEN_PORT
+        value: '2333'
+      image: '[[ registry_release ]]/storage-admission:v0.3.0-alpha.4'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 2333
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+    controller:
+      replica: 1
+    services:
+    - name: storage-admission
+      ports:
+      - port: 443
+        protocol: TCP
+        targetPort: 2333
+      type: ClusterIP
+    type: Deployment

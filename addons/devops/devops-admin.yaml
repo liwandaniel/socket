@@ -1,0 +1,42 @@
+_config:
+  _metadata:
+    description: devops-admin
+    name: devops-admin
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.6.0-beta.1"
+  controllers:
+  - containers:
+    - env:
+      - name: CYCLONE_SERVER
+        value: http://cyclone-server:7099
+      - name: STORAGE_ADMIN_SERVER
+        value: storage-admin:2333
+      - name: CLUSTER_ADMIN_SERVER
+        value: cds-server:9000
+      - name: MONGO_SERVERS
+        value: '[[ platform_mongo_host ]]'
+      - name: CARGO_ADMIN_SERVER
+        value: cargo-admin:8080
+      - name: TENANT_ADMIN_SERVER
+        value: tenant-admin:8080
+      - name: NOTIFY_ADMIN_SERVER
+        value: notify-admin:8900
+      image: '[[ registry_release ]]/devops-admin:v0.6.0-beta.1'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 7088
+        protocol: TCP
+    controller:
+      replica: 1
+    services:
+    - name: devops-admin
+      ports:
+      - port: 7088
+        protocol: TCP
+        targetPort: 7088
+      type: ClusterIP
+    type: Deployment
+

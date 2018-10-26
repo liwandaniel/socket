@@ -1,0 +1,50 @@
+_config:
+  _metadata:
+    description: alerting-manager
+    name: alerting-manager
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: v0.6.2
+  controllers:
+  - containers:
+    - args:
+      - -config.file=/etc/alertmanager/alertmanager.yaml
+      image: '[[ registry_release ]]/alertmanager:v0.6.2'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: alertmanager-config
+        path: /etc/alertmanager
+      ports:
+      - port: 9093
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 100m
+          memory: 256Mi
+        requests:
+          cpu: 20m
+          memory: 50Mi
+    controller:
+      replica: 1
+    services:
+    - name: alertmanager
+      ports:
+      - port: 9093
+        protocol: TCP
+        targetPort: 9093
+      type: ClusterIP
+    type: Deployment
+    volumes:
+    - name: alertmanager-config
+      source:
+        default: '420'
+        target: alertmanager-caicloud
+      type: Secret
+    secrets:
+    - name: alertmanager-caicloud
+      type: Opaque
+      data:
+      - key: alertmanager.yaml
+        value: Z2xvYmFsOgogIHJlc29sdmVfdGltZW91dDogNW0Kcm91dGU6CiAgcmVjZWl2ZXI6IGFsZXJ0LW5vdGlmaWVyCiAgZ3JvdXBfYnk6CiAgLSBjYWljbG91ZF9ydWxlX2lkCiAgZ3JvdXBfd2FpdDogMTVzCiAgZ3JvdXBfaW50ZXJ2YWw6IDNtCiAgcmVwZWF0X2ludGVydmFsOiAzaApyZWNlaXZlcnM6Ci0gbmFtZTogYWxlcnQtbm90aWZpZXIKICB3ZWJob29rX2NvbmZpZ3M6CiAgLSB1cmw6IGh0dHA6Ly9hbGVydC1ub3RpZmllcjo1MDAxL2FwaS92MC4xL2FsZXJ0cwo=

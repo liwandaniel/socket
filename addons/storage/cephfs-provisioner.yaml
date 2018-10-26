@@ -1,0 +1,29 @@
+_config:
+  _metadata:
+    description: cephfs-provisioner
+    name: cephfs-provisioner
+    namespace: kube-system
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v2.1.0-k8s1.11-20181017"
+  controllers:
+  - containers:
+    - env:
+      - name: PROVISIONER_NAME
+        value: ceph.com/cephfs
+      # image: "quay.io/external_storage/cephfs-provisioner:v2.1.0-k8s1.11"
+      # need retag to private cargo, keep version
+      image: '[[ registry_release ]]/cephfs-provisioner:v2.1.0-k8s1.11'
+      imagePullPolicy: IfNotPresent
+      command:
+        - "/usr/local/bin/cephfs-provisioner"
+      args:
+        - "-id=cephfs-provisioner-1"
+        - "-disable-ceph-namespace-isolation=true"
+    controller:
+      replica: 1
+      strategy:
+        surge: 1
+        unavailable: 1
+    type: Deployment

@@ -1,0 +1,386 @@
+_config:
+  _metadata:
+    name: standard
+    namespace: standard
+    version: 1.0.0
+    description: "Standard chart values"
+    creationTime: "2017-07-14 12:00:00"
+    source: "/library/template/1.0.0"
+    revision: 1
+    class: Default
+    template:
+      type: "template.caicloud.io/application"
+      version: 1.0.0
+  controllers:
+  - type: ControllerType
+    controller:
+      replica: 1
+      strategy:
+        unavailable: 0
+        surge: 1
+      ready: 0
+      name: "statefulsetname"
+      domain: "servicedomain"
+      parallelism: 1
+      completions: 1
+      active: 0
+      rule: "*/1 * * * *"
+      deadline: 0
+      policy: "Allow"
+      suspend: false
+      history:
+        success: 0
+        fail: 0
+      annotations:
+      - key: "annotation key"
+        value: "annotation value"
+    schedule:
+      scheduler: "schedulername"
+      labels:
+        name: somename
+        # FIXME if chart support key value
+        k8s-app: somename
+        caicloud-app: somename
+      affinity:
+        node:
+          type: Prefered
+          terms:
+          - weight: 10
+            expressions:
+            - key: somenodekey
+              operator: NotIn
+              values:
+              - somenodevalue
+        pod:
+          type: Required
+          terms:
+          - weight: 10
+            topologyKey: "kubernetes.io/hostname"
+            namespaces:
+            - default
+            selector:
+              labels:
+                name: somename
+                # FIXME if chart support key value
+                caicloud-app: somename
+                k8s-app: somename
+              expressions:
+              - key: name
+                operator: NotIn
+                values:
+                - somename
+      antiaffinity:
+        pod:
+          type: Required
+          terms:
+          - weight: 10
+            topologyKey: "kubernetes.io/hostname"
+            namespaces:
+            - default
+            selector:
+              labels:
+                name: somename
+                # FIXME if chart support key value
+                caicloud-app: caicloud-app
+                k8s-app: k8s-app
+              expressions:
+              - key: name
+                operator: NotIn
+                values:
+                - somename
+      tolerations:
+      - key: "somenodekey"
+        operator: "Equal"
+        value: "somenodevalue"
+        effect: "NoExecute"
+        tolerationSeconds: 10
+    pod:
+      restart: Always
+      dns: "ClusterFirst"
+      hostname: "hostname"
+      subdomain: "subdomain"
+      termination: 30
+      serviceAccountName: "serviceAccountName"
+      host:
+        network: true
+        pid: false
+        ipc: false
+      annotations:
+      - key: "podannotationkey"
+        value: "podannotationvalue"
+    initContainers:
+    - name: "ic0"
+      image: mysql-init:v1.0.0
+      imagePullPolicy: Always
+      tty: false
+      command:
+      - "./init"
+      args:
+      - "-c"
+      workingDir: "/"
+      securityContext:
+        privileged: false
+        capabilities:
+          add:
+          - "Some"
+          drop:
+          - "Others"
+      ports:
+      - protocol: HTTP
+        port: 80
+        hostPort: 0
+      envFrom:
+      - type: Config
+        name: someconfigmap
+        prefix: XXXX_
+        optional: false
+      downwardPrefix: MY_ENV
+      env:
+      - name: SOME_ENV
+        value: "env value"
+        from:
+          type: "Config"
+          name: "someconfig"
+          key: "configkey"
+          optional: false
+      resources:
+        requests:
+          cpu: 100m
+          memory: 100Mi
+          storage: 10Gi
+          gpu: "1"
+        limits:
+          cpu: 100m
+          memory: 100Mi
+          storage: 10Gi
+          gpu: "1"
+      mounts:
+      - name: db-volume
+        readonly: false
+        path: /var/lib/mysql
+        subpath: "db"
+      probe:
+        liveness:
+          handler:
+            type: HTTP
+            method:
+              command:
+              - test
+              scheme: HTTPS
+              host: "none"
+              port: 443
+              path: /liveness
+              header:
+              - name: "Some-Header"
+                value: "value"
+          delay: 10
+          timeout: 1
+          period: 10
+          threshold:
+            success: 1
+            failure: 3
+        readiness:
+          handler:
+            type: HTTP
+            method:
+              command:
+              - test
+              scheme: HTTPS
+              host: "none"
+              port: 443
+              path: /liveness
+              header:
+              - name: "Some-Header"
+                value: "value"
+          delay: 10
+          timeout: 1
+          period: 10
+          threshold:
+            success: 1
+            failure: 3
+      lifecycle:
+        postStart:
+          type: HTTP
+          method:
+            command:
+            - test
+            scheme: HTTPS
+            host: "none"
+            port: 443
+            path: /liveness
+            header:
+            - name: "Some-Header"
+              value: "value"
+        preStop:
+          type: HTTP
+          method:
+            command:
+            - test
+            scheme: HTTPS
+            host: "none"
+            port: 443
+            path: /liveness
+            header:
+            - name: "Some-Header"
+              value: "value"
+    containers:
+    - name: "c0"
+      image: mysql:v1.0.0
+      imagePullPolicy: Always
+      tty: false
+      command:
+      - "./init"
+      args:
+      - "-c"
+      workingDir: "/"
+      securityContext:
+        privileged: false
+        capabilities:
+          add:
+          - "Some"
+          drop:
+          - "Others"
+      ports:
+      - protocol: HTTP
+        port: 80
+        hostPort: 0
+      envFrom:
+      - type: Config
+        name: someconfigmap
+        prefix: XXXX_
+        optional: false
+      downwardPrefix: MY_ENV
+      env:
+      - name: SOME_ENV
+        value: "env value"
+        from:
+          type: "Config"
+          name: "someconfig"
+          key: "configkey"
+          optional: false
+      resources:
+        requests:
+          cpu: 100m
+          memory: 100Mi
+          storage: 10Gi
+          gpu: "1"
+        limits:
+          cpu: 100m
+          memory: 100Mi
+          storage: 10Gi
+          gpu: "1"
+      mounts:
+      - name: db-volume
+        readonly: false
+        path: /var/lib/mysql
+        subpath: "db"
+        propagation: HostToContainer
+      probe:
+        liveness:
+          handler:
+            type: HTTP
+            method:
+              command:
+              - test
+              scheme: HTTPS
+              host: "none"
+              port: 443
+              path: /liveness
+              header:
+              - name: "Some-Header"
+                value: "value"
+          delay: 10
+          timeout: 1
+          period: 10
+          threshold:
+            success: 1
+            failure: 3
+        readiness:
+          handler:
+            type: HTTP
+            method:
+              command:
+              - test
+              scheme: HTTPS
+              host: "none"
+              port: 443
+              path: /liveness
+              header:
+              - name: "Some-Header"
+                value: "value"
+          delay: 10
+          timeout: 1
+          period: 10
+          threshold:
+            success: 1
+            failure: 3
+      lifecycle:
+        postStart:
+          type: HTTP
+          method:
+            command:
+            - test
+            scheme: HTTPS
+            host: "none"
+            port: 443
+            path: /liveness
+            header:
+            - name: "Some-Header"
+              value: "value"
+        preStop:
+          type: HTTP
+          method:
+            command:
+            - test
+            scheme: HTTPS
+            host: "none"
+            port: 443
+            path: /liveness
+            header:
+            - name: "Some-Header"
+              value: "value"
+    volumes:
+    - name: db-volume
+      type: Dedicated
+      source:
+        class: hdd
+        modes:
+        - ReadWriteOnce
+        target: "pvcname"
+        readonly: false
+        medium: "memory"
+        items:
+        - key: "key"
+          path: "path"
+          mode: "0644"
+        default: "0644"
+        optional: false
+        path: "/localpath"
+      storage:
+        request: 5Gi
+        limit: 100Gi
+    services:
+    - name: mysql
+      type: ClusterIP
+      export: true
+      ports:
+      - protocol: HTTP
+        targetPort: 80
+        port: 80
+        nodePort: 30000
+      annotations:
+      - key: "annotationkey"
+        value: "annotationvalue"
+    configs:
+    - name: simplecfg
+      data:
+      - key: "config.yaml"
+        value: |
+          sync: "5m"
+          deadline: "3h"
+    secrets:
+    - name: simplesecret
+      type: Opaque
+      data:
+      - key: "encrypted.cfg"
+        value: c3luYzogIjVtIgpkZWFkbGluZTogIjNoIgo=

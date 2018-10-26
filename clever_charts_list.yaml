@@ -1,0 +1,34 @@
+# Collect tool for GitHub repos
+#
+# Field explanation:
+#   repositoryFullName: org/repo
+#   resourcePaths: path to resources
+#   targetPath: path to put resources
+#
+# Notice:
+#   If files in a folder with the same name, it will cover each other.
+---
+metadata:
+  name: collect set
+  description: A set of files to collect.
+spec:
+  - repositoryFullName: caicloud/clever-admin
+    resourcePaths:
+      - release/clever-admin.yaml
+      - release/fileserver.yaml
+    targetPath: clever-admin
+  - repositoryFullName: caicloud/clever-web
+    resourcePaths:
+      - release/clever-web.yaml
+    targetPath: clever-web
+  - repositoryFullName: caicloud/kubeflow-admin
+    resourcePaths:
+      - release/kubeflow-admin.yaml
+      - release/pytorch-operator.yaml
+      - release/tf-operator.yaml
+    targetPath: kubeflow-admin
+  - repositoryFullName: caicloud/clever-labeler
+    resourcePaths:
+      - release/labelgres.yaml
+    targetPath: labeler
+

@@ -1,0 +1,93 @@
+_config:
+  _metadata:
+    description: hodor
+    name: hodor-server
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v1.1.0-alpha.12"
+  controllers:
+  - containers:
+    - env:
+      - name: OIDC_ISSUER
+        from:
+          type: Config
+          name: platform-config
+          key: "oidcIssuer"
+      - name: OIDC_CLIENT_ID
+        value: caicloud
+      image: '[[ registry_release ]]/hodor:v1.1.0-alpha.12'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: hodor
+        path: /app/etc/config.yaml
+        subpath: config.yaml
+    controller:
+      replica: 3
+    pod:
+      annotations:
+      - key: prometheus.io/port
+        value: '8080'
+      - key: prometheus.io/scrape
+        value: 'true'
+    services:
+    - name: hodor-nodeport
+      ports:
+      - port: 8080
+        # nodePort: 30069
+        protocol: TCP
+        targetPort: 8080
+      # type: NodePort
+      type: ClusterIP
+    - name: hodor
+      ports:
+      - port: 8080
+        protocol: TCP
+        targetPort: 8080
+      type: ClusterIP
+    volumes:
+    - name: hodor
+      source:
+        items:
+        - key: hodor.yaml
+          path: config.yaml
+        target: hodor
+      type: Config
+    configs:
+    - name: hodor
+      data:
+      - key: hodor.yaml
+        value: |
+          service:
+            path: "./hodor"
+          plugin:
+            path: "./plugins"
+          http:
+            port: 8080
+          middlewares:
+          - name: "normalizer"
+          - name: "logger"
+          - name: "auth"
+            config:
+              authn:
+                oidc:
+                  clientID: "<OIDC_CLIENT_ID>"
+                  issuer: "<OIDC_ISSUER>"
+                basic:
+                  cauth:
+                    url: http://dex-cauth:8080
+              authz:
+                cauth:
+                  url: http://dex-cauth:8080
+          - name: "license"
+            config:
+              endpoint: "http://license:4243/api/stat"
+              ttl: 1m
+          - name: "metrics"
+          - name: "auditor"
+            config:
+              store:
+                driver: "mongo"
+                url: "mongodb://mgo-cluster:27017"
+    type: Deployment
