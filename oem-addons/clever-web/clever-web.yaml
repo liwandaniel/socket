@@ -45,6 +45,8 @@ _config:
         value: /api/idToken
       - name: PARTITION_NAME
         value: clever
+      - name: GRAPHQL_SERVER_WS
+        value: 'ws://[[ kube_apiserver_endpoint_ip ]]:6065'
       - name: NOTEBOOK_IMAGE
         value: '[[ registry_release ]]/anaconda:v5.2.0'
       - name: TENSORBOARD_IMAGE
@@ -66,11 +68,9 @@ _config:
     services:
     - name: clever-web
       ports:
-      - nodePort: 30006
-        port: 4006
+      - port: 4006
         protocol: TCP
-      - nodePort: 30011
-        port: 8080
+      - port: 8080
         protocol: TCP
-      type: NodePort
+      type: ClusterIP
     type: Deployment
