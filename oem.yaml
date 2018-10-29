@@ -25,5 +25,3 @@ spec:
     description: Postgres for label
   - name: user-web
     description: User web
-  - name: tenant-controller
-    description: Tenant Controller
