@@ -5,14 +5,14 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.0.1-alpha.5"
+    version: "v0.0.1-alpha.8"
   controllers:
   - type: Deployment
     controller:
       replica: 1
     containers:
     - name: clever-admin
-      image: '[[ registry_release ]]/clever-admin:v0.0.1-alpha.5'
+      image: '[[ registry_release ]]/clever-admin:v0.0.1-alpha.8'
       resources:
         requests:
           cpu: 100m
@@ -29,7 +29,7 @@ _config:
       - name: CLEVER_ADMIN_PORT
         value: '7070'
       - name: DROPPY_IMAGE
-        value: '[[ registry_release ]]/caicloud-droppy:v10.1.1'
+        value: '[[ registry_release ]]/caicloud-droppy:v10.2.0'
       - name: FILESERVER_IMAGE
         value: '[[ registry_release ]]/clever-fileserver:v1.4.2'
       mounts:
@@ -176,11 +176,11 @@ _config:
           - name: labelme
             images:
               - name: Labelme
-                path: labelme:v0.1.7
+                path: labelme:v0.1.9
           - name: labeler
             images:
               - name: Labeler
-                path: labeler:v0.1.10
+                path: labeler:v0.1.13
           - name: thumbnails
             images:
               - name: Thumbnails

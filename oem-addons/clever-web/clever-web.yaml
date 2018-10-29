@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v2.4.5"
+    version: "v2.5.0"
   controllers:
   - containers:
     - env:
@@ -17,7 +17,10 @@ _config:
       - name: CLOUD_ENV
         value: private
       - name: EXTERNAL_HODOR
-        value: ws://[[ kube_apiserver_endpoint_ip ]]:30069
+        from:
+          type: Config
+          name: platform-config
+          key: "hodorEndpoint"
       - name: HIDE
         value: signup,forget
       - name: HIDE_MENU
@@ -47,8 +50,11 @@ _config:
       - name: TENSORBOARD_IMAGE
         value: '[[ registry_release ]]/tensorflow:v1.9.0-py36'
       - name: USER_URL
-        value: http://[[ kube_apiserver_endpoint_ip ]]:30008
-      image: '[[ registry_release ]]/clever-web:v2.4.5'
+        from:
+          type: Config
+          name: platform-config
+          key: "userwebServer"
+      image: '[[ registry_release ]]/clever-web:v2.5.0'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 4006

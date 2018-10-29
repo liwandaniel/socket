@@ -6,11 +6,11 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.1.0-alpha.4"
+    version: "v1.1.0-rc3"
   controllers:
   - containers:
     - env:
-      image: '[[ registry_release ]]/kubeflow-admin:v1.1.0-alpha.4'
+      image: '[[ registry_release ]]/kubeflow-admin:v1.1.0-rc3'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 8080
