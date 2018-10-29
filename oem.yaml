@@ -5,8 +5,6 @@ metadata:
   description: clever deployment config
 spec:
   systemAddons:
-  - name: app-admin
-    description: app admin
   - name: clever-admin
     description: clever admin
   - name: clever-public-fileserver
