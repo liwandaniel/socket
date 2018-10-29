@@ -106,10 +106,11 @@ case $input in
 
     docker run --rm -it \
       -e DEPLOY_YAML=${deploy_yaml} \
+      -e ADDONS_PATH=${addons} \
       -v `pwd`/../.kubectl.kubeconfig:/root/.kube/config \
       -v `pwd`/config:/pangolin/config \
       ${RELEASE_IMAGE} \
-      sh -c 'python3 amctl.py create -p /pangolin/${DEPLOY_YAML}'
+      sh -c 'python3 amctl.py create -p /pangolin/${DEPLOY_YAML} -f ${ADDONS_PATH}'
     ;;
   # install hotfixes
   hotfix )
