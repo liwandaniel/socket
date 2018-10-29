@@ -17,8 +17,6 @@ spec:
     description: Auth server
   - name: hodor-server
     description: API Gateway
-  - name: auth-provider
-    description: caicloud auth provider
   - name: clever-kubeflow-admin
     description: clever kubeflow admin
   - name: clever-pytorch-operator
