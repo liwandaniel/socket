@@ -1,5 +1,5 @@
-release/clever-admin:v0.0.1-alpha.8
-release/caicloud-droppy:v10.2.0
+release/clever-admin:v0.0.1-rc01
+release/caicloud-droppy:v10.1.1
 release/clever-fileserver:v1.4.2
 release/kubeflow-admin:v1.1.0-rc3
-release/clever-web:v2.5.0
+release/clever-web:v2.5.4

@@ -20,4 +20,4 @@ release/graphpipe-onnx:v1.0.1-initcontainer
 release/graphpipe-onnx:v1.0.1
 release/graphpipe-onnx:v1.0.1-gpu
 release/labeler:v0.1.13
-release/labelme:v0.1.9
+release/labelme:v0.2.0

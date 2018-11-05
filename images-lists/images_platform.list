@@ -73,4 +73,4 @@ release/storage-controller:v0.3.0-alpha.4
 release/storage-nfs-multiple-provisioner:v0.0.2
 release/tenant-admin:v1.2.0-alpha.3
 release/tenant-controller:v1.2.0-alpha.3
-release/user-web:v0.3.18
+release/user-web:v0.3.23
