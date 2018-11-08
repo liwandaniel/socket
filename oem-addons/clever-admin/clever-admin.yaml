@@ -32,6 +32,8 @@ _config:
         value: '[[ registry_release ]]/caicloud-droppy:v10.1.1'
       - name: FILESERVER_IMAGE
         value: '[[ registry_release ]]/clever-fileserver:v1.4.2'
+      - name: APP_HOST
+        value: '[[ kube_apiserver_endpoint_ip ]]'
       mounts:
       - name: clever-admin-config
         path: /etc/clever-admin
@@ -107,7 +109,7 @@ _config:
                 path: tensorflow:v1.4.1-py36
               - name: Python2+TensorFlow1.9
                 path: tensorflow:v1.9.0-py27
-              - name: Python3+TensorFlow1.4
+              - name: Python3+TensorFlow1.9
                 path: tensorflow:v1.9.0-py36
           - name: pytorch
             resources:
@@ -155,7 +157,7 @@ _config:
                 memory: 2048Mi
             images:
               - name: OnnxServing
-                path: graphpipe-onnx:v1.0.0
+                path: graphpipe-onnx:v1.0.1
       - key: visualization
         value: |
           - name: tensorboard
