@@ -112,7 +112,7 @@ function upload(){
     FULL_UPLOAD_PATH="oss://infra-release/platform/${UPLOAD_OSS_PATH}/hotfixes/`date +%Y%m%d`/${file}"
     echo -e "$GREEN_COL uploading ${file} to ${FULL_UPLOAD_PATH}...... $NORMAL_COL"
     # upload to oss, need to set configuration on "~" path
-    ~/ossutil-mac cp -ru "${TARGET_PATH}/${file}" ${FULL_UPLOAD_PATH}
+    ~/ossutil cp -ru "${TARGET_PATH}/${file}" ${FULL_UPLOAD_PATH}
     done
 }
 
