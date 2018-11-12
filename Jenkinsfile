@@ -7,6 +7,16 @@ def RELEASE_VERSION = "${params.release_version}"
 def BASE_BRANCH = "${params.base_branch}"
 def GIT_EMAIL = "${params.git_email}"
 def GITHUB_CREDENTIAL_ID = "${params.github_credential_id}"
+def CARGO_DIR = "${params.cargo_dir}"
+def SYNC_DIR = "${params.sync_dir}"
+def OSS_PATH = "${params.oss_path}"
+def RELEASE_CARGO_LOGIN = "${params.release_cargo_login}"
+def SOURCE_REGISTRY = "${params.source_registry}"
+def TARGET_REGISTRY = "${params.target_registry}"
+def RELEASE_REGISTRY = "${params.release_registry}"
+def SOURCE_REGISTRY_CREDENTIAL_ID = "${params.source_registry_credential_id}"
+def TARGET_REGISTRY_CREDENTIAL_ID = "${params.target_registry_credential_id}"
+def RELEASE_REGISTRY_CREDENTIAL_ID = "${params.release_registry_credential_id}"
 
 // docker registry prefix
 def DOCKER_REGISTRY_PREFIX = "cargo.caicloudprivatetest.com/caicloud"
@@ -37,8 +47,20 @@ spec:
       value: "${BASE_BRANCH}"
     - name: GIT_EMAIL
       value: "${GIT_EMAIL}"
+    - name: CARGO_DIR
+      value: "${CARGO_DIR}"
+    - name: SYNC_DIR
+      value: "${SYNC_DIR}"
+    - name: OSS_PATH
+      value: "${OSS_PATH}"
+    - name: SOURCE_REGISTRY
+      value: "${SOURCE_REGISTRY}"
+    - name: TARGET_REGISTRY
+      value: "${TARGET_REGISTRY}"
+    - name: RELEASE_REGISTRY
+      value: "${RELEASE_REGISTRY}"
     name: golang-docker
-    image: "${DOCKER_REGISTRY_PREFIX}/golang-docker:1.10-17.09-product-release"
+    image: "${DOCKER_REGISTRY_PREFIX}/golang-jenkins:v0.0.1"
     imagePullPolicy: Always
     tty: true
   - name: jnlp
@@ -164,6 +186,80 @@ spec:
                         }
                     }
                 }
+                if (params.package) {
+                    withCredentials([usernamePassword(credentialsId: "${RELEASE_CARGO_LOGIN}", passwordVariable: "RELEASE_CARGO_PASSWORD", usernameVariable: "RELEASE_CARGO_IP")]) {
+                        stage("Sync images") {
+                            withCredentials([usernamePassword(credentialsId: "${SOURCE_REGISTRY_CREDENTIAL_ID}", passwordVariable: "SOURCE_REGISTRY_PASSWORD", usernameVariable: "SOURCE_REGISTRY_USER")]) {
+                                withCredentials([usernamePassword(credentialsId: "${TARGET_REGISTRY_CREDENTIAL_ID}", passwordVariable: "TARGET_REGISTRY_PASSWORD", usernameVariable: "TARGET_REGISTRY_USER")]) {
+                                    withCredentials([usernamePassword(credentialsId: "${RELEASE_REGISTRY_CREDENTIAL_ID}", passwordVariable: "RELEASE_REGISTRY_PASSWORD", usernameVariable: "RELEASE_REGISTRY_USER")]) {
+                                        sh """
+                                            cp /jenkins/ansible/inventory.sample /jenkins/ansible/inventory
+                                            sed -i 's/CARGO_IP/${RELEASE_CARGO_IP}/g' /jenkins/ansible/inventory
+                                            sed -i 's/CARGO_PASSWORD/${RELEASE_CARGO_PASSWORD}/g' /jenkins/ansible/inventory
+                                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "docker login ${SOURCE_REGISTRY} -u ${SOURCE_REGISTRY_USER} -p ${SOURCE_REGISTRY_PASSWORD}"
+                                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "docker login ${TARGET_REGISTRY} -u ${TARGET_REGISTRY_USER} -p ${TARGET_REGISTRY_PASSWORD}"
+                                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "docker login ${RELEASE_REGISTRY} -u ${RELEASE_REGISTRY_USER} -p ${RELEASE_REGISTRY_PASSWORD}"
+                                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "rm -rf ${SYNC_DIR} && mkdir -p ${SYNC_DIR}"
+                                            ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/sync_images_scripts/sync.sh dest=${SYNC_DIR}/ mode=0755"
+                                            ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=images-lists/ dest=${SYNC_DIR}/images-lists/ mode=0644"
+                                            ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/auto_package/package.sh dest=/root/ mode=0755"
+                                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/source_registry/${SOURCE_REGISTRY}/g' /root/package.sh"
+                                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/target_registry/${TARGET_REGISTRY}/g' /root/package.sh"
+                                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/release_registry/${RELEASE_REGISTRY}/g' /root/package.sh"
+                                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "bash /root/package.sh sync ${RELEASE_VERSION} ${CARGO_DIR} ${SYNC_DIR}"
+                                            """
+                                    }
+                                }
+                            }
+                        }
+                        stage("Packaging") {
+                            def packaging = packaging()
+                            if (packaging) {
+                                sh """
+                                    ansible -i /jenkins/ansible/inventory cargo -m shell -a "bash /root/package.sh package ${RELEASE_VERSION} ${CARGO_DIR}"
+                                    ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/install.sh dest=${CARGO_DIR}/compass-component-${RELEASE_VERSION}/ mode=0755"
+                                    ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/config.sample dest=${CARGO_DIR}/compass-component-${RELEASE_VERSION}/ mode=0644"
+                                    ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=release.tar.gz dest=${CARGO_DIR}/compass-component-${RELEASE_VERSION}/image/ mode=0644"
+                                """
+                            } else {
+                                sh """
+                                    echo "got missed images"
+                                    ansible -i /jenkins/ansible/inventory cargo -m shell -a 'echo -e "missed_images: \n`cat ${SYNC_DIR}/images-lists/miss_image.txt`"
+                                    exit 1'
+                                """
+                            }
+                        }
+                        stage("Cadm"){
+                            docker.withRegistry("https://${DOCKER_REGISTRY}", "${DOCKER_REGISTRY_CREDENTIAL_ID}") {
+                                def cadm = cadm()
+                                if (cadm) {
+                                    withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIAL_ID}", passwordVariable: "GITHUB_TOKEN", usernameVariable: "GITHUB_USERNAME")]) {
+                                    sh """
+                                        git clone https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/caicloud/compass-admin
+                                        cd compass-admin && make build-linux
+                                        ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=bin/cadm dest=${CARGO_DIR}/compass-component-${RELEASE_VERSION}/ mode=0755"
+                                    """
+                                    }
+                                } else {
+                                    sh """
+                                        echo "cadm exists, will copy"
+                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "cp /root/cadm ${CARGO_DIR}/compass-component-${RELEASE_VERSION}/"
+                                    """
+                                }
+                            }
+                        }
+                        stage("Upload") {
+                            def upload = upload()
+                            if (upload) {
+                                sh """
+                                    ansible -i /jenkins/ansible/inventory cargo -m shell -a "bash /root/package.sh upload ${RELEASE_VERSION} ${CARGO_DIR} ${SYNC_DIR} ${OSS_PATH}"
+                                """
+                            } else {
+                                echo 'Why choose no?'
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -174,6 +270,38 @@ def whetherPRMerged() {
         def merged = input message: 'Whether PR merged?', 
                     parameters: [booleanParam(defaultValue: true, description: 'Whether PR merged?', name: 'Merged')]
         return merged
+    } catch(e) {
+        return false
+    }
+}
+
+def packaging() {
+    try {
+        sh """
+            ansible -i /jenkins/ansible/inventory cargo -m shell -a "bash /root/package.sh judge ${RELEASE_VERSION} ${CARGO_DIR} ${SYNC_DIR}"
+        """
+        return true
+    } catch(e) {
+        return false
+    }
+}
+
+def cadm() {
+    try {
+        sh """
+            ansible -i /jenkins/ansible/inventory cargo -m shell -a "test -e /root/cadm"
+        """
+        return false
+    } catch(e) {
+        return true
+    }
+}
+
+def upload() {
+    try {
+        def upload = input message: 'Ready to start uploading?',
+                    parameters: [booleanParam(defaultValue: true, description: 'Ready to start uploading?', name: 'upload')]
+        return upload
     } catch(e) {
         return false
     }
