@@ -32,6 +32,8 @@ spec:
       description: Console web
     - name: console-web-redis
       description: Redis for console web
+    - name: web-gateway-proxy
+      description: Web gateway proxy
   - name: user-web
     description: User web
     required: true

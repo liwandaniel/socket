@@ -55,6 +55,7 @@ spec:
     resourcePaths:
       - release/console-web.yaml
       - release/console-web-redis.yaml
+      - release/web-gateway-proxy.yaml
     targetPath: console
   - repositoryFullName: caicloud/user-web
     resourcePaths:
