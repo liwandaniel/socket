@@ -3,20 +3,25 @@
 def DOCKER_REGISTRY = "${params.docker_registry}"
 def DOCKER_PROJECT = "${params.docker_project}"
 def DOCKER_REGISTRY_CREDENTIAL_ID = "${params.docker_credential_id}"
-def RELEASE_VERSION = "${params.release_version}"
 def BASE_BRANCH = "${params.base_branch}"
 def GIT_EMAIL = "${params.git_email}"
 def GITHUB_CREDENTIAL_ID = "${params.github_credential_id}"
-def CARGO_DIR = "${params.cargo_dir}"
-def SYNC_DIR = "${params.sync_dir}"
-def OSS_PATH = "${params.oss_path}"
 def RELEASE_CARGO_LOGIN = "${params.release_cargo_login}"
 def SOURCE_REGISTRY = "${params.source_registry}"
-def TARGET_REGISTRY = "${params.target_registry}"
-def RELEASE_REGISTRY = "${params.release_registry}"
+def SOURCE_PROJECT = "${params.source_project}"
 def SOURCE_REGISTRY_CREDENTIAL_ID = "${params.source_registry_credential_id}"
+def TARGET_REGISTRY = "${params.target_registry}"
+def TARGET_PROJECT = "${params.target_project}"
 def TARGET_REGISTRY_CREDENTIAL_ID = "${params.target_registry_credential_id}"
+def RELEASE_REGISTRY = "${params.release_registry}"
 def RELEASE_REGISTRY_CREDENTIAL_ID = "${params.release_registry_credential_id}"
+def RELEASE_VERSION = "${params.release_version}"
+def CARGO_DIR = "${params.cargo_dir}"
+def SYNC_DIR = "${params.sync_dir}"
+def RELEASE_OSS_PATH = "${params.release_oss_path}"
+def HOTFIX_DIR = "${params.hotfix_dir}"
+def HOTFIX_YAML_PATH = "${params.hotfix_yaml_path}"
+def HOTFIX_OSS_PATH = "${params.hotfix_oss_path}"
 
 // docker registry prefix
 def DOCKER_REGISTRY_PREFIX = "cargo.caicloudprivatetest.com/caicloud"
@@ -37,8 +42,6 @@ spec:
   - env:
     - name: DOCKER_HOST
       value: unix:///home/jenkins/docker.sock
-    - name: RELEASE_VERSION
-      value: "${RELEASE_VERSION}"
     - name: REGISTRY
       value: "${DOCKER_REGISTRY}"
     - name: PROJECT
@@ -47,18 +50,30 @@ spec:
       value: "${BASE_BRANCH}"
     - name: GIT_EMAIL
       value: "${GIT_EMAIL}"
+    - name: SOURCE_REGISTRY
+      value: "${SOURCE_REGISTRY}"
+    - name: SOURCE_PROJECT
+      value: "${SOURCE_PROJECT}"
+    - name: TARGET_REGISTRY
+      value: "${TARGET_REGISTRY}"
+    - name: TARGET_PROJECT
+      value: "${TARGET_PROJECT}"
+    - name: RELEASE_REGISTRY
+      value: "${RELEASE_REGISTRY}"
+    - name: RELEASE_VERSION
+      value: "${RELEASE_VERSION}"
     - name: CARGO_DIR
       value: "${CARGO_DIR}"
     - name: SYNC_DIR
       value: "${SYNC_DIR}"
-    - name: OSS_PATH
-      value: "${OSS_PATH}"
-    - name: SOURCE_REGISTRY
-      value: "${SOURCE_REGISTRY}"
-    - name: TARGET_REGISTRY
-      value: "${TARGET_REGISTRY}"
-    - name: RELEASE_REGISTRY
-      value: "${RELEASE_REGISTRY}"
+    - name: RELEASE_OSS_PATH
+      value: "${RELEASE_OSS_PATH}"
+    - name: HOTFIX_DIR
+      value: "${HOTFIX_DIR}"
+    - name: HOTFIX_YAML_PATH
+      value: "${HOTFIX_YAML_PATH}"
+    - name: HOTFIX_OSS_PATH
+      value: "${HOTFIX_OSS_PATH}"
     name: golang-docker
     image: "${DOCKER_REGISTRY_PREFIX}/golang-jenkins:v0.0.1"
     imagePullPolicy: Always
@@ -89,10 +104,9 @@ spec:
                         make lint
                     """
                 }
-
-                stage("Make Release") {
+                if (params.release) {
+                    stage("Make Release") {
                     // bool params defined in Jenkins pipeline setting.
-                    if (params.release) {
                         withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIAL_ID}", passwordVariable: "GITHUB_TOKEN", usernameVariable: "GITHUB_USERNAME")]) {
                             sh """
                                 # Prepare GitHub OAuth Token
@@ -252,11 +266,46 @@ spec:
                             def upload = upload()
                             if (upload) {
                                 sh """
-                                    ansible -i /jenkins/ansible/inventory cargo -m shell -a "bash /root/package.sh upload ${RELEASE_VERSION} ${CARGO_DIR} ${SYNC_DIR} ${OSS_PATH}"
+                                    ansible -i /jenkins/ansible/inventory cargo -m shell -a "bash /root/package.sh upload ${RELEASE_VERSION} ${CARGO_DIR} ${SYNC_DIR} ${RELEASE_OSS_PATH}"
                                 """
                             } else {
                                 echo 'Why choose no?'
                             }
+                        }
+                    }
+                }
+                if (params.hotfix) {
+                    stage("Make Hotfix") {
+                    // bool params defined in Jenkins pipeline setting.
+                        withCredentials([usernamePassword(credentialsId: "${RELEASE_CARGO_LOGIN}", passwordVariable: "RELEASE_CARGO_PASSWORD", usernameVariable: "RELEASE_CARGO_IP")]) {
+                            withCredentials([usernamePassword(credentialsId: "${SOURCE_REGISTRY_CREDENTIAL_ID}", passwordVariable: "SOURCE_REGISTRY_PASSWORD", usernameVariable: "SOURCE_REGISTRY_USER")]) {
+                                withCredentials([usernamePassword(credentialsId: "${TARGET_REGISTRY_CREDENTIAL_ID}", passwordVariable: "TARGET_REGISTRY_PASSWORD", usernameVariable: "TARGET_REGISTRY_USER")]) {
+                                    sh """
+                                        cp /jenkins/ansible/inventory.sample /jenkins/ansible/inventory
+                                        sed -i 's/CARGO_IP/${RELEASE_CARGO_IP}/g' /jenkins/ansible/inventory
+                                        sed -i 's/CARGO_PASSWORD/${RELEASE_CARGO_PASSWORD}/g' /jenkins/ansible/inventory
+                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "docker login ${SOURCE_REGISTRY} -u ${SOURCE_REGISTRY_USER} -p ${SOURCE_REGISTRY_PASSWORD}"
+                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "docker login ${TARGET_REGISTRY} -u ${TARGET_REGISTRY_USER} -p ${TARGET_REGISTRY_PASSWORD}"
+                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "rm -rf ${HOTFIX_DIR} && mkdir -p ${HOTFIX_DIR}"
+                                        ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=release-hotfixes dest=${HOTFIX_DIR} mode=0755"
+                                        ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/auto_hotfix/hotfix.sh dest=${HOTFIX_DIR} mode=0755"
+                                        ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/auto_hotfix/env.sh dest=${HOTFIX_DIR} mode=0755"
+                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/source_registry/${SOURCE_REGISTRY}/g;s/source_project/${SOURCE_PROJECT}/g' ${HOTFIX_DIR}/env.sh"
+                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/target_registry/${TARGET_REGISTRY}/g;s/target_project/${TARGET_PROJECT}/g' ${HOTFIX_DIR}/env.sh"
+                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "cd ${HOTFIX_DIR} && bash hotfix.sh hotfix release-hotfixes/${HOTFIX_YAML_PATH}"
+                                    """
+                                }
+                            }
+                        }
+                    }
+                    stage("Upload") {
+                        def upload = upload()
+                        if (upload) {
+                            sh """
+                                ansible -i /jenkins/ansible/inventory cargo -m shell -a "cd ${HOTFIX_DIR} && bash ${HOTFIX_DIR}/hotfix.sh upload ${HOTFIX_OSS_PATH}"
+                            """
+                        } else {
+                            echo 'Why choose no?'
                         }
                     }
                 }

@@ -124,22 +124,24 @@ docker login harbor.caicloud.xyz -u admin -p $HARBOR_PASSWORD
 docker login cargo-infra.caicloud.xyz -u admin -p $CARGO_PASSWORD
 ```
 
+需要配置 [env.sh](../hack/auto_hotfix/env.sh) 里面的对应参数
+
 Step 3，执行脚本:
 
 确认参数
 
-1. `[HOTFIX_YAML_PATH]`: hotfix yaml 的路径，例如 `./release-hotfixes/2.7.1/20180905/`
-2. `[UPLOAD_OSS_PATH]`: 上传 oss 的路径， 只需要给出上传至哪个版本的目录下即可，例如 `compass-v2.7.1/` --> `oss://infra-release/platform/compass-v2.7.1/hotfixes/20180905/compass-hotfixes-2.7.1-20181015-logging-admin-v2.1.4.tar.gz`
+1. `[UPLOAD_OSS_PATH]`: 上传 oss 的路径， 只需要给出上传至哪个版本的目录下即可，例如 `compass-v2.7.x/` --> `oss://infra-release/platform/compass-v2.7.x/hotfixes/2018xxxx/...`
+2. `[HOTFIX_YAML_PATH]`: hotfix yaml 的路径，例如 `./release-hotfixes/2.7.1/20180907/`
 
 ```bash
-./hack/hotfix_scripts/sync_hotfix_images.sh ./release-hotfixes/2.7.1/20180905/ compass-v2.7.2/
+./hack/auto_hotfix/hotfix.sh  compass-v2.7.x/ ./release-hotfixes/2.7.x/2018xxxx/
 ```
 
 确认上传完成后，需给出以下指令：
 
 ```
 packages uploaded to
-oss://infra-release/platform/compass-v2.7.0/hotfixes/compass-hotfixes-<desc>-<addon-name>-<VERSION>.tar.gz
+oss://infra-release/platform/compass-v2.7.x/hotfixes/compass-hotfixes-<desc>-<addon-name>-<VERSION>.tar.gz
 ...
 /queue done-package-uploaded
 ```
