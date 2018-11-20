@@ -55,7 +55,7 @@ compass-hotfixes-<desc>-<addon-name-x>-<VERSION>.tar.gz
   * `bugxxx` 表示这是一项紧急（P0）问题修复交付的热升级，必须有对应的 `caicloud/prod-issue` 项目。例如 `bug227` 指交付 https://github.com/caicloud/prod-issue/issues/227 的修改
 * 一个安装包热修复一个 addon
 * 大多数情况下一个镜像，可能有多个
-* yaml 内容和组织方式，符合 [pangolin addons](https://github.com/caicloud/pangolin/tree/master/addons) 规范
+* yaml 内容和组织方式，符合 [product-release addons](https://github.com/caicloud/product-release/tree/master/addons) 规范
 
 ### 发布流程
 
@@ -73,7 +73,7 @@ PM 在 platform 发起 [hotfix issue](https://github.com/caicloud/platform/issue
 
 **使用目录 `release-hotfixes`，由工程师按以下流程发起 pull request。**
 
-[样例 pull request: #24](https://github.com/caicloud/compass-release/pull/24)
+[样例 pull request: #217](https://github.com/caicloud/product-release/pull/217)
 
 ```
 **Release note**:
@@ -83,8 +83,9 @@ PM 在 platform 发起 [hotfix issue](https://github.com/caicloud/platform/issue
 ```
 * 明确该 hotfix 针对的 Compass 版本，从本项目中该版本对应的 tag 中获得该组件的 values.yaml
 * values.yaml 的 `_metedata.version` 按照 hotfix 组件的镜像版本修改
-  * 例如更新 `console-web:v3.1.55`, `_metedata.version` 则需要改为`v3.1.55`
-* 仅修改 `release-plugins/v2.7.0/<desc>-<addon-name>-<VERSION>/<namespace>/<addon-group-name>/<addon-name>/values.yaml`
+  * 例如更新 `console-web:v3.3.2`, `_metedata.version` 则需要改为`v3.3.2`
+* 创建文件 `release-hotfixes/<compass-version>/<hotfix-date>/<desc>-<addon-name>-<VERSION>-<fix or feat>-<issue-no>/<addon-group-name>/<addon-name>.yaml`
+  * 例如 `release-hotfixes/2.7.2/20181123/compass-hotfixes-console-web-v3.3.2-fix-211/console/console-web.yaml`, 具体的 addon-group-name 请查看目录 [addons](../addons)
   * 大部分时间仅修改 `_config.controllers[0].containers[0].image`, 格式为 `[[ registry_release ]]/<addon-component>:<VERSION>`
   * 也有可能修改 `controllers[x]` 下的其他配置字段
 * pr 除了 `/cc @plugin-owner` 之外需要：
@@ -112,6 +113,8 @@ platform-release 小组需查看 `label:queue/working-image-pushed label:kind/re
 pull requests，待确认 pull requests 之后，将 pull requests merge，开始打包上传
 
 #### 打包上传
+
+自动化打包参考 [自动化打包发布](./auto_package.md)
 
 Step 1, 配置 oss 上传的工具，确保 `~` 目录，即 `/root` 下配置了正确的上传工具
 
@@ -165,7 +168,7 @@ oss://infra-release/platform/compass-v2.7.x/hotfixes/compass-hotfixes-<desc>-<ad
 
 ### 安装流程
 
-参考[部署手册](https://docs.google.com/document/d/1BrLNUsbSpDM_v4Owv97fLCnG_ccIA2eULu8_Sx80Eyc/edit#heading=h.tn6y7bkv17bu)。
+参考[部署手册](https://docs.google.com/document/d/1hnEdqaDRbHsfLYf89kv_SEv0-RXCes4BF6oZU4ObeMY/edit#heading=h.tn6y7bkv17bu)。
 
 ## 产品组特殊补丁安装包
 
