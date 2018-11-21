@@ -54,38 +54,40 @@ fi
 function makeHotfix(){
     # if the path end with .yaml, start parsing the yaml and saving image
     if [ "${1##*.}" = "yaml" ]; then
-    echo -e "$GREEN_COL ########## handling ${1} ##########$NORMAL_COL"
-    images=$( cat "${1}" | grep -e "image:.*" | grep -o "/.*" | sed $'s/\'//g' | sed $'s/\///g')
-    for image in ${images[@]}
-    do
-        FULL_IMAGE="${SOURCE_REGISTRY}/${SOURCE_PROJECT}/${image}"
-        # pull images
-        echo -e "$GREEN_COL pulling image ${FULL_IMAGE} $NORMAL_COL"
-        docker pull ${FULL_IMAGE}
-        NEW_IMAGE="${TARGET_REGISTRY}/${TARGET_PROJECT}/${image}"
-        echo ${NEW_IMAGE}
-        docker tag ${FULL_IMAGE} ${NEW_IMAGE}
-        docker push ${NEW_IMAGE}
-        if [[ $? != 0 ]]; then
-            echo -e "$RED_COL Push image ${NEW_IMAGE} error... $NORMAL_COL"
-            echo "${NEW_IMAGE}" >> miss_push_image.txt
-            exit 1
-        else
-            # save images and yaml
-            echo -e "$GREEN_COL ${NEW_IMAGE} successfully pushed $NORMAL_COL"
-            IMAGE_NAME=`echo $image | cut -d \: -f 1`
-            IMAGE_TAG=`echo $image | cut -d \: -f 2`
-            IMAGE_SUFFIX="-image.tar.gz"
-            FULL_NAME="compass-hotfixes-"$COMPASS_VERSION"-"`date +%Y%m%d`"-"$IMAGE_NAME"-"$IMAGE_TAG
-            IMAGE_NAME="${FULL_NAME}${IMAGE_SUFFIX}"
-            echo -e "$GREEN_COL saving image to file ${IMAGE_NAME}...... $NORMAL_COL"
-            # make new dir in TARGET_PATH to save image and yaml
-            mkdir "${TARGET_PATH}/${FULL_NAME}"
-            docker save ${NEW_IMAGE} -o "${TARGET_PATH}/${FULL_NAME}/${IMAGE_NAME}"
-            cp "${1}" "${TARGET_PATH}/${FULL_NAME}"
-            cd ${TARGET_PATH} && tar cvf "${FULL_NAME}.tar.gz" "${FULL_NAME}" && rm -rf ${FULL_NAME}
-            cd -
-        fi
+        echo -e "$GREEN_COL ########## handling ${1} ##########$NORMAL_COL"
+        # make new dir in TARGET_PATH to save image and yaml
+        ADDON_NAME=`cat "${1}" | grep -e "name:.*" | awk NR==1 | awk -F': ' '{print $2}'`
+        HOTFIX_FULL_NAME="compass-hotfixes-"$COMPASS_VERSION"-"`date +%Y%m%d`"-"$ADDON_NAME
+        mkdir "${TARGET_PATH}/${HOTFIX_FULL_NAME}"
+        cp "${1}" "${TARGET_PATH}/${HOTFIX_FULL_NAME}"
+        # get all images from yaml
+        images=$( cat "${1}" | grep -e "\[\[ registry_release \]\].*" | grep -o "/.*" | sed $'s/\'//g' | sed $'s/\///g')
+        for image in ${images[@]}
+        do
+            FULL_IMAGE="${SOURCE_REGISTRY}/${SOURCE_PROJECT}/${image}"
+            # pull images
+            echo -e "$GREEN_COL pulling image ${FULL_IMAGE} $NORMAL_COL"
+            docker pull ${FULL_IMAGE}
+            NEW_IMAGE="${TARGET_REGISTRY}/${TARGET_PROJECT}/${image}"
+            echo ${NEW_IMAGE}
+            docker tag ${FULL_IMAGE} ${NEW_IMAGE}
+            docker push ${NEW_IMAGE}
+            if [[ $? != 0 ]]; then
+                echo -e "$RED_COL Push image ${NEW_IMAGE} error... $NORMAL_COL"
+                echo "${NEW_IMAGE}" >> miss_push_image.txt
+                exit 1
+            else
+                # save images
+                echo -e "$GREEN_COL ${NEW_IMAGE} successfully pushed $NORMAL_COL"
+                IMAGE_NAME=`echo $image | cut -d \: -f 1`
+                IMAGE_TAG=`echo $image | cut -d \: -f 2`
+                FULL_NAME="compass-hotfixes-"$COMPASS_VERSION"-"`date +%Y%m%d`"-"$IMAGE_NAME"-"$IMAGE_TAG"-image.tar.gz"
+                echo -e "$GREEN_COL saving image to file ${FULL_NAME}...... $NORMAL_COL"
+                docker save ${NEW_IMAGE} -o "${TARGET_PATH}/${HOTFIX_FULL_NAME}/${FULL_NAME}"
+            fi
+    cd ${TARGET_PATH} && tar cvf "${HOTFIX_FULL_NAME}.tar.gz" "${HOTFIX_FULL_NAME}"
+    rm -rf "${HOTFIX_FULL_NAME}"
+    cd -
     done
     elif [ -d $1 ]
     then
