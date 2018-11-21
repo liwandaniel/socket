@@ -3,14 +3,14 @@ metadata:
   alias: GPU 管理插件
 spec:
   class: gpu-manager
-  version: v0.1.3
-  compassRequirement: ">=v2.7.1"
+  version: v0.1.4
+  compassRequirement: ">=v2.7.2"
   description: GPU 管理插件
   note: GPU 管理插件
   author: caicloud.io
   service:
     port: 9999
-    image: cargo-infra.caicloud.xyz/devops_release/compass-plugins-gpu-manager:v0.1.3-0de04b60
+    image: cargo-infra.caicloud.xyz/devops_release/compass-plugins-gpu-manager:v0.1.4
     configs:
       envs:
       - name: SERVER_GPU_MONITORING_ADMIN_CONN_TIMEOUT
