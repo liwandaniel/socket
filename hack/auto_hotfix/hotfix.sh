@@ -86,7 +86,6 @@ function makeHotfix(){
                 docker save ${NEW_IMAGE} -o "${TARGET_PATH}/${HOTFIX_FULL_NAME}/${FULL_NAME}"
             fi
     cd ${TARGET_PATH} && tar cvf "${HOTFIX_FULL_NAME}.tar.gz" "${HOTFIX_FULL_NAME}"
-    rm -rf "${HOTFIX_FULL_NAME}"
     cd -
     done
     elif [ -d $1 ]
@@ -137,10 +136,14 @@ case $CHOICE in
     else
         for file in `ls ${TARGET_PATH}`
         do
-        FULL_UPLOAD_PATH="oss://infra-release/platform/${UPLOAD_OSS_PATH}/hotfixes/`date +%Y%m%d`/${file}"
-        echo -e "$GREEN_COL uploading ${file} to ${FULL_UPLOAD_PATH}...... $NORMAL_COL"
-        # upload to oss, need to set configuration on "~" path
-        ~/ossutil cp -ru "${TARGET_PATH}/${file}" ${FULL_UPLOAD_PATH}
+            if [ "${file##*.}" = "gz" ] || [ "${file##*.}" = "md"  ]; then
+                FULL_UPLOAD_PATH="oss://infra-release/platform/${UPLOAD_OSS_PATH}/hotfixes/`date +%Y%m%d`/${file}"
+                echo -e "$GREEN_COL uploading ${file} to ${FULL_UPLOAD_PATH}...... $NORMAL_COL"
+                # upload to oss, need to set configuration on "~" path
+                ~/ossutil cp -ru "${TARGET_PATH}/${file}" ${FULL_UPLOAD_PATH}
+            else
+                rm -rf "${TARGET_PATH}/${file}"
+            fi
         done
     fi
     ;;
