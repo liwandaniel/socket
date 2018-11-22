@@ -5,6 +5,8 @@ metadata:
 data:
   # 配置单租户模式还是多租户模式，默认 enabled 为多租户，disabled 单租户
   tenantMode: "{{ tenantMode }}"
+  domainEndpoint: ""
+  ipEndpoint: "http://{{ systemEndpoint }}:6060"
   oidcIssuer: "http://{{ systemEndpoint }}:6060/sso"
   compassWebEndpoint: "http://{{ systemEndpoint }}:6060"
   userwebServer: "http://{{ systemEndpoint }}:6060/userweb"
