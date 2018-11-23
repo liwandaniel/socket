@@ -73,6 +73,8 @@ PM 在 platform 发起 [hotfix issue](https://github.com/caicloud/platform/issue
 
 **使用目录 `release-hotfixes`，由工程师按以下流程发起 pull request。**
 
+**compass 产品线 master 分支使用目录 `release-hotfixes`, oem 分支使用目录 `oem-hotfiexs`**
+
 [样例 pull request: #217](https://github.com/caicloud/product-release/pull/217)
 
 ```
