@@ -276,7 +276,12 @@ spec:
                 }
                 if (params.hotfix) {
                     stage("Make Hotfix") {
-                    // bool params defined in Jenkins pipeline setting.
+                        if (params.oem-hotfix) {
+                            HOTFIX_YAML_DIR = "oem-hotfixes"
+                        } else {
+                            HOTFIX_YAML_DIR = "release-hotfixes"
+                        }
+                        // bool params defined in Jenkins pipeline setting.
                         withCredentials([usernamePassword(credentialsId: "${RELEASE_CARGO_LOGIN}", passwordVariable: "RELEASE_CARGO_PASSWORD", usernameVariable: "RELEASE_CARGO_IP")]) {
                             withCredentials([usernamePassword(credentialsId: "${SOURCE_REGISTRY_CREDENTIAL_ID}", passwordVariable: "SOURCE_REGISTRY_PASSWORD", usernameVariable: "SOURCE_REGISTRY_USER")]) {
                                 withCredentials([usernamePassword(credentialsId: "${TARGET_REGISTRY_CREDENTIAL_ID}", passwordVariable: "TARGET_REGISTRY_PASSWORD", usernameVariable: "TARGET_REGISTRY_USER")]) {
@@ -287,12 +292,12 @@ spec:
                                         ansible -i /jenkins/ansible/inventory cargo -m shell -a "docker login ${SOURCE_REGISTRY} -u ${SOURCE_REGISTRY_USER} -p ${SOURCE_REGISTRY_PASSWORD}"
                                         ansible -i /jenkins/ansible/inventory cargo -m shell -a "docker login ${TARGET_REGISTRY} -u ${TARGET_REGISTRY_USER} -p ${TARGET_REGISTRY_PASSWORD}"
                                         ansible -i /jenkins/ansible/inventory cargo -m shell -a "rm -rf ${HOTFIX_DIR} && mkdir -p ${HOTFIX_DIR}"
-                                        ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=release-hotfixes dest=${HOTFIX_DIR} mode=0755"
+                                        ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=${HOTFIX_YAML_DIR} dest=${HOTFIX_DIR} mode=0755"
                                         ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/auto_hotfix/hotfix.sh dest=${HOTFIX_DIR} mode=0755"
                                         ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/auto_hotfix/env.sh dest=${HOTFIX_DIR} mode=0755"
                                         ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/source_registry/${SOURCE_REGISTRY}/g;s/source_project/${SOURCE_PROJECT}/g' ${HOTFIX_DIR}/env.sh"
                                         ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/target_registry/${TARGET_REGISTRY}/g;s/target_project/${TARGET_PROJECT}/g' ${HOTFIX_DIR}/env.sh"
-                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "cd ${HOTFIX_DIR} && bash hotfix.sh hotfix release-hotfixes/${HOTFIX_YAML_PATH}"
+                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "cd ${HOTFIX_DIR} && bash hotfix.sh hotfix ${HOTFIX_YAML_DIR}/${HOTFIX_YAML_PATH}"
                                     """
                                 }
                             }
