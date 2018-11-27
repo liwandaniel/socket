@@ -36,7 +36,11 @@ function usage {
 CHOICE=$1
 CHOICE=${CHOICE:=hotfix}
 
-HOTFIX_LISTS_SUFFIX="compass-hotfixes"
+# get product name of current hotfix, default is compass
+PRODUCT=$3
+PRODUCT=${PRODUCT:=compass}
+
+HOTFIX_LISTS_SUFFIX="${PRODUCT}-hotfixes"
 TARGET_PATH="./hotfixes"
 
 GREEN_COL="\\033[32;1m"         # green color
@@ -57,7 +61,7 @@ function makeHotfix(){
         echo -e "$GREEN_COL ########## handling ${1} ##########$NORMAL_COL"
         # make new dir in TARGET_PATH to save image and yaml
         ADDON_NAME=`cat "${1}" | grep -e "name:.*" | awk NR==1 | awk -F': ' '{print $2}'`
-        HOTFIX_FULL_NAME="compass-hotfixes-"$COMPASS_VERSION"-"`date +%Y%m%d`"-"$ADDON_NAME
+        HOTFIX_FULL_NAME="${HOTFIX_LISTS_SUFFIX}-${PRODUCT_VERSION}-"`date +%Y%m%d`"-${ADDON_NAME}"
         mkdir "${TARGET_PATH}/${HOTFIX_FULL_NAME}"
         cp "${1}" "${TARGET_PATH}/${HOTFIX_FULL_NAME}"
         # get all images from yaml
@@ -81,7 +85,7 @@ function makeHotfix(){
                 echo -e "$GREEN_COL ${NEW_IMAGE} successfully pushed $NORMAL_COL"
                 IMAGE_NAME=`echo $image | cut -d \: -f 1`
                 IMAGE_TAG=`echo $image | cut -d \: -f 2`
-                FULL_NAME="compass-hotfixes-"$COMPASS_VERSION"-"`date +%Y%m%d`"-"$IMAGE_NAME"-"$IMAGE_TAG"-image.tar.gz"
+                FULL_NAME="${HOTFIX_LISTS_SUFFIX}-${PRODUCT_VERSION}-"`date +%Y%m%d`"-${IMAGE_NAME}-${IMAGE_TAG}-image.tar.gz"
                 echo -e "$GREEN_COL saving image to file ${FULL_NAME}...... $NORMAL_COL"
                 docker save ${NEW_IMAGE} -o "${TARGET_PATH}/${HOTFIX_FULL_NAME}/${FULL_NAME}"
             fi
@@ -113,7 +117,7 @@ case $CHOICE in
     # delete the "/" end of path
     HOTFIX_YAML_PATH=`echo ${HOTFIX_YAML_PATH%*/}`
     # get compass version by parsing the path
-    COMPASS_VERSION=`echo $HOTFIX_YAML_PATH | grep -o -e "release-hotfixes/.*/" | awk -F '/' '{print$2}'`
+    PRODUCT_VERSION=`echo $HOTFIX_YAML_PATH | grep -o -e "release-hotfixes/.*/" | awk -F '/' '{print$2}'`
     # source env.sh
     if [ -f ./env.sh ];then
     source ./env.sh

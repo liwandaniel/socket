@@ -19,6 +19,7 @@ def RELEASE_VERSION = "${params.release_version}"
 def CARGO_DIR = "${params.cargo_dir}"
 def SYNC_DIR = "${params.sync_dir}"
 def RELEASE_OSS_PATH = "${params.release_oss_path}"
+def PRODUCT = "${params.product}"
 def HOTFIX_DIR = "${params.hotfix_dir}"
 def HOTFIX_YAML_PATH = "${params.hotfix_yaml_path}"
 def HOTFIX_OSS_PATH = "${params.hotfix_oss_path}"
@@ -68,6 +69,8 @@ spec:
       value: "${SYNC_DIR}"
     - name: RELEASE_OSS_PATH
       value: "${RELEASE_OSS_PATH}"
+    - name: PRODUCT
+      value: "${PRODUCT}"
     - name: HOTFIX_DIR
       value: "${HOTFIX_DIR}"
     - name: HOTFIX_YAML_PATH
@@ -297,7 +300,7 @@ spec:
                                         ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/auto_hotfix/env.sh dest=${HOTFIX_DIR} mode=0755"
                                         ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/source_registry/${SOURCE_REGISTRY}/g;s/source_project/${SOURCE_PROJECT}/g' ${HOTFIX_DIR}/env.sh"
                                         ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/target_registry/${TARGET_REGISTRY}/g;s/target_project/${TARGET_PROJECT}/g' ${HOTFIX_DIR}/env.sh"
-                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "cd ${HOTFIX_DIR} && bash hotfix.sh hotfix ${HOTFIX_YAML_DIR}/${HOTFIX_YAML_PATH}"
+                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "cd ${HOTFIX_DIR} && bash hotfix.sh hotfix ${HOTFIX_YAML_DIR}/${HOTFIX_YAML_PATH} ${PRODUCT}"
                                     """
                                 }
                             }
@@ -307,7 +310,7 @@ spec:
                         def upload = upload()
                         if (upload) {
                             sh """
-                                ansible -i /jenkins/ansible/inventory cargo -m shell -a "cd ${HOTFIX_DIR} && bash ${HOTFIX_DIR}/hotfix.sh upload ${HOTFIX_OSS_PATH}"
+                                ansible -i /jenkins/ansible/inventory cargo -m shell -a "cd ${HOTFIX_DIR} && bash ${HOTFIX_DIR}/hotfix.sh upload ${HOTFIX_OSS_PATH} ${PRODUCT}"
                             """
                         } else {
                             echo 'Why choose no?'

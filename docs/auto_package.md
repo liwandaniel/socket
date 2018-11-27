@@ -115,6 +115,7 @@ make build-image JENKINS_VERSION=v0.0.x
     - 最终拼接成完整的路径为 `oss://infra-release/platform/compass-v2.7.3-rc/01/compass-component-v2.7.3-rc01.tzr.gz`
 - `hotfix`: 选择是否制作 hotfix，默认为 false
 - `oem-hotfix`: 选择 hotfix 是否针对 oem 分支，oem 和 标准产品的 hotfix 保存路径不一样，需要区别开，默认为 false
+- `product`: 填写 hotfix 对应的产品线名称，如果是 oem 的 hotfix，需要填写对应的产品线，例如 clever，默认为 compass
 - `hotfix_dir`: 存放 hotfix 脚本和 hotfix yaml 的路径，如非必要保持默认即可
 - `hotfix_yaml_path`: 指定 `product-release` repo 中 [release-hotfixes](../release-hotfixes) 目录下的 hotfix 路径，例如 `2.7.1/20180907`
 - `hotfix_oss_path`: 上传 oss 路径，例如 `compass-v2.7.3` 
@@ -323,9 +324,10 @@ sed -i 's/target_registry/${TARGET_REGISTRY}/g;s/target_project/${TARGET_PROJECT
 指定目录下需要打包的路径，根据对应版本，发布日期
 
 传递参数 `HOTFIX_YAML_PATH`，读取 hotfix charts 的路径
+传递参数 `PRODUCT`，针对产品线的名称，例如 `compass` 或者 `clever`
 
 ```bash
-bash hotfix.sh hotfix /root/release-hotfixes/2.7.x/2018xxxx
+bash hotfix.sh hotfix /root/release-hotfixes/2.7.x/2018xxxx compass
 ```
 
 最终会在脚本当前的目录下生成 `./hotfixes` 的目录
@@ -333,9 +335,10 @@ bash hotfix.sh hotfix /root/release-hotfixes/2.7.x/2018xxxx
 #### 上传
 
 传递参数 `UPLOAD_OSS_PATH`，上传 oss 的路径
+传递参数 `PRODUCT`，针对产品线的名称，例如 `compass` 或者 `clever`
 
 ```bash
-bash hotfix.sh upload compass-v2.7.x/ 
+bash hotfix.sh upload compass-v2.7.x/ compass
 ```
 
 待脚本结束，需去 oss 上确认是否上传成功，最终会上传至路径 `oss://infra-release/platform/compass-v2.7.x/hotfixes/2018xxxx/...`
