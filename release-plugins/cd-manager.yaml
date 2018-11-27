@@ -40,5 +40,6 @@ spec:
     sources:
     - "/src/index.js"
     slots:
-    # For multiple tenant mode, use `user.plugin_center`, for single tenant mode, use `system.plugin_center`.
+    # Enable `user.plugin_center` and `system.plugin_center` for both system tenant and user tenant.
     - user.plugin_center
+    - system.plugin_center
