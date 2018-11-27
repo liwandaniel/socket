@@ -117,7 +117,7 @@ case $CHOICE in
     # delete the "/" end of path
     HOTFIX_YAML_PATH=`echo ${HOTFIX_YAML_PATH%*/}`
     # get compass version by parsing the path
-    PRODUCT_VERSION=`echo $HOTFIX_YAML_PATH | grep -o -e "release-hotfixes/.*/" | awk -F '/' '{print$2}'`
+    PRODUCT_VERSION=`echo $HOTFIX_YAML_PATH | grep -o -e "hotfixes/.*/" | awk -F '/' '{print$2}'`
     # source env.sh
     if [ -f ./env.sh ];then
     source ./env.sh
