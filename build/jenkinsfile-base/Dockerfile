@@ -27,7 +27,28 @@ RUN go get github.com/caicloud/rudder/cmd/release-cli && \
     go get github.com/caicloud/pangolin/cmd/amctl
 
 # This results in a single layer image
-# Dockerfile link:
 FROM cargo.caicloudprivatetest.com/caicloud/golang-docker:1.10-17.09
 LABEL maintainer="baomengjiang@caicloud.io"
 COPY --from=build /go/bin /go/bin
+
+RUN apk update && apk add \
+        python \
+        ansible \
+        openssh \
+        sshpass \
+ && rm -rf /var/cache/apk/*
+
+RUN mkdir -p /etc/ansible \
+ && echo 'localhost' > /etc/ansible/hosts \
+ && echo -e """\
+\n\
+Host *\n\
+    StrictHostKeyChecking no\n\
+    UserKnownHostsFile=/dev/null\n\
+""" >> /etc/ssh/ssh_config
+
+ENV WORK_DIR /jenkins
+ENV ANSIBLE_CONFIG /jenkins/ansible/ansible.cfg
+
+WORKDIR $WORK_DIR
+COPY ./ansible $WORK_DIR/ansible

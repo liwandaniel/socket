@@ -3,3 +3,7 @@ token
 release.tar.gz
 hotfixes
 *.txt
+
+# pycharm
+.idea/
+.DS_Store
