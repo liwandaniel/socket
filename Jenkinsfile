@@ -279,7 +279,7 @@ spec:
                 }
                 if (params.hotfix) {
                     stage("Make Hotfix") {
-                        if (params.oem-hotfix) {
+                        if (params.oem_hotfix) {
                             HOTFIX_YAML_DIR = "oem-hotfixes"
                         } else {
                             HOTFIX_YAML_DIR = "release-hotfixes"

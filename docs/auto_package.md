@@ -114,7 +114,7 @@ make build-image JENKINS_VERSION=v0.0.x
 - `release_oss_path`: 上传 oss 路径，例如 `compass-v2.7.3-rc/01` 
     - 最终拼接成完整的路径为 `oss://infra-release/platform/compass-v2.7.3-rc/01/compass-component-v2.7.3-rc01.tzr.gz`
 - `hotfix`: 选择是否制作 hotfix，默认为 false
-- `oem-hotfix`: 选择 hotfix 是否针对 oem 分支，oem 和 标准产品的 hotfix 保存路径不一样，需要区别开，默认为 false
+- `oem_hotfix`: 选择 hotfix 是否针对 oem 分支，oem 和 标准产品的 hotfix 保存路径不一样，需要区别开，默认为 false
 - `product`: 填写 hotfix 对应的产品线名称，如果是 oem 的 hotfix，需要填写对应的产品线，例如 clever，默认为 compass
 - `hotfix_dir`: 存放 hotfix 脚本和 hotfix yaml 的路径，如非必要保持默认即可
 - `hotfix_yaml_path`: 指定 `product-release` repo 中 [release-hotfixes](../release-hotfixes) 目录下的 hotfix 路径，例如 `2.7.1/20180907`
