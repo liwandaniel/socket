@@ -1,0 +1,27 @@
+_config:
+  _metadata:
+    description: kubeflow-admin
+    name: clever-kubeflow-admin
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v1.2.0-beta.2"
+  controllers:
+  - containers:
+    - env:
+      image: '[[ registry_release ]]/kubeflow-admin:v1.2.0-beta.2'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 8080
+        protocol: TCP
+    controller:
+      replica: 1
+    services:
+    - name: kubeflow-admin
+      ports:
+      - port: 8080
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment
+
