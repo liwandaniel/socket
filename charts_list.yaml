@@ -38,7 +38,8 @@ spec:
       - release/cluster-admin.yaml
       - release/cluster-controller.yaml
       - release/cluster-machine.yaml
-      - release/cluster-addon.yaml
+      - release/cluster-reqgap.yaml
+      - release/cluster-scaling.yaml
     targetPath: cluster
   - repositoryFullName: caicloud/config-admin
     resourcePaths:
@@ -127,6 +128,7 @@ spec:
       - release/monitoring-prometheus.yaml
       - release/alerting-manager.yaml
       - release/alerting-notifier.yaml
+      - release/monitoring-addon.yaml
     targetPath: monitoring
   - repositoryFullName: caicloud/exporters
     resourcePaths:

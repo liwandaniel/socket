@@ -67,8 +67,10 @@ spec:
       description: cluster controller
     - name: cluster-machine
       description: cluster machine controller
-    - name: cluster-addon
-      description: cluster addon manager
+    - name: cluster-scaling
+      description: cluster auto scaling group controller
+    - name: cluster-reqgap
+      description: cluster requirement gap controller
   - name: tenant
     description: tenant
     required: true
@@ -185,6 +187,8 @@ spec:
       description: gpu exporter
     - name: exporters-node
       description: node exporter
+    - name: monitoring-addon
+      description: cps/k8s addon checker
   - name: logging
     description: logging
     required: false
