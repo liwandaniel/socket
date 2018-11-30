@@ -149,7 +149,7 @@ spec:
     targetPath: plugin-center
   - repositoryFullName: caicloud/statistician
     resourcePaths:
-      - release/statistician-server.yaml
+      - release/statistician-admin.yaml
     targetPath: statistician
   - repositoryFullName: caicloud/storage-admin
     resourcePaths:

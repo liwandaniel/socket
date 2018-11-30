@@ -87,7 +87,7 @@ spec:
     description: statistician
     required: false
     addons:
-    - name: statistician-server
+    - name: statistician-admin
       description: statistician
   - name: alerting
     description: alerting
