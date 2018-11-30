@@ -12,11 +12,6 @@ spec:
   resourcePaths:
   - release/helm-registry.yaml
   targetPath: app
-- repositoryFullName: caicloud/template-registry
-  tag: ""
-  resourcePaths:
-  - release/template-registry.yaml
-  targetPath: app
 - repositoryFullName: caicloud/canary-release
   tag: v0.3.1
   resourcePaths:
