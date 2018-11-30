@@ -113,8 +113,6 @@ spec:
       description: App management
     - name: helm-registry
       description: Registry for app
-    - name: template-registry
-      description: common Registry 
     - name: canary-release-controller
       description: Controller for canary release
   - name: loadbalancer
