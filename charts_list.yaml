@@ -24,10 +24,6 @@ spec:
     resourcePaths:
       - release/canary-release-controller.yaml
     targetPath: app
-  - repositoryFullName: caicloud/compass-admin
-    resourcePaths:
-      - release/compass-admin.yaml
-    targetPath: compass-admin
   - repositoryFullName: caicloud/charts
   - repositoryFullName: caicloud/cargo-admin
     resourcePaths:

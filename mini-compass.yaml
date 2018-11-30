@@ -123,12 +123,6 @@ spec:
       description: Load balance management
     - name: loadbalancer-controller
       description: Controller for load balancer
-  - name: compass-admin
-    description: compass-admin server
-    required: true
-    addons:
-    - name: compass-admin
-      description: compass-admin server
   - name: kubernetes-admin
     description: kubernetes admin
     required: false
