@@ -17,11 +17,6 @@ spec:
   resourcePaths:
   - release/canary-release-controller.yaml
   targetPath: app
-- repositoryFullName: caicloud/compass-admin
-  tag: v0.0.6
-  resourcePaths:
-  - release/compass-admin.yaml
-  targetPath: compass-admin
 - repositoryFullName: caicloud/charts
   tag: v1.2.15
 - repositoryFullName: caicloud/cargo-admin
