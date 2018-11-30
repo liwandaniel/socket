@@ -1,9 +1,9 @@
 release/app-admin:v0.3.21-hotfix
-release/templates:v1.2.14
+release/templates:v1.2.15
 release/canary-nginx-proxy:v0.3.1
 release/canary-controller:v0.3.1
 release/helm-registry:v0.2.8-experiment
-release/charts:v1.2.14
+release/charts:v1.2.15
 release/auth-provider:v1.0.1-alpha.4
 release/cargo-admin:v0.4.15
 release/cargo-token:v0.4.15
