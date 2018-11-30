@@ -211,4 +211,5 @@ spec:
       description: Logging agent
     - name: logging-hooks
       description: Logging hooks
-
+    - name: logging-ruler
+      description: Logging ruler

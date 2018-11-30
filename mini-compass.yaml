@@ -219,6 +219,8 @@ spec:
       description: Logging agent
     - name: logging-hooks
       description: Logging hooks
+    - name: logging-ruler
+      description: Logging ruler
   extraAddons:
   - name: monitoring-admin
     description: Monitoring management

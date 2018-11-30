@@ -117,6 +117,7 @@ spec:
       - release/logging-eventer.yaml
       - release/logging-fluentd.yaml
       - release/logging-kibana.yaml
+      - release/logging-ruler.yaml
     targetPath: logging
   - repositoryFullName: caicloud/insight-agent
     resourcePaths:
