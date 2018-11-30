@@ -6,13 +6,13 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.4.14"
+    version: "v0.5.0"
   controllers:
   - type: Deployment
     controller:
       replica: 1
     containers:
-    - image: '[[ registry_release ]]/cargo-admin:v0.4.15'
+    - image: '[[ registry_release ]]/cargo-admin:v0.5.0'
       imagePullPolicy: IfNotPresent
       name: admin
       mounts:
@@ -22,13 +22,17 @@ _config:
         path: /platform/etc
       - name: cargo-admin-docker-sock
         path: /var/run/dind
-    - image: '[[ registry_release ]]/cargo-token:v0.4.15'
+      - name: cargo-cert
+        path: /app/certs
+    - image: '[[ registry_release ]]/cargo-token:v0.5.0'
       imagePullPolicy: IfNotPresent
       name: token
       mounts:
       - name: cargo-token-config
         path: /app/etc
-    - image: '[[ registry_release ]]/docker:1.13.1-dind'
+      - name: cargo-cert
+        path: /app/certs
+    - image: '[[ registry_release ]]/docker:1.13.1-dind-certs'
       imagePullPolicy: IfNotPresent
       name: docker
       securityContext:
@@ -41,6 +45,8 @@ _config:
         path: /var/lib/docker
       - name: cargo-admin-docker-sock
         path: /var/run/dind
+      - name: cargo-cert
+        path: /etc/cargo
     services:
     - name: cargo-token
       ports:
@@ -55,6 +61,13 @@ _config:
         targetPort: 8080
       type: ClusterIP
     volumes:
+    - name: cargo-cert
+      source:
+        items:
+        - key: cargo_ca
+          path: cargo.crt
+        target: platform-info
+      type: Config
     - name: cargo-admin-config
       source:
         items:

@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.1"
+    version: "v0.1.2"
   controllers:
   - type: Deployment
     controller:

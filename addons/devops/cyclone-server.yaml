@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: 'v0.7.0-beta.1'
+    version: 'v0.8.0-alpha'
   controllers:
   - containers:
     - command:
@@ -35,7 +35,7 @@ _config:
       - name: CYCLONE_SERVER
         value: 'http://[[ kube_apiserver_endpoint_ip ]]:6008'
       - name: WORKER_IMAGE
-        value: '[[ registry_release ]]/cyclone-worker:v0.7.0-beta.1'
+        value: '[[ registry_release ]]/cyclone-worker:v0.8.0-alpha'
       - name: CLOUD_AUTO_DISCOVERY
         value: 'true'
       - name: LIMIT_MEMORY
@@ -65,7 +65,7 @@ _config:
           type: Config
           name: platform-config
           key: "devopsWebhookURL"
-      image: '[[ registry_release ]]/cyclone-server:v0.7.0-beta.1'
+      image: '[[ registry_release ]]/cyclone-server:v0.8.0-alpha'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: cyclone-data

@@ -1,7 +1,7 @@
 _config:
   _metadata:
-    description: logging-processor
-    name: logging-processor
+    description: logging-ruler
+    name: logging-ruler
     namespace: default
     template:
       type: template.caicloud.io/application
@@ -10,11 +10,15 @@ _config:
   controllers:
   - containers:
     - env:
-      image: '[[ registry_release ]]/auditlog-processor:v2.2.0-alpha.0'
+      - name: MGO_ENDPOINT
+        value: mongodb://mgo-cluster:27017
+      - name: ALERTMANAGERS
+        value: http://alertmanager:9093
+      image: '[[ registry_release ]]/logging-ruler:v2.2.0-alpha.0'
       imagePullPolicy: IfNotPresent
     controller:
       replica: 1
       strategy:
-        surge: 1
-        unavailable: 0
+        surge: 0
+        unavailable: 1
     type: Deployment

@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v3.3.1-alpha.11"
+    version: "v3.4.0-beta.2"
   controllers:
   - containers:
     - env:
@@ -44,7 +44,18 @@ _config:
           name: platform-config
           key: "oidcIssuer"
       - name: ISSUER_PORT
-        value: "6062"
+        value: "6060"
+      - name: COMPASS_PORT
+        value: "6060"
+      - name: CLEVER_PORT
+        value: "6061"
+      - name: USERWEB_PORT
+        value: "6060"
+      - name: ISSUER_PREFIX_URL
+        from:
+          type: Config
+          name: platform-config
+          key: ssoBasePath
       - name: OIDC_CLIENT_ID
         value: compass-web
       - name: OIDC_CLIENT_SECRET
@@ -54,6 +65,13 @@ _config:
           type: Config
           name: platform-config
           key: "consoleBasePath"
+      - name: USERWEB_BASE_PATH
+        from:
+          type: Config
+          name: platform-config
+          key: "userwebBasePath"
+      - name: CLEVER_BASE_PATH
+        value: ''
       - name: COMPASS_SERVER
         from:
           type: Config
@@ -80,7 +98,7 @@ _config:
         value: '[[ platform_release_version ]]'
       - name: PRODUCT_RELEASE_TIME
         value: '[[ platform_release_time ]]'
-      image: '[[ registry_release ]]/console-web:v3.3.1-alpha.11'
+      image: '[[ registry_release ]]/console-web:v3.4.0-beta.2'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 3000
