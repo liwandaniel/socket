@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: am-minion
-        image: [[ registry_release ]]/am_minion:v0.0.7
+        image: [[ registry_release ]]/am_minion:v0.0.8
         imagePullPolicy: IfNotPresent
         env:
         - name: SECRET_KEY
@@ -33,7 +33,7 @@ spec:
           name: data
       initContainers:
       - name: check-master
-        image: [[ registry_release ]]/am_minion:v0.0.7
+        image: [[ registry_release ]]/am_minion:v0.0.8
         command: ["/bin/sh", "-c", "until /pangolin/kubectl get pods | grep am-master | grep Running; do echo waiting for master to be ready; sleep 5; done;"]
       - env:
         - name: OUTPUT_DIR
