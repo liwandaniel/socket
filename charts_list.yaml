@@ -176,3 +176,8 @@ spec:
     resourcePaths:
       - release/auth-provider.yaml
     targetPath: auth-provider
+  - repositoryFullName: caicloud/microservice-admin
+    resourcePaths:
+      - release/microservice-admin.yaml
+      - release/microservice-controller.yaml
+    targetPath: microservice

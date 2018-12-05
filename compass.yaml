@@ -115,6 +115,14 @@ spec:
       description: Registry for app
     - name: canary-release-controller
       description: Controller for canary release
+  - name: microservice
+    description: microservice
+    required: true
+    addons:
+    - name: microservice-admin
+      description: Microservice management
+    - name: microservice-controller
+      description: Controller for microservice task
   - name: loadbalancer
     description: load balancer
     required: true
