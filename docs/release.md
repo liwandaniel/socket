@@ -62,6 +62,23 @@ echo $GITHUB_OAUTH_TOKEN > token
 
 ### Collect & Update tags
 
+**如要添加新的组件，需要以下操作:**
+
+1. 在 [charts_list.yaml](../charts_list.yaml) 文件中添加新的 repo 配置，用于收集 chart yaml
+    - 添加 repo 的名称 `repositoryFullName`
+    - chart yaml 保存在 repo 的路径 `resourcePaths`，路径统一为 repo 根目录的 release 目录下
+    - chart yaml 在项目中保存的路径 `targetPath`，推荐命名为组件的分组名称的文件夹，例如 `console-web-web` 和 `console-web-redis`，统一保存在分组 `console` 目录下
+        ```yaml
+          - repositoryFullName: caicloud/console-web
+            resourcePaths:
+              - release/console-web.yaml
+              - release/console-web-redis.yaml
+              - release/web-gateway-proxy.yaml
+            targetPath: console
+        ```
+2. 在 [compass.yaml](../compass.yaml) 以及 [mini-compass.yaml](../mini-compass.yaml) 中添加部署配置用于部署
+    - 参考 [产品模块描述文件](./configurable-product-installation.md)
+
 执行以下命令：
 
 ```bash
