@@ -1,0 +1,197 @@
+_config:
+  _metadata:
+    name: clever-admin
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.0.3-beta"
+  controllers:
+  - type: Deployment
+    controller:
+      replica: 1
+    containers:
+    - name: clever-admin
+      image: '[[ registry_release ]]/clever-admin:v0.0.3'
+      resources:
+        requests:
+          cpu: 100m
+          memory: 100Mi
+      env:
+      - name: KUBEFLOW_ADMIN_ENDPOINT
+        value: http://kubeflow-admin:8080
+      - name: CLUSTER_ADMIN_ENDPOINT
+        value: http://cluster-admin:2233
+      - name: APP_ADMIN_ENDPOINT
+        value: http://app-admin:7799
+      - name: CONFIG_MAP_PATH
+        value: "/etc/clever-admin/"
+      - name: CLEVER_ADMIN_PORT
+        value: '7070'
+      - name: DROPPY_IMAGE
+        value: '[[ registry_release ]]/caicloud-droppy:v10.1.1'
+      - name: FILESERVER_IMAGE
+        value: '[[ registry_release ]]/clever-fileserver:v1.4.2'
+      - name: APP_HOST
+        value: '[[ kube_apiserver_endpoint_ip ]]'
+      - name: DROPPY_REQUEST_CPU
+        value: '500m'
+      - name: DROPPY_REQUEST_MEMORY
+        value: '800Mi'
+      mounts:
+      - name: clever-admin-config
+        path: /etc/clever-admin
+    services:
+    - name: clever-admin
+      type: NodePort
+      ports:
+      - protocol: HTTP
+        targetPort: 7070
+        port: 7070
+    volumes:
+    - name: clever-admin-config
+      source:
+        items:
+        - key: repository
+          path: repository
+        - key: developing
+          path: developing
+        - key: training
+          path: training
+        - key: serving
+          path: serving
+        - key: visualization
+          path: visualization
+        - key: others
+          path: others
+        target: clever-admin-config
+      type: Config
+    configs:
+    - name: clever-admin-config
+      data:
+      - key: repository
+        value: '[[ registry_release ]]'
+      - key: developing
+        value: |
+          - name: jupyter
+            resources:
+              - name: basic
+                cpu: 1
+                gpu: 0
+                memory: 1024Mi
+              - name: standard
+                cpu: 1
+                gpu: 0
+                memory: 2048Mi
+              - name: advanced
+                cpu: 2
+                gpu: 1
+                memory: 4096Mi
+            images:
+              - name: Anaconda5.2
+                path: anaconda:v5.2.0
+      - key: training
+        value: |
+          - name: tensorflow
+            resources:
+              - name: basic
+                cpu: 1
+                gpu: 0
+                memory: 2048Mi
+              - name: standard
+                cpu: 2
+                gpu: 0
+                memory: 4096Mi
+              - name: advanced
+                cpu: 2
+                gpu: 1
+                memory: 4096Mi
+            images:
+              - name: Python2+TensorFlow1.4
+                path: tensorflow:v1.4.1-py27
+              - name: Python3+TensorFlow1.4
+                path: tensorflow:v1.4.1-py36
+              - name: Python2+TensorFlow1.9
+                path: tensorflow:v1.9.0-py27
+              - name: Python3+TensorFlow1.9
+                path: tensorflow:v1.9.0-py36
+          - name: pytorch
+            resources:
+              - name: basic
+                cpu: 1
+                gpu: 0
+                memory: 2048Mi
+              - name: standard
+                cpu: 2
+                gpu: 1
+                memory: 4096Mi
+              - name: advanced
+                cpu: 2
+                gpu: 1
+                memory: 4096Mi
+            images:
+              - name: Python2+PyTorch0.4
+                path: pytorch:v0.4.1-py27
+              - name: Python3+PyTorch0.4
+                path: pytorch:v0.4.1-py36
+      - key: serving
+        value: |
+          - name: tensorflow
+            resources:
+              - name: basic
+                cpu: 1
+                gpu: 0
+                memory: 1024Mi
+              - name: standard
+                cpu: 2
+                gpu: 1
+                memory: 2048Mi
+            images:
+              - name: TFServing
+                path: tfserving:v1.9.0
+          - name: onnx
+            resources:
+              - name: basic
+                cpu: 1
+                gpu: 0
+                memory: 1024Mi
+              - name: standard
+                cpu: 2
+                gpu: 1
+                memory: 2048Mi
+            images:
+              - name: OnnxServing-Py36
+                path: graphpipe-onnx:v1.0.1
+              - name: OnnxServing-Py27
+                path: graphpipe-onnx:v1.0.1-py27
+      - key: visualization
+        value: |
+          - name: tensorboard
+            resources:
+            - name: basic
+              cpu: 500m
+              gpu: 0
+              memory: 512Mi
+            - name: standard
+              cpu: 1000m
+              gpu: 0
+              memory: 1024Mi
+            images:
+              - name: TensorBoard
+                path: tensorflow:v1.9.0-py36
+      - key: others
+        value: |
+          - name: labelme
+            images:
+              - name: Labelme
+                path: labelme:v0.2.0
+          - name: labeler
+            images:
+              - name: Labeler
+                path: labeler:v0.1.13
+          - name: thumbnails
+            images:
+              - name: Thumbnails
+                path: clever-fileserver:v1.4.2
+
+
