@@ -16,10 +16,10 @@ def TARGET_REGISTRY_CREDENTIAL_ID = "${params.target_registry_credential_id}"
 def RELEASE_REGISTRY = "${params.release_registry}"
 def RELEASE_REGISTRY_CREDENTIAL_ID = "${params.release_registry_credential_id}"
 def RELEASE_VERSION = "${params.release_version}"
+def PRODUCT_NAME = "${params.product_name}"
 def CARGO_DIR = "${params.cargo_dir}"
 def SYNC_DIR = "${params.sync_dir}"
 def RELEASE_OSS_PATH = "${params.release_oss_path}"
-def PRODUCT = "${params.product}"
 def HOTFIX_DIR = "${params.hotfix_dir}"
 def HOTFIX_YAML_PATH = "${params.hotfix_yaml_path}"
 def HOTFIX_OSS_PATH = "${params.hotfix_oss_path}"
@@ -63,14 +63,14 @@ spec:
       value: "${RELEASE_REGISTRY}"
     - name: RELEASE_VERSION
       value: "${RELEASE_VERSION}"
+    - name: PRODUCT_NAME
+      value: "${PRODUCT_NAME}"
     - name: CARGO_DIR
       value: "${CARGO_DIR}"
     - name: SYNC_DIR
       value: "${SYNC_DIR}"
     - name: RELEASE_OSS_PATH
       value: "${RELEASE_OSS_PATH}"
-    - name: PRODUCT
-      value: "${PRODUCT}"
     - name: HOTFIX_DIR
       value: "${HOTFIX_DIR}"
     - name: HOTFIX_YAML_PATH
@@ -107,8 +107,26 @@ spec:
                         make lint
                     """
                 }
-                if (params.release) {
-                    stage("Make Release") {
+                if (params.release && params.oem) {
+                    stage("Make OEM-Release") {
+                    // bool params defined in Jenkins pipeline setting.
+                        withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIAL_ID}", passwordVariable: "GITHUB_TOKEN", usernameVariable: "GITHUB_USERNAME")]) {
+                            def collectCharts = whetherPRMerged()
+                            if (collectCharts) {
+                                docker.withRegistry("https://${DOCKER_REGISTRY}", "${DOCKER_REGISTRY_CREDENTIAL_ID}") {
+                                    sh """
+                                        # Env will replace params in Makefile.
+                                        make release-image RELEASE_VERSION=${PRODUCT_NAME}-${RELEASE_VERSION}
+                                    """
+                                }
+                            } else {
+                                echo 'Why choose no?'
+                            }
+                        }
+                    }
+                }
+                if (params.release && ! params.oem) {
+                    stage("Make Compass-Release") {
                     // bool params defined in Jenkins pipeline setting.
                         withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIAL_ID}", passwordVariable: "GITHUB_TOKEN", usernameVariable: "GITHUB_USERNAME")]) {
                             sh """
@@ -175,7 +193,7 @@ spec:
                                     "head": "${GITHUB_USERNAME}:${RELEASE_VERSION}",
                                     "base": "${BASE_BRANCH}"
                                     }'
-                                """  
+                                """
                             } else {
                                 echo 'Why choose no?'
                             }
@@ -204,6 +222,11 @@ spec:
                     }
                 }
                 if (params.package) {
+                    if (params.oem && params.increment_release) {
+                        IMGAE_LIST_DIR = "oem-images-lists"
+                    } else {
+                        IMGAE_LIST_DIR = "images-lists"
+                    }
                     withCredentials([usernamePassword(credentialsId: "${RELEASE_CARGO_LOGIN}", passwordVariable: "RELEASE_CARGO_PASSWORD", usernameVariable: "RELEASE_CARGO_IP")]) {
                         stage("Sync images") {
                             withCredentials([usernamePassword(credentialsId: "${SOURCE_REGISTRY_CREDENTIAL_ID}", passwordVariable: "SOURCE_REGISTRY_PASSWORD", usernameVariable: "SOURCE_REGISTRY_USER")]) {
@@ -218,13 +241,13 @@ spec:
                                             ansible -i /jenkins/ansible/inventory cargo -m shell -a "docker login ${RELEASE_REGISTRY} -u ${RELEASE_REGISTRY_USER} -p ${RELEASE_REGISTRY_PASSWORD}"
                                             ansible -i /jenkins/ansible/inventory cargo -m shell -a "rm -rf ${SYNC_DIR} && mkdir -p ${SYNC_DIR}"
                                             ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/sync_images_scripts/sync.sh dest=${SYNC_DIR}/ mode=0755"
-                                            ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=images-lists/ dest=${SYNC_DIR}/images-lists/ mode=0644"
+                                            ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=${IMGAE_LIST_DIR}/ dest=${SYNC_DIR}/images-lists/ mode=0644"
                                             ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/auto_package/package.sh dest=/root/ mode=0755"
                                             ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/source_registry/${SOURCE_REGISTRY}/g' /root/package.sh"
                                             ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/target_registry/${TARGET_REGISTRY}/g' /root/package.sh"
                                             ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/release_registry/${RELEASE_REGISTRY}/g' /root/package.sh"
-                                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "bash /root/package.sh sync ${RELEASE_VERSION} ${CARGO_DIR} ${SYNC_DIR}"
-                                            """
+                                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "bash /root/package.sh sync ${RELEASE_VERSION} ${CARGO_DIR} ${PRODUCT_NAME} ${SYNC_DIR}"
+                                        """
                                     }
                                 }
                             }
@@ -233,16 +256,21 @@ spec:
                             def packaging = packaging()
                             if (packaging) {
                                 sh """
-                                    ansible -i /jenkins/ansible/inventory cargo -m shell -a "bash /root/package.sh package ${RELEASE_VERSION} ${CARGO_DIR}"
-                                    ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/install.sh dest=${CARGO_DIR}/compass-component-${RELEASE_VERSION}/ mode=0755"
-                                    ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/config.sample dest=${CARGO_DIR}/compass-component-${RELEASE_VERSION}/ mode=0644"
-                                    ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=release.tar.gz dest=${CARGO_DIR}/compass-component-${RELEASE_VERSION}/image/ mode=0644"
+                                    ansible -i /jenkins/ansible/inventory cargo -m shell -a "bash /root/package.sh package ${RELEASE_VERSION} ${CARGO_DIR} ${PRODUCT_NAME}"
+                                    ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/install.sh dest=${CARGO_DIR}/${PRODUCT_NAME}-component-${RELEASE_VERSION}/ mode=0755"
+                                    ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/config.sample dest=${CARGO_DIR}/${PRODUCT_NAME}-component-${RELEASE_VERSION}/ mode=0644"
+                                    ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=release.tar.gz dest=${CARGO_DIR}/${PRODUCT_NAME}-component-${RELEASE_VERSION}/image/ mode=0644"
                                 """
                             } else {
                                 sh """
                                     echo "got missed images"
                                     ansible -i /jenkins/ansible/inventory cargo -m shell -a 'echo -e "missed_images: \n`cat ${SYNC_DIR}/images-lists/miss_image.txt`"
                                     exit 1'
+                                """
+                            }
+                            if (params.oem && params.increment_release) {
+                                sh """
+                                    ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/compass.yaml/oem.yaml/g;s/addons/oem-addons/g' ${CARGO_DIR}/${PRODUCT_NAME}-component-${RELEASE_VERSION}/config.sample"
                                 """
                             }
                         }
@@ -254,13 +282,13 @@ spec:
                                     sh """
                                         git clone https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/caicloud/compass-admin
                                         cd compass-admin && make build-linux
-                                        ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=bin/cadm dest=${CARGO_DIR}/compass-component-${RELEASE_VERSION}/ mode=0755"
+                                        ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=bin/cadm dest=${CARGO_DIR}/${PRODUCT_NAME}-component-${RELEASE_VERSION}/ mode=0755"
                                     """
                                     }
                                 } else {
                                     sh """
                                         echo "cadm exists, will copy"
-                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "cp /root/cadm ${CARGO_DIR}/compass-component-${RELEASE_VERSION}/"
+                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "cp /root/cadm ${CARGO_DIR}/${PRODUCT_NAME}-component-${RELEASE_VERSION}/"
                                     """
                                 }
                             }
@@ -269,7 +297,7 @@ spec:
                             def upload = upload()
                             if (upload) {
                                 sh """
-                                    ansible -i /jenkins/ansible/inventory cargo -m shell -a "bash /root/package.sh upload ${RELEASE_VERSION} ${CARGO_DIR} ${SYNC_DIR} ${RELEASE_OSS_PATH}"
+                                    ansible -i /jenkins/ansible/inventory cargo -m shell -a "bash /root/package.sh upload ${RELEASE_VERSION} ${CARGO_DIR} ${PRODUCT_NAME} ${RELEASE_OSS_PATH}"
                                 """
                             } else {
                                 echo 'Why choose no?'
@@ -279,7 +307,7 @@ spec:
                 }
                 if (params.hotfix) {
                     stage("Make Hotfix") {
-                        if (params.oem_hotfix) {
+                        if (params.oem) {
                             HOTFIX_YAML_DIR = "oem-hotfixes"
                         } else {
                             HOTFIX_YAML_DIR = "release-hotfixes"
@@ -300,7 +328,7 @@ spec:
                                         ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/auto_hotfix/env.sh dest=${HOTFIX_DIR} mode=0755"
                                         ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/source_registry/${SOURCE_REGISTRY}/g;s/source_project/${SOURCE_PROJECT}/g' ${HOTFIX_DIR}/env.sh"
                                         ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/target_registry/${TARGET_REGISTRY}/g;s/target_project/${TARGET_PROJECT}/g' ${HOTFIX_DIR}/env.sh"
-                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "cd ${HOTFIX_DIR} && bash hotfix.sh hotfix ${HOTFIX_YAML_DIR}/${HOTFIX_YAML_PATH} ${PRODUCT}"
+                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "cd ${HOTFIX_DIR} && bash hotfix.sh hotfix ${HOTFIX_YAML_DIR}/${HOTFIX_YAML_PATH} ${PRODUCT_NAME}"
                                     """
                                 }
                             }
@@ -310,7 +338,7 @@ spec:
                         def upload = upload()
                         if (upload) {
                             sh """
-                                ansible -i /jenkins/ansible/inventory cargo -m shell -a "cd ${HOTFIX_DIR} && bash ${HOTFIX_DIR}/hotfix.sh upload ${HOTFIX_OSS_PATH} ${PRODUCT}"
+                                ansible -i /jenkins/ansible/inventory cargo -m shell -a "cd ${HOTFIX_DIR} && bash ${HOTFIX_DIR}/hotfix.sh upload ${HOTFIX_OSS_PATH} ${PRODUCT_NAME}"
                             """
                         } else {
                             echo 'Why choose no?'
@@ -324,7 +352,7 @@ spec:
 
 def whetherPRMerged() {
     try {
-        def merged = input message: 'Whether PR merged?', 
+        def merged = input message: 'Whether PR merged?',
                     parameters: [booleanParam(defaultValue: true, description: 'Whether PR merged?', name: 'Merged')]
         return merged
     } catch(e) {
@@ -335,7 +363,7 @@ def whetherPRMerged() {
 def packaging() {
     try {
         sh """
-            ansible -i /jenkins/ansible/inventory cargo -m shell -a "bash /root/package.sh judge ${RELEASE_VERSION} ${CARGO_DIR} ${SYNC_DIR}"
+            ansible -i /jenkins/ansible/inventory cargo -m shell -a "bash /root/package.sh judge ${RELEASE_VERSION} ${CARGO_DIR} ${PRODUCT_NAME} ${SYNC_DIR}"
         """
         return true
     } catch(e) {

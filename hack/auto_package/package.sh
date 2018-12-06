@@ -1,44 +1,42 @@
 #!/bin/bash
-input=$1
-input=${input:=auto}
+INPUT=$1
+INPUT=${INPUT:=auto}
 
-version=$2
-version=${version:=auto}
+RELEASE_VERSION=$2
+RELEASE_VERSION=${RELEASE_VERSION:=auto}
 
-cargo_dir=$3
-cargo_dir=${cargo_dir:="/compass"}
+CARGO_DIR=$3
+CARGO_DIR=${CARGO_DIR:="/compass"}
 
-sync_dir=$4
-sync_dir=${sync_dir:="/root/sync-scripts"}
-
-oss_path=$5
-oss_path=${oss_path:=auto}
+PRODUCT_NAME=$4
+PRODUCT_NAME=${PRODUCT_NAME:="compass"}
 
 GREEN_COL="\\033[32;1m"         # green color
 RED_COL="\\033[1;31m"           # red color
 NORMAL_COL="\\033[0;39m"
 
-ROOT_DIR=${cargo_dir}
-SYNC_DIR=${sync_dir}
-RELEASE_VERSION=${version}
 OSS_DIR="oss://infra-release/platform"
 
 SOURCE_REGISTRY=source_registry
 TARGET_REGISTRY=target_registry
 RELEASE_REGISTRY=release_registry
 
-case $input in
+case $INPUT in
   # sync images
   sync )
     echo -e "$GREEN_COL starting sync images $NORMAL_COL"
-    rm -rf ${ROOT_DIR}/common/cargo-registry/docker
-    bash ${ROOT_DIR}/cargo-ansible/cargo/restart.sh
+    SYNC_DIR=$5
+    SYNC_DIR=${SYNC_DIR:="/root/sync-scripts"}
+    rm -rf ${CARGO_DIR}/common/cargo-registry/docker
+    bash ${CARGO_DIR}/cargo-ansible/cargo/restart.sh
     rm -rf ${SYNC_DIR}/images-lists/miss*
     bash ${SYNC_DIR}/sync.sh ${SOURCE_REGISTRY} ${TARGET_REGISTRY} ${SYNC_DIR}/images-lists
     bash ${SYNC_DIR}/sync.sh ${TARGET_REGISTRY} ${RELEASE_REGISTRY} ${SYNC_DIR}/images-lists
     ;;
   # check missed imgaes, if image missed, exit
   judge )
+    SYNC_DIR=$5
+    SYNC_DIR=${SYNC_DIR:="/root/sync-scripts"}
     if [ ! -f ${SYNC_DIR}/images-lists/miss_image.txt ];then
     echo -e "$GREEN_COL no missed image, will proceed $NORMAL_COL"
     else
@@ -49,20 +47,21 @@ case $input in
   # package the files
   package )
     echo -e "$GREEN_COL starting packaging $NORMAL_COL"
-    cd ${ROOT_DIR}/common/cargo-registry/ && tar -cvf pangolin-deploy-images.tar.gz docker
-    cd ${ROOT_DIR} && mkdir -p compass-component-${RELEASE_VERSION}/image
-    mv ${ROOT_DIR}/common/cargo-registry/pangolin-deploy-images.tar.gz ${ROOT_DIR}/compass-component-${RELEASE_VERSION}/
+    cd ${CARGO_DIR}/common/cargo-registry/ && tar -cvf pangolin-deploy-images.tar.gz docker
+    cd ${CARGO_DIR} && mkdir -p ${PRODUCT_NAME}-component-${RELEASE_VERSION}/image
+    mv ${CARGO_DIR}/common/cargo-registry/pangolin-deploy-images.tar.gz ${CARGO_DIR}/${PRODUCT_NAME}-component-${RELEASE_VERSION}/
     ;;
   # upload the package
   upload )
     echo -e "$GREEN_COL starting uploading $NORMAL_COL"
-    OSS_PATH=$oss_path
-    cd ${ROOT_DIR} && tar cvf compass-component-${RELEASE_VERSION}.tar.gz compass-component-${RELEASE_VERSION}
-    echo -e "$GREEN_COL will upload to ${OSS_DIR}/${OSS_PATH}/compass-component-${RELEASE_VERSION}.tar.gz $NORMAL_COL"
-    /root/ossutil cp -ru ${ROOT_DIR}/compass-component-${RELEASE_VERSION}.tar.gz ${OSS_DIR}/${OSS_PATH}/compass-component-${RELEASE_VERSION}.tar.gz
+    OSS_PATH=$5
+    OSS_PATH=${OSS_PATH:=auto}
+    cd ${CARGO_DIR} && tar cvf ${PRODUCT_NAME}-component-${RELEASE_VERSION}.tar.gz ${PRODUCT_NAME}-component-${RELEASE_VERSION}
+    echo -e "$GREEN_COL will upload to ${OSS_DIR}/${OSS_PATH}/${PRODUCT_NAME}-component-${RELEASE_VERSION}.tar.gz $NORMAL_COL"
+    /root/ossutil cp -ru ${CARGO_DIR}/${PRODUCT_NAME}-component-${RELEASE_VERSION}.tar.gz ${OSS_DIR}/${OSS_PATH}/${PRODUCT_NAME}-component-${RELEASE_VERSION}.tar.gz
     ;;
   * )
-    echo -e "$RED_COL unknown command param:${input} $NORMAL_COL"
+    echo -e "$RED_COL unknown command param:${INPUT} $NORMAL_COL"
     exit 1
     ;;
 esac
