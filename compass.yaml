@@ -115,6 +115,8 @@ spec:
       description: Registry for app
     - name: canary-release-controller
       description: Controller for canary release
+    - name: template-registry
+      description: Registry for common template
   - name: microservice
     description: microservice
     required: true
@@ -123,6 +125,12 @@ spec:
       description: Microservice management
     - name: microservice-controller
       description: Controller for microservice task
+  - name: compass-admin
+    description: common template registry
+    required: true
+    addons:
+    - name: compass-admin
+      description: common template registry
   - name: loadbalancer
     description: load balancer
     required: true
