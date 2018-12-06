@@ -15,7 +15,7 @@ TAG = $(shell git describe --tags --always --dirty)
 
 # RELEASE_VERSION is the version of the release
 RELEASE_VERSION            ?= $(TAG)
-PANGOLIN_VERSION           ?= v0.0.2
+PANGOLIN_VERSION           ?= v0.0.3
 JENKINS_VERSION            ?= v0.0.1
 
 ADDONS_PATH                ?= ./addons

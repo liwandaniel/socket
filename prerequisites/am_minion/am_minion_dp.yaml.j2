@@ -14,17 +14,17 @@ spec:
     spec:
       containers:
       - name: am-minion
-        image: [[ registry_release ]]/am_minion:v0.0.8
+        image: '[[ registry_release ]]/am_minion:v0.0.8'
         imagePullPolicy: IfNotPresent
         env:
         - name: SECRET_KEY
           value: 'q*(7(ljz=i61)f_^6vu42u0i1cl4-txz@h6h79kn%c49w$j=n9'
         - name: MASTER_HOST
-          value: "[[ addon_master_ip ]]"
+          value: '[[ addon_master_ip ]]'
         - name: MASTER_PORT
-          value: "[[ addon_master_port ]]"
+          value: '[[ addon_master_port ]]'
         - name: NAMESPACE
-          value: [[ platform_namespace ]]
+          value: '[[ platform_namespace ]]'
         ports:
         - containerPort: 8000
         volumeMounts:
@@ -33,12 +33,12 @@ spec:
           name: data
       initContainers:
       - name: check-master
-        image: [[ registry_release ]]/am_minion:v0.0.8
+        image: '[[ registry_release ]]/am_minion:v0.0.8'
         command: ["/bin/sh", "-c", "until /pangolin/kubectl get pods | grep am-master | grep Running; do echo waiting for master to be ready; sleep 5; done;"]
       - env:
         - name: OUTPUT_DIR
           value: /data/templates
-        image: [[ registry_release ]]/templates:v1.2.15
+        image: '[[ registry_release ]]/templates:v1.2.15'
         imagePullPolicy: IfNotPresent
         name: template
         resources:
