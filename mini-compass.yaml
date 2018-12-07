@@ -117,6 +117,10 @@ spec:
       description: Controller for canary release
     - name: template-registry
       description: Registry for common template
+    - name: application-admission
+      description: Admission for application orchestration
+    - name: application-controller
+      description: Controller for application orchestration
   - name: microservice
     description: microservice
     required: false

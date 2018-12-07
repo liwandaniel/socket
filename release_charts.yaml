@@ -17,6 +17,12 @@ spec:
   resourcePaths:
   - release/template-registry.yaml
   targetPath: app
+- repositoryFullName: caicloud/application
+  tag: v0.1.0-alpha.0
+  resourcePaths:
+  - release/application-admission.yaml
+  - release/application-controller.yaml
+  targetPath: app
 - repositoryFullName: caicloud/compass-admin
   tag: v0.0.7
   resourcePaths:
