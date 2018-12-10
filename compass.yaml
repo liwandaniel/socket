@@ -209,19 +209,13 @@ spec:
       description: Logging management
     - name: logging-processor
       description: Logging processor
-    - name: logging-curator
-      description: Logging curator
-    - name: logging-elasticsearch
-      description: Store and search log
     - name: logging-eventer
       description: Collect k8s events
-    - name: logging-fluentd
-      description: Collect log
     - name: logging-kibana
       description: Display log
-    - name: logging-agent
-      description: Logging agent
     - name: logging-hooks
       description: Logging hooks
     - name: logging-ruler
       description: Logging ruler
+    - name: logging-filebeat
+      description: Logging filebeat
