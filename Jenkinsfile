@@ -109,7 +109,7 @@ spec:
                 }
                 if (params.release && params.oem) {
                     stage("Make OEM-Release") {
-                    // bool params defined in Jenkins pipeline setting.
+                        // bool params defined in Jenkins pipeline setting.
                         withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIAL_ID}", passwordVariable: "GITHUB_TOKEN", usernameVariable: "GITHUB_USERNAME")]) {
                             def collectCharts = whetherPRMerged()
                             if (collectCharts) {
@@ -127,7 +127,7 @@ spec:
                 }
                 if (params.release && ! params.oem) {
                     stage("Make Compass-Release") {
-                    // bool params defined in Jenkins pipeline setting.
+                        // bool params defined in Jenkins pipeline setting.
                         withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIAL_ID}", passwordVariable: "GITHUB_TOKEN", usernameVariable: "GITHUB_USERNAME")]) {
                             sh """
                                 # Prepare GitHub OAuth Token
@@ -157,7 +157,7 @@ spec:
                                 https://api.github.com/repos/caicloud/product-release/pulls \
                                 -H 'Authorization: Bearer ${GITHUB_TOKEN}' \
                                 -d '{
-                                "title": "Updating new tags",
+                                "title": "[Auto pushed by Jenkins] Updating new tags",
                                 "body": "**What this PR does / why we need it**:\\n\\nUpdating new tags\\n\\n**Special notes for your reviewer**:\\n\\ncc @caicloud/platform-t2\\n\\n```release-note\\nNONE\\n```",
                                 "head": "${GITHUB_USERNAME}:${RELEASE_VERSION}",
                                 "base": "${BASE_BRANCH}"
@@ -188,7 +188,7 @@ spec:
                                     https://api.github.com/repos/caicloud/product-release/pulls \
                                     -H 'Authorization: Bearer ${GITHUB_TOKEN}' \
                                     -d '{
-                                    "title": "Updating charts",
+                                    "title": "[Auto pushed by Jenkins] Updating charts",
                                     "body": "**What this PR does / why we need it**:\\n\\nUpdating charts\\n\\n**Special notes for your reviewer**:\\n\\ncc @caicloud/platform-release\\n\\n```release-note\\nNONE\\n```",
                                     "head": "${GITHUB_USERNAME}:${RELEASE_VERSION}",
                                     "base": "${BASE_BRANCH}"
