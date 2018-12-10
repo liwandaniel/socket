@@ -1,40 +1,37 @@
 _config:
   _metadata:
-    description: monitoring-admin
-    name: monitoring-admin
+    description: template-registry
+    name: template-registry
     namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.5.23-alpha.0"
+    version: "v0.1.1"
   controllers:
   - containers:
-    - args:
-      - /admin
-      - --mongo-endpoint=$(MONGO_ENDPOINT)
-      env:
-      - name: MONGO_ENDPOINT
+    - env:
+      - name: MONGO_HOST
         value: '[[ platform_mongo_host ]]'
-      image: '[[ registry_release ]]/monitoring-admin:v0.5.23-alpha.0'
+      image: '[[ registry_release ]]/template-registry:v0.1.1'
       imagePullPolicy: IfNotPresent
       ports:
-      - port: 8899
+      - port: 8080
         protocol: TCP
       resources:
         limits:
           cpu: 500m
-          memory: 1.5Gi
+          memory: 512Mi
         requests:
           cpu: 100m
-          memory: 256Mi
+          memory: 128Mi
     controller:
       replica: 1
-    pod:
-      serviceAccountName: admin
     services:
-    - name: monitoring-admin
+    - name: template-registry
       ports:
-      - port: 8899
+      - port: 8080
         protocol: TCP
+        targetPort: 8080
       type: ClusterIP
     type: Deployment
+

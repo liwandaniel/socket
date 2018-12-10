@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.2.1"
+    version: "v0.3.0"
   controllers:
   - containers:
     - args:
@@ -24,6 +24,8 @@ _config:
         path: /prometheus
       - name: etcd-tls-secret
         path: /secrets/etcd
+      - name: kubelet-client-tls-secret
+        path: /secrets/kubelet
       ports:
       - port: 9090
         protocol: TCP
@@ -64,6 +66,10 @@ _config:
       source:
         target: etcd-tls-secret
       type: Secret
+    - name: kubelet-client-tls-secret
+      type: Secret
+      source:
+        target: kubelet-client-tls-secret
     - name: prometheus-config
       source:
         target: prometheus-config
@@ -216,8 +222,10 @@ _config:
 
               scheme: https
               tls_config:
-                ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-              bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+                ca_file: /secrets/kubelet/ca
+                key_file: /secrets/kubelet/key
+                cert_file: /secrets/kubelet/cert
+              metrics_path: /metrics/cadvisor
 
               kubernetes_sd_configs:
               - role: node
@@ -225,12 +233,6 @@ _config:
               relabel_configs:
               - action: labelmap
                 regex: __meta_kubernetes_node_label_(.+)
-              - target_label: __address__
-                replacement: kubernetes.default.svc:443
-              - source_labels: [__meta_kubernetes_node_name]
-                regex: (.+)
-                target_label: __metrics_path__
-                replacement: /api/v1/nodes/${1}/proxy/metrics/cadvisor
               - source_labels: [__meta_kubernetes_node_name]
                 regex: (.+)
                 target_label: cps_node_name
@@ -240,8 +242,9 @@ _config:
 
               scheme: https
               tls_config:
-                ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-              bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+                ca_file: /secrets/kubelet/ca
+                key_file: /secrets/kubelet/key
+                cert_file: /secrets/kubelet/cert
 
               kubernetes_sd_configs:
               - role: node
@@ -249,12 +252,6 @@ _config:
               relabel_configs:
               - action: labelmap
                 regex: __meta_kubernetes_node_label_(.+)
-              - target_label: __address__
-                replacement: kubernetes.default.svc:443
-              - source_labels: [__meta_kubernetes_node_name]
-                regex: (.+)
-                target_label: __metrics_path__
-                replacement: /api/v1/nodes/${1}/proxy/metrics
               - source_labels: [__meta_kubernetes_node_address_LegacyHostIP]
                 target_label: host_ip
 

@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.7.0-alpha"
+    version: "v0.7.0-beta"
   controllers:
   - containers:
     - env:
@@ -24,7 +24,7 @@ _config:
         value: tenant-admin:8080
       - name: NOTIFY_ADMIN_SERVER
         value: notify-admin:8900
-      image: '[[ registry_release ]]/devops-admin:v0.7.0-alpha'
+      image: '[[ registry_release ]]/devops-admin:v0.7.0-beta'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 7088

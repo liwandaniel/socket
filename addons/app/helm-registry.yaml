@@ -34,7 +34,7 @@ _config:
         value: /data/system-tenant_library
       - name: IMAGE_DOMAIN
         value: '[[ cargo_registry ]]'
-      image: '[[ registry_release ]]/charts:v1.2.15'
+      image: '[[ registry_release ]]/charts:v1.2.16'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: charts-storage

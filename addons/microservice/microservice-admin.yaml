@@ -1,12 +1,12 @@
 _config:
   _metadata:
-    description: app-admin
-    name: app-admin
+    description: microservice-admin
+    name: microservice-admin
     namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.3.23"
+    version: "v0.0.3"
   controllers:
   - containers:
     - env:
@@ -14,7 +14,7 @@ _config:
         value: http://helm-registry:8099
       - name: CHART_TEMPLATE_PATH
         value: /data/templates
-      image: '[[ registry_release ]]/app-admin:v0.3.23'
+      image: '[[ registry_release ]]/microservice-admin: v0.0.3'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 7799
@@ -25,7 +25,7 @@ _config:
     controller:
       replica: 1
     services:
-    - name: app-admin
+    - name: microservice-admin
       ports:
       - port: 7799
         protocol: TCP
@@ -36,7 +36,7 @@ _config:
       - name: OUTPUT_DIR
         value: /data/templates
       name: template
-      image: '[[ registry_release ]]/templates:v1.2.16'
+      image: '[[ registry_release ]]/templates:v1.2.15'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: data

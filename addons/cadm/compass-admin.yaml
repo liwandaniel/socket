@@ -1,31 +1,30 @@
 _config:
   _metadata:
-    description: loadbalancer-admin
-    name: loadbalancer-admin
+    description: compass-admin
+    name: compass-admin
     namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.4.9"
+    version: "v0.0.8"
   controllers:
   - containers:
-    - args:
-      - --debug
-      - --min-valid-port=20000
-      - --max-valid-port=29999
-      image: '[[ registry_release ]]/loadbalancer-admin:v0.4.9'
+    - image: '[[ registry_release ]]/compass-admin:v0.0.8'
       imagePullPolicy: IfNotPresent
+      ports:
+      - port: 8080
+        protocol: TCP
       resources:
         limits:
-          cpu: 300m
-          memory: 300Mi
+          cpu: 500m
+          memory: 512Mi
         requests:
-          cpu: 200m
-          memory: 200Mi
+          cpu: 100m
+          memory: 128Mi
     controller:
       replica: 1
     services:
-    - name: loadbalancer-admin
+    - name: compass-admin
       ports:
       - port: 8080
         protocol: TCP

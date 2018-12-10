@@ -54,6 +54,7 @@ _config:
                   }
                   server {
                       listen 6060;
+                      client_max_body_size 5G;
                       server_name_in_redirect off;
                       port_in_redirect on;
                       proxy_set_header Host $http_host;

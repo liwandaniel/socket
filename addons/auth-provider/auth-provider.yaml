@@ -6,10 +6,10 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: 'v1.1.0-alpha.1'
+    version: 'v1.1.0-rc01'
   controllers:
     - containers:
-      - image: '[[ registry_release ]]/auth-provider:v1.1.0-alpha.1'
+      - image: '[[ registry_release ]]/auth-provider:v1.1.0-rc01'
         imagePullPolicy: IfNotPresent
         env:
           - name: MONGODB_URL
