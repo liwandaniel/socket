@@ -16,6 +16,11 @@ spec:
     resourcePaths:
       - release/app-admin.yaml
     targetPath: app
+- repositoryFullName: caicloud/application
+  resourcePaths:
+  - release/application-admission.yaml
+  - release/application-controller.yaml
+  targetPath: app
   - repositoryFullName: caicloud/helm-registry
     resourcePaths:
       - release/helm-registry.yaml
