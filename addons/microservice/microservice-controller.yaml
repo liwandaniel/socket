@@ -11,7 +11,7 @@ _config:
   - containers:
     - args:
       - --debug
-      image: '[[ registry_release ]]/microservice-controller: v0.0.3'
+      image: '[[ registry_release ]]/microservice-controller:v0.0.3'
       imagePullPolicy: IfNotPresent
       resources:
         limits:

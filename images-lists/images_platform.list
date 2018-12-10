@@ -52,9 +52,9 @@ release/auditlog-processor:v2.2.0-alpha.1
 release/logging-ruler:v2.2.0-alpha.1
 release/filebeat:upstream-6.4.2-v0.0.1
 release/log-pilot:v0.0.1-alpha.0
-release/microservice-admin: v0.0.3
+release/microservice-admin:v0.0.3
 release/templates:v1.2.15
-release/microservice-controller: v0.0.3
+release/microservice-controller:v0.0.3
 release/alertmanager:v0.6.2
 release/alert-notifier:v0.5.23-alpha.0
 release/app-exporter:v0.0.1
