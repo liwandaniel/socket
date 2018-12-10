@@ -16,22 +16,22 @@ spec:
     resourcePaths:
       - release/app-admin.yaml
     targetPath: app
-- repositoryFullName: caicloud/application
-  resourcePaths:
-  - release/application-admission.yaml
-  - release/application-controller.yaml
-  targetPath: app
+  - repositoryFullName: caicloud/application
+    resourcePaths:
+      - release/application-admission.yaml
+      - release/application-controller.yaml
+    targetPath: app
   - repositoryFullName: caicloud/helm-registry
     resourcePaths:
       - release/helm-registry.yaml
     targetPath: app
   - repositoryFullName: caicloud/template-registry
     resourcePaths:
-    - release/template-registry.yaml
+      - release/template-registry.yaml
     targetPath: app
   - repositoryFullName: caicloud/compass-admin
     resourcePaths:
-    - release/compass-admin.yaml
+      - release/compass-admin.yaml
     targetPath: cadm
   - repositoryFullName: caicloud/canary-release
     resourcePaths:
