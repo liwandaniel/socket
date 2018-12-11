@@ -191,3 +191,7 @@ spec:
       - release/microservice-admin.yaml
       - release/microservice-controller.yaml
     targetPath: microservice
+  - repositoryFullName: caicloud/gitbook-tutorial
+    resourcePaths:
+      - release/tutorial.yaml
+    targetPath: tutorial
