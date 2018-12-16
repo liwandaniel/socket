@@ -118,9 +118,14 @@ spec:
     resourcePaths:
       - release/logging-admin.yaml
       - release/logging-processor.yaml
-      - release/logging-eventer.yaml
-      - release/logging-kibana.yaml
       - release/logging-ruler.yaml
+    targetPath: logging
+  - repositoryFullName: caicloud/eventer
+    resourcePaths:
+      - release/logging-eventer.yaml
+    targetPath: logging
+  - repositoryFullName: caicloud/log-pilot
+    resourcePaths:
       - release/logging-filebeat.yaml
     targetPath: logging
   - repositoryFullName: caicloud/insight-hooks

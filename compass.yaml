@@ -213,8 +213,6 @@ spec:
       description: Logging processor
     - name: logging-eventer
       description: Collect k8s events
-    - name: logging-kibana
-      description: Display log
     - name: logging-hooks
       description: Logging hooks
     - name: logging-ruler
