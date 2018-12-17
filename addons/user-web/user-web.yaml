@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.3.24-rc01"
+    version: "v0.3.24-rc02"
   controllers:
   - containers:
     - env:
@@ -99,7 +99,7 @@ _config:
         value: '[[ platform_release_version ]]'
       - name: PRODUCT_RELEASE_TIME
         value: '[[ platform_release_time ]]'
-      image: '[[ registry_release ]]/user-web:v0.3.24-rc01'
+      image: '[[ registry_release ]]/user-web:v0.3.24-rc02'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 3006

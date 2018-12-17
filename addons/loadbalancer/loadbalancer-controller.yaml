@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.4.6"
+    version: "v0.4.7"
   controllers:
   - containers:
     - args:
@@ -15,7 +15,7 @@ _config:
       - --proxy-nginx=[[ registry_library ]]/nginx-ingress-controller:0.15.0
       - --proxy-sidecar=[[ registry_release ]]/loadbalancer-provider-ingress:v0.4.5
       - --provider-ipvsdr=[[ registry_release ]]/loadbalancer-provider-ipvsdr:v0.4.5
-      image: '[[ registry_release ]]/loadbalancer-controller:v0.4.6'
+      image: '[[ registry_release ]]/loadbalancer-controller:v0.4.7'
       imagePullPolicy: IfNotPresent
       resources:
         limits:

@@ -6,10 +6,10 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.0-beta.2"
+    version: "v0.1.0-beta.3"
   controllers:
   - containers:
-    - image: '[[ registry_release ]]/statistician-admin:v0.1.0-beta.2'
+    - image: '[[ registry_release ]]/statistician-admin:v0.1.0-beta.3'
       imagePullPolicy: IfNotPresent
       env:
       - name: SERVER_KUBE_HOST

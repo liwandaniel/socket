@@ -1,18 +1,21 @@
 _config:
   _metadata:
-    description: logging-admin
-    name: logging-admin
+    description: Tutorial Gitbook
+    name: tutorial
     namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v2.2.0-beta.0"
+    version: "0.0.3"
   controllers:
   - containers:
-    - image: '[[ registry_release ]]/logging-admin:v2.2.0-beta.0'
+    - env:
+      - name: PRODUCTION
+        value: 'compass'
+      image: '[[ registry_release ]]/tutorial:0.0.3'
       imagePullPolicy: IfNotPresent
       ports:
-      - port: 7800
+      - port: 4000
         protocol: TCP
     controller:
       replica: 1
@@ -20,9 +23,9 @@ _config:
         surge: 1
         unavailable: 0
     services:
-    - name: logging-admin
+    - name: tutorial
       ports:
-      - port: 7800
-        protocol: TCP
+      - protocol: TCP
+        port: 4000
       type: ClusterIP
     type: Deployment

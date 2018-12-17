@@ -55,6 +55,7 @@ _config:
                   server {
                       listen 6060;
                       client_max_body_size 5G;
+                      proxy_read_timeout 3600;
                       server_name_in_redirect off;
                       port_in_redirect on;
                       proxy_set_header Host $http_host;
@@ -73,6 +74,10 @@ _config:
                       }
                       location /sso/ {
                           proxy_pass http://auth-provider:8020;
+                          proxy_redirect off;
+                      }
+                      location /tutorial/ {
+                          proxy_pass http://tutorial:4000/;
                           proxy_redirect off;
                       }
                       location / {
