@@ -15,8 +15,6 @@ spec:
     description: Auth server
   - name: hodor-server
     description: API Gateway
-  - name: clever-kubeflow-admin
-    description: clever kubeflow admin
   - name: clever-pytorch-operator
     description: clever pytorch operator
   - name: clever-tf-operator

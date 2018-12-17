@@ -1,0 +1,23 @@
+apiVersion: clever.caicloud.io/v1alpha1
+kind: Flavor
+metadata:
+  name: python
+spec:
+  images:
+  - name: Python2
+    image: '[[ registry_release ]]'/pytorch:v0.4.1-py27
+  - name: Python3
+    image: '[[ registry_release ]]'/pytorch:v0.4.1-py36
+  resources:
+  - name: basic
+    cpu: "1"
+    gpu: "0"
+    memory: 2048Mi
+  - name: standard
+    cpu: "2"
+    gpu: "0"
+    memory: 4096Mi
+  - name: advanced
+    cpu: "2"
+    gpu: "1"
+    memory: 4096Mi

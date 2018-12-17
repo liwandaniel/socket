@@ -1,0 +1,14 @@
+apiVersion: clever.caicloud.io/v1alpha1
+kind: Template
+metadata:
+ name: tensorflow
+spec:
+  flavors:
+    - tensorflow
+    - jupyter
+  properties:
+    logo: <g id="Shape" transform="translate(4.000000, 5.000000)">  <polygon class="st0"
+      points="14.9,6.9 8.6,2.5 8.6,5 13.4,8.1 10.5,10.6 8.6,9.6 8.6,16.2 4.9,16.2
+      4.9,4.9 0.9,7.4 -2,4.6    8.6,-2.2 18,4   "/> </g>
+    type: training
+    framework: tensorflow

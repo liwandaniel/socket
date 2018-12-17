@@ -16,17 +16,13 @@ spec:
     resourcePaths:
       - release/clever-admin.yaml
       - release/fileserver.yaml
+      - release/tf-operator.yaml
+      - release/pytorch-operator.yaml
     targetPath: clever-admin
   - repositoryFullName: caicloud/clever-web
     resourcePaths:
       - release/clever-web.yaml
     targetPath: clever-web
-  - repositoryFullName: caicloud/kubeflow-admin
-    resourcePaths:
-      - release/kubeflow-admin.yaml
-      - release/pytorch-operator.yaml
-      - release/tf-operator.yaml
-    targetPath: kubeflow-admin
   - repositoryFullName: caicloud/clever-labeler
     resourcePaths:
       - release/labelgres.yaml
