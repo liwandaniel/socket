@@ -134,7 +134,7 @@ case $input in
   # debug mode
   debug )
     echo -e "$GREEN_COL running debug mode $NORMAL_COL"
-    docker run -it \
+    docker run --rm -it \
       -v `pwd`/../.kubectl.kubeconfig:/root/.kube/config \
       -v `pwd`/config:/pangolin/config \
       ${RELEASE_IMAGE} bash
