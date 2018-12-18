@@ -3,25 +3,20 @@ metadata:
   description: A set of files to collect.
 spec:
 - repositoryFullName: caicloud/clever-admin
-  tag: v0.0.3
+  tag: v0.0.4
   resourcePaths:
   - release/clever-admin.yaml
   - release/fileserver.yaml
+  - release/tf-operator.yaml
+  - release/pytorch-operator.yaml
   targetPath: clever-admin
 - repositoryFullName: caicloud/clever-web
-  tag: v3.2.7
+  tag: v3.3.0
   resourcePaths:
   - release/clever-web.yaml
   targetPath: clever-web
-- repositoryFullName: caicloud/kubeflow-admin
-  tag: v1.2.0-beta.3
-  resourcePaths:
-  - release/kubeflow-admin.yaml
-  - release/pytorch-operator.yaml
-  - release/tf-operator.yaml
-  targetPath: kubeflow-admin
 - repositoryFullName: caicloud/clever-labeler
-  tag: v1.2.0
+  tag: v1.3.0
   resourcePaths:
   - release/labelgres.yaml
   targetPath: labeler
