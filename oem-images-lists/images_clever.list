@@ -1,5 +1,11 @@
-release/clever-admin:v0.0.1-rc01
+release/clever-admin:v0.0.4
 release/caicloud-droppy:v10.1.1
+release/saved_model_cli:latest
 release/clever-fileserver:v1.4.2
-release/kubeflow-admin:v1.1.0-rc4
-release/clever-web:v2.5.8
+release/pytorch-operator:v1alpha2-v1.2.0
+release/tf-operator:v1alpha2-v1.2.0
+release/clever-web:v3.3.0
+release/cauth:v2.2.3
+release/hodor:v1.1.7
+release/postgres:10-alpine
+release/user-web:v1.0.1-alpha.5
