@@ -18,7 +18,7 @@ OEM_PRODUCT_NAME           ?= oem
 BASE_RELEASE_VERSION       ?= v2.7.2
 BASE_RELEASE_TIME          ?= 2018-10-26 18:00
 RELEASE_VERSION            ?= $(TAG)
-PANGOLIN_VERSION           ?= v0.0.3
+PANGOLIN_VERSION           ?= v0.0.4
 JENKINS_VERSION            ?= v0.0.1
 
 ADDONS_PATH                ?= ./addons
