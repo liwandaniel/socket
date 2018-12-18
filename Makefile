@@ -12,8 +12,11 @@
 
 # commitish
 TAG = $(shell git describe --tags --always --dirty)
+OEM_PRODUCT = $(shell git symbolic-ref --short HEAD | awk -F "-" '{print $$2}')
 
 # RELEASE_VERSION is the version of the release
+BASE_RELEASE_VERSION       ?= v2.7.2
+BASE_RELEASE_TIME          ?= 2018-10-26 18:00
 RELEASE_VERSION            ?= $(TAG)
 PANGOLIN_VERSION           ?= v0.0.3
 JENKINS_VERSION            ?= v0.0.1
@@ -35,8 +38,11 @@ DOCKER_LABELS=--label product-release.git-describe="$(shell date -u +v%Y%m%d)-$(
 
 release-image:
 	# set platform release info in platform-info
-	sed -i- "s|G_PLATFORM_RELEASE_VERSION|\"${RELEASE_VERSION}\"|g" platform-info.yaml.j2
-	sed -i- "s|G_PLATFORM_RELEASE_TIME|\"$(shell date +'%Y-%m-%d %H:%M')\"|g" platform-info.yaml.j2 && rm platform-info.yaml.j2-
+	sed -i- "s|G_PLATFORM_RELEASE_VERSION|\"${BASE_RELEASE_VERSION}\"|g" platform-info.yaml.j2
+	sed -i- "s|G_PLATFORM_RELEASE_TIME|\"${BASE_RELEASE_TIME}\"|g" platform-info.yaml.j2
+	sed -i- "s|oem_product|\${OEM_PRODUCT}|g" platform-info.yaml.j2
+	sed -i- "s|G_OEM_RELEASE_VERSION|\"${RELEASE_VERSION}\"|g" platform-info.yaml.j2
+	sed -i- "s|G_OEM_RELEASE_TIME|\"$(shell date +'%Y-%m-%d %H:%M')\"|g" platform-info.yaml.j2 && rm platform-info.yaml.j2-
 	# build release-image
 	sed -i- "s|PANGOLIN_IMAGE|$(PANGOLIN_IMAGE)|g" build/release/Dockerfile && rm build/release/Dockerfile-
 	docker build -t "$(REGISTRY)/$(PROJECT)/release:$(RELEASE_VERSION)" $(DOCKER_LABELS) -f build/release/Dockerfile .

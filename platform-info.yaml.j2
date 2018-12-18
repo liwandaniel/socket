@@ -15,9 +15,12 @@ data:
   registry_ip: "{{ registryIP }}"
   registry_release: "{{ registryName }}/release"
   registry_library: "{{ registryName }}/library"
-  # Makefile打包镜像的时候，在platform-info的ConfigMap中添加平台版本号和发布时间
+  # Makefile 打包镜像的时候，在 platform-info 的 ConfigMap 中添加 compass 平台版本号和发布时间
   platform_release_version: G_PLATFORM_RELEASE_VERSION
   platform_release_time: G_PLATFORM_RELEASE_TIME
+  # Makefile 打包镜像的时候，在 platform-info 的 ConfigMap 中添加 oem 平台版本号和发布时间
+  oem_product_release_version: G_OEM_RELEASE_VERSION
+  oem_product_release_time: G_OEM_RELEASE_TIME
 
   # it can be cluster info
   platform_mongo_host: mongodb://infra-mongo-mongo-v1-0-0.mgo-cluster,infra-mongo-mongo-v1-0-1.mgo-cluster,infra-mongo-mongo-v1-0-2.mgo-cluster
