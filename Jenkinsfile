@@ -116,7 +116,7 @@ spec:
                                 docker.withRegistry("https://${DOCKER_REGISTRY}", "${DOCKER_REGISTRY_CREDENTIAL_ID}") {
                                     sh """
                                         # Env will replace params in Makefile.
-                                        make release-image RELEASE_VERSION=${PRODUCT_NAME}-${RELEASE_VERSION}
+                                        make release-image RELEASE_VERSION=${PRODUCT_NAME}-${RELEASE_VERSION} OEM_PRODUCT_NAME=${PRODUCT_NAME}
                                     """
                                 }
                             } else {
