@@ -1,5 +1,6 @@
 release/tensorflow-serving:1.12.0
 release/tensorflow-serving:1.12.0-gpu
+release/saved_model_cli:latest
 release/tensorflow:v1.9.0-py36-gpu
 release/tensorflow:v1.9.0-py27-gpu
 release/tensorflow:v1.9.0-py36
