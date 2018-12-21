@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.0.4"
+    version: "v0.0.6"
   controllers:
   - containers:
     - env:
@@ -14,7 +14,7 @@ _config:
         value: http://helm-registry:8099
       - name: CHART_TEMPLATE_PATH
         value: /data/templates
-      image: '[[ registry_release ]]/microservice-admin:v0.0.4'
+      image: '[[ registry_release ]]/microservice-admin:v0.0.6'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 7799

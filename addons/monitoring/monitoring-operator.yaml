@@ -6,12 +6,12 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.5.23-beta.2"
+    version: "v0.5.23-beta.3"
   controllers:
   - containers:
     - args:
       - --mongodbURL=[[ platform_mongo_host ]]
-      image: '[[ registry_release ]]/monitoring-operator:v0.5.23-beta.2'
+      image: '[[ registry_release ]]/monitoring-operator:v0.5.23-beta.3'
       imagePullPolicy: IfNotPresent
     controller:
       replica: 1

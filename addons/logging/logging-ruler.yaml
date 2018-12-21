@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v2.2.0-beta.0"
+    version: "v2.2.0-beta.1"
   controllers:
   - containers:
     - env:
@@ -14,7 +14,7 @@ _config:
         value: mongodb://mgo-cluster:27017
       - name: ALERTMANAGERS
         value: http://alertmanager:9093
-      image: '[[ registry_release ]]/logging-ruler:v2.2.0-beta.0'
+      image: '[[ registry_release ]]/logging-ruler:v2.2.0-beta.1'
       imagePullPolicy: IfNotPresent
     controller:
       replica: 1

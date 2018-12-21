@@ -6,13 +6,13 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "0.0.3"
+    version: "v0.1.1"
   controllers:
   - containers:
     - env:
       - name: PRODUCTION
         value: 'compass'
-      image: '[[ registry_release ]]/tutorial:0.0.3'
+      image: '[[ registry_release ]]/tutorial:v0.1.1'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 4000

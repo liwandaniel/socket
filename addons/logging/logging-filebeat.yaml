@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.0.0-alpha.0"
+    version: "v1.0.0-alpha.1"
   controllers:
   - containers:
     - env:
@@ -22,7 +22,7 @@ _config:
         requests:
           memory: 50Mi
           cpu: 100m
-      image: '[[ registry_release ]]/filebeat:v1.0.0-alpha.0'
+      image: '[[ registry_release ]]/filebeat:v1.0.0-alpha.1'
       imagePullPolicy: Always
       command:
       - /opt/filebeat-keeper/filebeat-keeper
@@ -48,7 +48,7 @@ _config:
         subpath: filebeat
       - name: output-config
         path: /config
-    - image: '[[ registry_release ]]/log-pilot:v1.0.0-alpha.0'
+    - image: '[[ registry_release ]]/log-pilot:v1.0.0-alpha.1'
       imagePullPolicy: Always
       command:
       - /opt/log-pilot/bin/log-pilot

@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: 'v3.4.2'
+    version: 'v3.4.3'
   controllers:
     - containers:
         - env:
@@ -85,6 +85,11 @@ _config:
                 type: Config
                 name: platform-config
                 key: 'userwebServer'
+            - name: CLEVER_ON
+              from:
+                type: Config
+                name: platform-config
+                key: "cleverOn"
             - name: SHOW_LANG
               value: 'false'
             - name: DEFAULT_LANG
@@ -98,7 +103,7 @@ _config:
               value: '[[ platform_release_time ]]'
             - name: TUTORIAL_LINK
               value: 'tutorial'
-          image: '[[ registry_release ]]/console-web:v3.4.2'
+          image: '[[ registry_release ]]/console-web:v3.4.3'
           imagePullPolicy: IfNotPresent
           ports:
             - port: 3000

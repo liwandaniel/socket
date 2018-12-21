@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.4.0-alpha.3"
+    version: "v1.4.0-alpha.4"
   controllers:
   - containers:
     - env:
@@ -16,7 +16,7 @@ _config:
         value: '30'
       - name: ENV_LOG_LEVEL
         value: info
-      image: '[[ registry_release ]]/cluster-reqgap-controller:v1.4.0-alpha.3'
+      image: '[[ registry_release ]]/cluster-reqgap-controller:v1.4.0-alpha.4'
       imagePullPolicy: IfNotPresent
     controller:
       replica: 1

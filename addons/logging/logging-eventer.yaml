@@ -6,20 +6,20 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.3"
+    version: "v0.1.4"
   controllers:
   - containers:
-    - env:
+    - command:
+      - /eventer
+      - --v=3
+      image: '[[ registry_release ]]/eventer:v0.1.4'
+      imagePullPolicy: IfNotPresent
+      env:
       - name: CLUSTER_NAME
         from:
           type: Config
           name: cluster-info
           key: name
-    - command:
-      - /eventer
-      - --v=3
-      image: '[[ registry_release ]]/eventer:v0.1.3'
-      imagePullPolicy: IfNotPresent
       mounts:
       - name: output-config
         path: /config
