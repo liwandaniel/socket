@@ -1,0 +1,62 @@
+_config:
+  _metadata:
+    name: clever-public-fileserver
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v1.4.3"
+  controllers:
+  - type: Deployment
+    controller:
+      replica: 1
+    containers:
+    - name: fileserver
+      image: '[[ registry_release ]]/clever-fileserver:v1.4.3'
+      resources:
+        requests:
+          cpu: 50m
+          memory: 50Mi
+      mounts:
+      - name: public
+        path: "/clever/public"
+      - name: time
+        path: "/etc/localtime"
+    - name: droppy
+      image: '[[ registry_release ]]/caicloud-droppy:v10.1.1'
+      command:
+      - "/bin/sh"
+      - "-c"
+      - droppy start -f /clever
+      workingDir: "/"
+      resources:
+        requests:
+          cpu: 50m
+          memory: 50Mi
+      mounts:
+      - name: public
+        path: "/clever/public"
+      - name: time
+        path: "/etc/localtime"
+    volumes:
+    - name: public
+      type: Static
+      source:
+        target: clever-kubeflow-admin-storage-public
+    - name: time
+      type: HostPath
+      source:
+        path: "/etc/localtime"
+    services:
+    - name: droppy
+      type: NodePort
+      ports:
+      - protocol: HTTP
+        targetPort: 8989
+        port: 8989
+    - name: fileserver
+      type: NodePort
+      ports:
+      - protocol: HTTP
+        targetPort: 8080
+        port: 8080
