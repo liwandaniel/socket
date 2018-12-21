@@ -8,3 +8,4 @@ release/am_mysql:v3.0
 release/am_master:v0.0.6
 release/am_minion:v0.0.8
 release/compass-plugins-cd-manager:v0.3.0-alpha.2
+release/compass-plugins-gpu-manager:v0.1.4
