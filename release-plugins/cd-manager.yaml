@@ -10,7 +10,7 @@ spec:
   author: caicloud.io
   service:
     port: 8080
-    image: harbor.caicloud.xyz/release/compass-plugins-cd-manager:v0.3.0-alpha.2
+    image: cargo-infra.caicloud.xyz/devops_release/compass-plugins-cd-manager:v0.3.0-alpha.2
     configs:
       envs:
       - name: SERVER_MONGO_HOST

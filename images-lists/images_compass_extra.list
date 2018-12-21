@@ -7,3 +7,4 @@ release/release-controller:v0.2.14
 release/am_mysql:v3.0
 release/am_master:v0.0.6
 release/am_minion:v0.0.8
+release/compass-plugins-cd-manager:v0.3.0-alpha.2
