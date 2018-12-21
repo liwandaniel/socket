@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v2.5.19-planA"
+    version: "v2.5.20-planA-1"
   controllers:
   - containers:
     - env:
@@ -61,7 +61,7 @@ _config:
           type: Config
           name: platform-config
           key: "userwebServer"
-      image: '[[ registry_release ]]/clever-web:v2.5.19-planA'
+      image: '[[ registry_release ]]/clever-web:v2.5.20-planA-1'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 4006
@@ -79,4 +79,3 @@ _config:
         protocol: TCP
       type: ClusterIP
     type: Deployment
-
