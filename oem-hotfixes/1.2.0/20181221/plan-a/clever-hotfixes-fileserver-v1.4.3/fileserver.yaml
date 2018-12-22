@@ -27,7 +27,7 @@ _config:
       command:
       - "/bin/sh"
       - "-c"
-      - droppy start -f /clever
+      - droppy start -f /clever/public
       workingDir: "/"
       resources:
         requests:
