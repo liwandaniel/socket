@@ -107,27 +107,26 @@ spec:
                         make lint
                     """
                 }
-                if (params.release && params.oem) {
-                    stage("Make OEM-Release") {
-                    // bool params defined in Jenkins pipeline setting.
-                        withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIAL_ID}", passwordVariable: "GITHUB_TOKEN", usernameVariable: "GITHUB_USERNAME")]) {
-                            def collectCharts = whetherPRMerged()
-                            if (collectCharts) {
-                                docker.withRegistry("https://${DOCKER_REGISTRY}", "${DOCKER_REGISTRY_CREDENTIAL_ID}") {
-                                    sh """
-                                        # Env will replace params in Makefile.
-                                        make release-image RELEASE_VERSION=${PRODUCT_NAME}-${RELEASE_VERSION} OEM_PRODUCT_NAME=${PRODUCT_NAME}
-                                    """
-                                }
-                            } else {
-                                echo 'Why choose no?'
-                            }
-                        }
-                    }
+                if (params.oem && params.increment_release) {
+                        CHARTS_LIST_FILE = "oem_charts_list.yaml"
+                        RELEASE_CAHRTS_FILE = "oem_release_charts.yaml"
+                        ADDONS_PATH = "oem-addons"
+                        TARGET_IMGAE_FILE = "oem-images-lists/images_oem.list"
+                        GITHUB_MENTION_GROUP = "@caicloud/platform-release"
+                        TAG_NAME = "${PRODUCT_NAME}-${RELEASE_VERSION}"
+                        IMGAE_LIST_DIR = "oem-images-lists"
+                    } else {
+                        CHARTS_LIST_FILE = "charts_list.yaml"
+                        RELEASE_CAHRTS_FILE = "release_charts.yaml"
+                        ADDONS_PATH = "addons"
+                        TARGET_IMGAE_FILE = "images-lists/images_platform.list"
+                        GITHUB_MENTION_GROUP = "@caicloud/platform-t2"
+                        TAG_NAME = "${RELEASE_VERSION}"
+                        IMGAE_LIST_DIR = "images-lists"
                 }
-                if (params.release && ! params.oem) {
-                    stage("Make Compass-Release") {
-                    // bool params defined in Jenkins pipeline setting.
+                if (params.collect) {
+                    stage("Collect-Charts") {
+                        // bool params defined in Jenkins pipeline setting.
                         withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIAL_ID}", passwordVariable: "GITHUB_TOKEN", usernameVariable: "GITHUB_USERNAME")]) {
                             sh """
                                 # Prepare GitHub OAuth Token
@@ -144,12 +143,12 @@ spec:
                                 git config --global user.email ${GIT_EMAIL}
 
                                 # Collect & Update tags
-                                make update-tag CHART_LIST_PATH=./charts_list.yaml GITHUB_TOKEN_PATH=./token TARGET_COLLECT_TAG_PATH=./release_charts.yaml
+                                make update-tag CHART_LIST_PATH=./${CHARTS_LIST_FILE} GITHUB_TOKEN_PATH=./token TARGET_COLLECT_TAG_PATH=./${RELEASE_CAHRTS_FILE}
 
                                 # Make commit.
                                 git checkout -B ${RELEASE_VERSION}
-                                git add release_charts.yaml
-                                git commit -m "chore(*): update release_charts.yaml"
+                                git add ${RELEASE_CAHRTS_FILE}
+                                git commit -m "chore(*): update ${RELEASE_CAHRTS_FILE}"
                                 git push --set-upstream origin ${RELEASE_VERSION} --force
 
                                 # Make PR with curl.
@@ -157,8 +156,8 @@ spec:
                                 https://api.github.com/repos/caicloud/product-release/pulls \
                                 -H 'Authorization: Bearer ${GITHUB_TOKEN}' \
                                 -d '{
-                                "title": "Updating new tags",
-                                "body": "**What this PR does / why we need it**:\\n\\nUpdating new tags\\n\\n**Special notes for your reviewer**:\\n\\ncc @caicloud/platform-t2\\n\\n```release-note\\nNONE\\n```",
+                                "title": "[Auto pushed by Jenkins] Updating new tags",
+                                "body": "**What this PR does / why we need it**:\\n\\nUpdating new tags\\n\\n**Special notes for your reviewer**:\\n\\ncc ${GITHUB_MENTION_GROUP}\\n\\n```release-note\\nNONE\\n```",
                                 "head": "${GITHUB_USERNAME}:${RELEASE_VERSION}",
                                 "base": "${BASE_BRANCH}"
                                 }'
@@ -174,12 +173,12 @@ spec:
                                     git checkout -B ${RELEASE_VERSION}
 
                                     # Collect Charts
-                                    make collect-charts ADDONS_PATH=./addons GITHUB_TOKEN_PATH=./token TARGET_COLLECT_TAG_PATH=./release_charts.yaml
+                                    make collect-charts ADDONS_PATH=./${ADDONS_PATH} GITHUB_TOKEN_PATH=./token TARGET_COLLECT_TAG_PATH=./${RELEASE_CAHRTS_FILE}
                                     # Update images
-                                    make convert-images ADDONS_PATH=./addons TARGET_FILE=./images-lists/images_platform.list
+                                    make convert-images ADDONS_PATH=./${ADDONS_PATH} TARGET_FILE=./${TARGET_IMGAE_FILE}
 
                                     # Make commit.
-                                    git add addons images-lists/images_platform.list
+                                    git add ${ADDONS_PATH} ${TARGET_IMGAE_FILE}
                                     git commit -m "chore(*): update addons"
                                     git push --set-upstream origin ${RELEASE_VERSION} --force
 
@@ -188,8 +187,8 @@ spec:
                                     https://api.github.com/repos/caicloud/product-release/pulls \
                                     -H 'Authorization: Bearer ${GITHUB_TOKEN}' \
                                     -d '{
-                                    "title": "Updating charts",
-                                    "body": "**What this PR does / why we need it**:\\n\\nUpdating charts\\n\\n**Special notes for your reviewer**:\\n\\ncc @caicloud/platform-release\\n\\n```release-note\\nNONE\\n```",
+                                    "title": "[Auto pushed by Jenkins] Updating charts",
+                                    "body": "**What this PR does / why we need it**:\\n\\nUpdating charts\\n\\n**Special notes for your reviewer**:\\n\\ncc ${GITHUB_MENTION_GROUP}\\n\\n```release-note\\nNONE\\n```",
                                     "head": "${GITHUB_USERNAME}:${RELEASE_VERSION}",
                                     "base": "${BASE_BRANCH}"
                                     }'
@@ -197,36 +196,34 @@ spec:
                             } else {
                                 echo 'Why choose no?'
                             }
+                        }
+                    }
+                }
+                if (params.release) {
+                    stage("Make Release-Image") {
+                        def collectCharts = whetherPRMerged()
+                        if (collectCharts) {
+                            docker.withRegistry("https://${DOCKER_REGISTRY}", "${DOCKER_REGISTRY_CREDENTIAL_ID}") {
+                                sh """
+                                    # Reset to upstream/master
+                                    git checkout ${BASE_BRANCH}
+                                    git fetch upstream
+                                    git reset --hard upstream/${BASE_BRANCH}
 
-                            def collectCharts = whetherPRMerged()
-                            if (collectCharts) {
-                                docker.withRegistry("https://${DOCKER_REGISTRY}", "${DOCKER_REGISTRY_CREDENTIAL_ID}") {
-                                    sh """
-                                        # Reset to upstream/master
-                                        git checkout ${BASE_BRANCH}
-                                        git fetch upstream
-                                        git reset --hard upstream/${BASE_BRANCH}
+                                    # Git tag
+                                    git tag ${TAG_NAME}
+                                    git push upstream --tags
 
-                                        # Git tag
-                                        git tag ${RELEASE_VERSION}
-                                        git push upstream --tags
-
-                                        # Env will replace params in Makefile.
-                                        make release-image
-                                    """
-                                }
-                            } else {
-                                echo 'Why choose no?'
+                                    # Env will replace params in Makefile.
+                                    make release-image RELEASE_VERSION=${TAG_NAME} OEM_PRODUCT_NAME=${PRODUCT_NAME}
+                                """
                             }
+                        } else {
+                            echo 'Why choose no?'
                         }
                     }
                 }
                 if (params.package) {
-                    if (params.oem && params.increment_release) {
-                        IMGAE_LIST_DIR = "oem-images-lists"
-                    } else {
-                        IMGAE_LIST_DIR = "images-lists"
-                    }
                     withCredentials([usernamePassword(credentialsId: "${RELEASE_CARGO_LOGIN}", passwordVariable: "RELEASE_CARGO_PASSWORD", usernameVariable: "RELEASE_CARGO_IP")]) {
                         stage("Sync images") {
                             withCredentials([usernamePassword(credentialsId: "${SOURCE_REGISTRY_CREDENTIAL_ID}", passwordVariable: "SOURCE_REGISTRY_PASSWORD", usernameVariable: "SOURCE_REGISTRY_USER")]) {
