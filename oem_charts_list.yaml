@@ -27,4 +27,7 @@ spec:
     resourcePaths:
       - release/labelgres.yaml
     targetPath: labeler
-
+  - repositoryFullName: caicloud/dataset
+    resourcePaths:
+      - release/dataset.yaml
+    targetPath: dataset

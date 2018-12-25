@@ -25,3 +25,4 @@ release/graphpipe-onnx:v1.0.1-py27-gpu
 release/graphpipe-onnx:v1.0.1-gpu
 release/labeler:v0.1.13
 release/labelme:v0.2.0
+release/git-server:2.8.3-rc0
