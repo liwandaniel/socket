@@ -1,12 +1,12 @@
 _config:
   _metadata:
-    description: logging-admin-v2.1.0
+    description: logging-admin
     name: logging-admin
     namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v2.1.0"
+    version: "v2.1.3"
   controllers:
   - containers:
     - env:
@@ -14,7 +14,7 @@ _config:
         value: cds-server
       - name: CDS_SERVER_PORT
         value: '9000'
-      image: '[[ registry_release ]]/logging-admin:v2.1.0'
+      image: '[[ registry_release ]]/logging-admin:v2.1.3'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 7800

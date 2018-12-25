@@ -1,19 +1,19 @@
 _config:
   _metadata:
-    description: notify-admin-v0.1.0
+    description: notify-admin
     name: notify-admin
     namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.0"
+    version: "v0.1.1"
   controllers:
   - containers:
     - args:
       - /entrypoint
       - --db-host=notify-admin-postgres
       - --db-auto-migrate=true
-      image: '[[ registry_release ]]/notify-admin:v0.1.0'
+      image: '[[ registry_release ]]/notify-admin:v0.1.1'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 8080

@@ -1,6 +1,6 @@
 _config:
   _metadata:
-    description: loadbalancer-controller-v0.4.0
+    description: loadbalancer-controller
     name: loadbalancer-controller
     namespace: kube-system
     template:
@@ -15,7 +15,7 @@ _config:
       - --proxy-nginx=[[ registry_library ]]/nginx-ingress-controller:0.15.0
       - --proxy-sidecar=[[ registry_release ]]/loadbalancer-provider-ingress:v0.4.2
       - --provider-ipvsdr=[[ registry_release ]]/loadbalancer-provider-ipvsdr:v0.4.2
-      image: '[[ registry_release ]]/loadbalancer-controller:v0.4.2'
+      image: '[[ registry_release ]]/loadbalancer-controller:v0.4.3'
       imagePullPolicy: IfNotPresent
       resources:
         limits:

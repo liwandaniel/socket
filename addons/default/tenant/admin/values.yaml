@@ -6,13 +6,13 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.2.0-alpha.0"
+    version: "v1.2.0-alpha.2"
   controllers:
   - containers:
     - env:
       - name: CDS_HOST
         value: cds-server:9000
-      image: '[[ registry_release ]]/tenant-admin:v1.2.0-alpha.0'
+      image: '[[ registry_release ]]/tenant-admin:v1.2.0-alpha.2'
       imagePullPolicy: IfNotPresent
     controller:
       replica: 1

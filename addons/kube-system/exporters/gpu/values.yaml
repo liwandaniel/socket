@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.4"
+    version: "v0.1.4-upgrade"
   controllers:
   - containers:
     - image: '[[ registry_release ]]/exporter-gpu:v0.1.4'
@@ -15,6 +15,7 @@ _config:
       - name: docker-sock
         path: /var/run/docker.sock
         readonly: true
+        propagation: HostToContainer
       ports:
       - port: 8080
         protocol: TCP

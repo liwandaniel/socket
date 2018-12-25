@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.3.3"
+    version: "v4.1.1-upgrade"
   controllers:
   - containers:
     - env:
@@ -16,8 +16,6 @@ _config:
         value: 'true'
       - name: GF_AUTH_ANONYMOUS_ORG_ROLE
         value: Admin
-      - name: GF_SERVER_ROOT_URL
-        value: /api/v1/namespaces/kube-system/services/monitoring-grafana:80/proxy
       image: '[[ registry_release ]]/grafana:4.1.1'
       imagePullPolicy: IfNotPresent
       mounts:
@@ -37,10 +35,11 @@ _config:
     services:
     - name: monitoring-grafana
       ports:
-      - port: 80
+      - nodePort: 32102
+        port: 3000
         protocol: TCP
         targetPort: 3000
-      type: ClusterIP
+      type: NodePort
     type: Deployment
     volumes:
     - name: grafana-persistent-storage

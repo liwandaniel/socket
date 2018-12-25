@@ -6,17 +6,15 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.2.0-alpha.4"
+    version: "v1.2.0-alpha.6-asus.2"
   controllers:
   - containers:
     - env:
-      - name: ENV_LISTEN_PORT
+      - name: SERVER_PORT
         value: '2233'
-      - name: ENV_LOG_LEVEL
-        value: info
-      - name: ENV_MONGO_ADDR
+      - name: SERVER_ENV_MONGO_ADDR
         value: '[[ platform_mongo_host ]]'
-      image: '[[ registry_release ]]/cluster-admin:v1.2.0-alpha.4'
+      image: '[[ registry_release ]]/cluster-admin:v1.2.0-alpha.6-asus.2'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 2233

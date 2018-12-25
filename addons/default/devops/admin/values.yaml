@@ -1,12 +1,12 @@
 _config:
   _metadata:
-    description: devops-admin-v0.4.0-beta.2
+    description: devops-admin
     name: devops-admin
     namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.5.0-alpha.1"
+    version: "v0.5.0-beta.3"
   controllers:
   - containers:
     - env:
@@ -22,7 +22,7 @@ _config:
         value: cargo-admin:8080
       - name: TENANT_ADMIN_SERVER
         value: tenant-admin:8080
-      image: '[[ registry_release ]]/devops-admin:v0.5.0-beta.1'
+      image: '[[ registry_release ]]/devops-admin:v0.5.0-beta.3'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 7088

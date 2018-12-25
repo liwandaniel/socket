@@ -6,13 +6,14 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "0.0.1"
+    version: "v0.0.2"
   controllers:
   - containers:
-    - image: '[[ registry_release ]]/insight-logging-agent:v0.0.1'
+    - image: '[[ registry_release ]]/insight-logging-agent:v0.0.2'
       mounts: 
       - name: kubelet 
         path: /var/lib/kubelet
+        propagation: HostToContainer
       args:
       - /agent
       - --esURL=http://elasticsearch:9200

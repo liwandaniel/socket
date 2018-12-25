@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "9.5.8"
+    version: "9.5.8-upgrade"
   controllers:
   - containers:
     - env:

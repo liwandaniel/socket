@@ -5,12 +5,24 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.0.2"
+    version: "v0.0.3-asus"
   controllers:
   - containers:
     - name: mongo
       image: '[[ registry_release ]]/mongo:3.6.5'
-      imagePullPolicy: Always
+      probe:
+        liveness:
+          threshold:
+            success: 1
+            failure: 3
+          delay: 15
+          period: 20
+          handler:
+            type: TCP
+            method:
+              port: 27017
+          timeout: 1
+      imagePullPolicy: IfNotPresent
       args:
       - mongod
       - "--replSet"
@@ -26,20 +38,8 @@ _config:
       - port: 27017
         protocol: TCP
     - name: mongo-sidecar
-      image: '[[ registry_release ]]/mongo-k8s-sidecar:v0.0.2'
-      probe:
-        liveness:
-          threshold:
-            success: 1
-            failure: 3
-          delay: 15
-          period: 20
-          handler:
-            type: TCP
-            method:
-              port: 27017
-          timeout: 1
-      imagePullPolicy: Always
+      image: '[[ registry_release ]]/mongo-k8s-sidecar:v0.0.3'
+      imagePullPolicy: IfNotPresent
       env:
       - name: MONGO_SIDECAR_POD_LABELS
         value: "controller.caicloud.io/release=infra-mongo"
@@ -59,7 +59,7 @@ _config:
       labels:
         k8s-app: mongo
     controller:
-      replica: 3
+      replica: 1
       domain: mgo-cluster
     type: StatefulSet
     volumes:

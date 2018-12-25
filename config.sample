@@ -1,0 +1,13 @@
+# 修改官方为授权的产品许可证的公钥和令牌 (必填)
+LICENSE_PKEY=""
+
+LICENSE_TOKEN=""
+
+# 选择安装全量的compass或者mini-compass, 默认为完整的compass, 如果PLATFORM_TYPE 为 MINI，则安装mini-compass
+PLATFORM_TYPE="FULL"
+
+# 配置单租户模式还是多租户模式，默认 enabled 为多租户，disabled 单租户
+tenantMode="enabled"
+
+# 默认从system-info中获取，如果config此处配置了systemEndpoint，就会使用此处的值
+systemEndpoint=""

@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.1.0-alpha.1"
+    version: "v1.1.0-alpha.7"
   controllers:
   - containers:
     - env:
@@ -17,14 +17,14 @@ _config:
           key: "oidcIssuer"
       - name: OIDC_CLIENT_ID
         value: caicloud
-      image: '[[ registry_release ]]/hodor:v1.1.0-alpha.1'
+      image: '[[ registry_release ]]/hodor:v1.1.0-alpha.7'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: hodor
         path: /app/etc/config.yaml
         subpath: config.yaml
     controller:
-      replica: 3
+      replica: 1
     pod:
       annotations:
       - key: prometheus.io/port

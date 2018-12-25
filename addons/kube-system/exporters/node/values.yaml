@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.14.0"
+    version: "v0.14.0-upgrade"
   controllers:
   - containers:
     - args:
@@ -22,12 +22,15 @@ _config:
       - name: procfs
         path: /host/proc
         readonly: true
+        propagation: HostToContainer
       - name: sysfs
         path: /host/sys
         readonly: true
+        propagation: HostToContainer
       - name: rootfs
         path: /rootfs
         readonly: true
+        propagation: HostToContainer
       ports:
       - hostPort: 9100
         port: 9100

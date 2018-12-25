@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v2.0.1"
+    version: "v2.0.1-upgrade"
   controllers:
   - containers:
     - env:
@@ -19,14 +19,17 @@ _config:
       mounts:
       - name: varlog
         path: /var/log
+        propagation: HostToContainer
       - name: varlibdockercontainers
         path: /var/lib/docker/containers
         readonly: true
+        propagation: HostToContainer
       - name: libsystemddir
         path: /host/lib
         readonly: true
       - name: config-volume
         path: /etc/fluent/config.d
+        propagation: HostToContainer
       ports:
       - port: 24231
         protocol: TCP

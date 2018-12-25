@@ -1,15 +1,15 @@
 _config:
   _metadata:
-    description: insight-mutating-webhook-0.0.1
+    description: insight-mutating-webhook
     name: logging-hooks
     namespace: kube-system
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "0.0.1"
+    version: "v0.0.2"
   controllers:
   - containers:
-    - image: '[[ registry_release ]]/insight-mutating-webhook:v0.0.1'
+    - image: '[[ registry_release ]]/insight-mutating-webhook:v0.0.3'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 443

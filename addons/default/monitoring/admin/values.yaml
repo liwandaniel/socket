@@ -1,12 +1,12 @@
 _config:
   _metadata:
-    description: monitoring-admin-v0.5.8
+    description: monitoring-admin
     name: monitoring-admin
     namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.5.13"
+    version: "v0.5.15"
   controllers:
   - containers:
     - args:
@@ -17,7 +17,7 @@ _config:
         value: '[[ platform_mongo_host ]]'
       - name: CLUSTER_ADMIN
         value: cds-server:9000
-      image: '[[ registry_release ]]/monitoring-admin:v0.5.13'
+      image: '[[ registry_release ]]/monitoring-admin:v0.5.15'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 8899

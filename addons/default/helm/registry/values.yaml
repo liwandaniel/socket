@@ -1,15 +1,15 @@
 _config:
   _metadata:
-    description: helm-registry-v0.2.0
+    description: helm-registry
     name: helm-registry
     namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.2.5"
+    version: "v0.2.2-experiment"
   controllers:
   - containers:
-    - image: '[[ registry_release ]]/helm-registry:v0.2.0'
+    - image: '[[ registry_release ]]/helm-registry:v0.2.2-experiment'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: charts-storage
@@ -34,7 +34,7 @@ _config:
         value: /data/system-tenant_library
       - name: IMAGE_DOMAIN
         value: '[[ cargo_registry ]]'
-      image: '[[ registry_release ]]/charts:v1.2.5'
+      image: '[[ registry_release ]]/charts:v1.2.7'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: charts-storage
