@@ -1,0 +1,62 @@
+_config:
+  _metadata:
+    name: dataset
+  controllers:
+  - type: Deployment
+    controller:
+      replica: 1
+    containers:
+    - name: dataset
+      image: '[[ registry_release ]]/clever-dataset:99957a2'
+      imagePullPolicy: Always
+      resources:
+        requests:
+          cpu: "1"
+      mounts:
+      - name: dataset
+        path: "/datasets"
+      - name: model
+        path: "/models"
+      - name: time
+        path: "/etc/localtime"
+    - name: gitserver
+      image: '[[ registry_release ]]/git-server:2.8.3-rc0'
+      imagePullPolicy: Always
+      resources:
+        requests:
+          cpu: 500m
+      mounts:
+      - name: dataset
+        path: "/datasets"
+      - name: model
+        path: "/models"
+      - name: time
+        path: "/etc/localtime"
+    volumes:
+    - name: dataset
+      type: Static
+      source:
+        target: clever-dataset
+    - name: model
+      type: Static
+      source:
+        target: clever-model
+    - name: time
+      type: HostPath
+      source:
+        path: "/etc/localtime"
+    services:
+    - name: dataset
+      type: NodePort
+      ports:
+      - protocol: HTTP
+        targetPort: 8080                
+        port: 8080
+        nodePort: 30032
+    - name: gitserver
+      type: NodePort
+      ports:
+      - protocol: HTTP
+        targetPort: 22 
+        port: 22
+        nodePort: 30696

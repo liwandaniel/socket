@@ -46,7 +46,7 @@ _config:
     - name: time
       type: HostPath
       source:
-        path: "/etc/localtime"
+        path: "/usr/share/zoneinfo/Asia/Shanghai"
     services:
     - name: droppy
       type: NodePort

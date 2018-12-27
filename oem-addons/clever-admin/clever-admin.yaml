@@ -5,14 +5,14 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.0.4"
+    version: "v0.0.6"
   controllers:
   - type: Deployment
     controller:
       replica: 1
     containers:
     - name: clever-admin
-      image: '[[ registry_release ]]/clever-admin:v0.0.4'
+      image: '[[ registry_release ]]/clever-admin:v0.0.6'
       resources:
         requests:
           cpu: 100m
@@ -22,18 +22,18 @@ _config:
         value: http://cluster-admin:2233
       - name: APP_ADMIN_ENDPOINT
         value: http://app-admin:7799
+      - name: APP_HOST
+        value: '[[ kube_apiserver_endpoint_ip ]]'
       - name: CONFIG_MAP_PATH
         value: /etc/clever-admin/
       - name: DROPPY_IMAGE
         value: '[[ registry_release ]]/caicloud-droppy:v10.1.1'
       - name: FILESERVER_IMAGE
         value: '[[ registry_release ]]/clever-fileserver:v1.4.2'
-      - name: APP_HOST
-        value: '[[ kube_apiserver_endpoint_ip ]]'
       - name: RESOLVER_IMAGE
-        value: '[[ registry_release ]]/clever-admin:v0.0.4'
+        value: '[[ registry_release ]]/clever-resolver:v0.0.6'
       - name: CONVERTER_IMAGE
-        value: '[[ registry_release ]]/clever-admin:v0.0.4'
+        value: '[[ registry_release ]]/clever-converter:v0.0.6'
       - name: DROPPY_REQUEST_CPU
         value: '500m'
       - name: DROPPY_REQUEST_MEMORY
