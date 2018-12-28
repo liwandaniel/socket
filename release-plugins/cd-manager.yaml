@@ -3,14 +3,14 @@ metadata:
   alias: 持续部署
 spec:
   class: cd-manager
-  version: v0.3.0-alpha.2
+  version: v0.3.0-beta
   compassRequirement: ">=v2.7.3"
   description: 持续部署
   note: 持续部署
   author: caicloud.io
   service:
     port: 8080
-    image: cargo-infra.caicloud.xyz/devops_release/compass-plugins-cd-manager:v0.3.0-alpha.2
+    image: cargo-infra.caicloud.xyz/devops_release/compass-plugins-cd-manager:v0.3.0-beta
     configs:
       envs:
       - name: SERVER_MONGO_HOST
