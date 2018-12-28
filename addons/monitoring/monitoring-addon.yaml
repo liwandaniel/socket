@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.5.23-beta.3"
+    version: "v0.5.23"
   controllers:
   - containers:
     - env:
@@ -22,7 +22,7 @@ _config:
         value: default
       - name: ENV_APP_LABEL_KEY
         value: k8s-app
-      image: '[[ registry_release ]]/monitoring-addon:v0.5.23-beta.3'
+      image: '[[ registry_release ]]/monitoring-addon:v0.5.23'
       imagePullPolicy: Always
       ports:
       - port: 6666

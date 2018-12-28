@@ -6,10 +6,10 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.0.8"
+    version: "v0.0.9"
   controllers:
   - containers:
-    - image: '[[ registry_release ]]/compass-admin:v0.0.8'
+    - image: '[[ registry_release ]]/compass-admin:v0.0.9'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 8080

@@ -6,10 +6,12 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: 'v3.4.3'
+    version: 'v3.4.4'
   controllers:
     - containers:
         - env:
+            - name: NODE_ENV
+              value: 'production'
             - name: GRAFANA_PORT
               value: '6104'
             - name: MONGODB_URL
@@ -103,7 +105,7 @@ _config:
               value: '[[ platform_release_time ]]'
             - name: TUTORIAL_LINK
               value: 'tutorial'
-          image: '[[ registry_release ]]/console-web:v3.4.3'
+          image: '[[ registry_release ]]/console-web:v3.4.4'
           imagePullPolicy: IfNotPresent
           ports:
             - port: 3000

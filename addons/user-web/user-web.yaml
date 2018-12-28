@@ -6,10 +6,12 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.3.24-rc02.2"
+    version: "v0.3.24-rc03.1"
   controllers:
   - containers:
     - env:
+      - name: NODE_ENV
+        value: 'production'
       - name: NODE_TLS_REJECT_UNAUTHORIZED
         value: '0'
       - name: GRAFANA_PORT
@@ -104,7 +106,7 @@ _config:
         value: '[[ platform_release_version ]]'
       - name: PRODUCT_RELEASE_TIME
         value: '[[ platform_release_time ]]'
-      image: '[[ registry_release ]]/user-web:v0.3.24-rc02.2'
+      image: '[[ registry_release ]]/user-web:v0.3.24-rc03.1'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 3006
