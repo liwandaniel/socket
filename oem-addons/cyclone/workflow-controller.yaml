@@ -28,7 +28,7 @@ _config:
               "git-resolver": "[[ registry_release ]]/cyclone-resolver-git:0.9.1",
               "image-resolver": "[[ registry_release ]]/cyclone-resolver-image:0.9.1",
               "kv-resolver": "[[ registry_release ]]/cyclone-resolver-kv:0.9.1",
-              "coordinator": "[[ registry_release ]]/cyclone-workflow-coordinator:0.9.1",
+              "coordinator": "[[ registry_release ]]/cyclone-coordiantor:0.9.1",
               "gc": "[[ registry_library ]]/alpine:3.7"
             },
             "logging": {
