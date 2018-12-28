@@ -3,7 +3,7 @@ metadata:
   description: A set of files to collect.
 spec:
 - repositoryFullName: caicloud/clever-admin
-  tag: v0.0.6
+  tag: 0.0.8
   resourcePaths:
   - release/clever-admin.yaml
   - release/fileserver.yaml
@@ -11,7 +11,7 @@ spec:
   - release/pytorch-operator.yaml
   targetPath: clever-admin
 - repositoryFullName: caicloud/clever-web
-  tag: v3.4.9
+  tag: v3.5.7
   resourcePaths:
   - release/clever-web.yaml
   targetPath: clever-web
