@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: am-minion
+  labels:
+    caicloud-app: am-minion
+spec:
+  ports:
+  - port: 8000
+    nodePort: 30999
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    caicloud-app: am-minion
+  type: NodePort

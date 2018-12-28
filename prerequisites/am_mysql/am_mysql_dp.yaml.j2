@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: am-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      caicloud-app: am-mysql
+  template:
+    metadata:
+      labels:
+        caicloud-app: am-mysql
+    spec:
+      containers:
+      - name: am-mysql
+        image: [[ registry_release ]]/am_mysql:v2.0
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_DATABASE
+          value: "am"
+        - name: MYSQL_ROOT_PASSWORD
+          value: "my-secret-pw"
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: am-mysql-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: am-mysql-storage
+        persistentVolumeClaim:
+          claimName: am-mysql-data

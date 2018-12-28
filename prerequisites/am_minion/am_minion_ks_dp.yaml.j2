@@ -1,0 +1,57 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: am-minion
+  namespace: 'kube-system'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      caicloud-app: am-minion
+  template:
+    metadata:
+      labels:
+        caicloud-app: am-minion
+    spec:
+      containers:
+      - name: am-minion
+        image: [[ registry_release ]]/am_minion:v0.0.4
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: SECRET_KEY
+          value: 'q*(7(ljz=i61)f_^6vu42u0i1cl4-txz@h6h79kn%c49w$j=n9'
+        - name: MASTER_HOST
+          value: "[[ addon_master_ip ]]"
+        - name: MASTER_PORT
+          value: "[[ addon_master_port ]]"
+        - name: NAMESPACE
+          value: 'kube-system'
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - mountPath: /pangolin/am_minion/chart_template
+          subPath: templates/1.0.0
+          name: data
+      initContainers:
+      - name: check-master
+        image: [[ registry_release ]]/am_minion:v0.0.4
+        command: ["/bin/sh", "-c", "until /pangolin/kubectl get pods -n default | grep am-master | grep Running; do echo waiting for master to be ready; sleep 5; done;"]
+      - env:
+        - name: OUTPUT_DIR
+          value: /data/templates
+        image: [[ registry_release ]]/templates:v1.2.7
+        imagePullPolicy: IfNotPresent
+        name: template
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+        - mountPath: /data
+          name: data
+      volumes:
+      - name: "data"
+        emptyDir: {}

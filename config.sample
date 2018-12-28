@@ -1,10 +1,6 @@
-# 修改官方为授权的产品许可证的公钥和令牌 (必填)
-LICENSE_PKEY=""
-
-LICENSE_TOKEN=""
-
-# 选择安装全量的compass或者mini-compass, 默认为完整的compass, 如果PLATFORM_TYPE 为 MINI，则安装mini-compass
-PLATFORM_TYPE="FULL"
+# 标准产品，可选择安装 FULL-COMPASS 和 MINI-COMPASS，选择填写 "compass.yaml" 和 "mini-compass.yaml"
+# oem 产品，则填写 oem.yaml
+COMPONENT_LIST="compass.yaml"
 
 # 配置单租户模式还是多租户模式，默认 enabled 为多租户，disabled 单租户
 tenantMode="enabled"
