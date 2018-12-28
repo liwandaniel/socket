@@ -114,8 +114,8 @@ case $CHOICE in
   hotfix )
     echo -e "$GREEN_COL start making hotfixes $NORMAL_COL"
     HOTFIX_YAML_PATH=$2
-    # delete the "/" end of path
-    HOTFIX_YAML_PATH=`echo ${HOTFIX_YAML_PATH%*/}`
+    # delete the "/" end of path and replace "//" to "/"
+    HOTFIX_YAML_PATH=`echo ${HOTFIX_YAML_PATH%*/} | sed 's#//#/#g'`
     # get compass version by parsing the path
     PRODUCT_VERSION=`echo $HOTFIX_YAML_PATH | grep -o -e "hotfixes/.*/" | awk -F '/' '{print$2}'`
     # source env.sh
@@ -133,8 +133,8 @@ case $CHOICE in
   upload )
     echo -e "$GREEN_COL start uploading $NORMAL_COL"
     UPLOAD_OSS_PATH=$2
-    # delete the "/" end of path
-    UPLOAD_OSS_PATH=`echo ${UPLOAD_OSS_PATH%*/}`
+    # delete the "/" at the begin and end of path
+    UPLOAD_OSS_PATH=`echo ${UPLOAD_OSS_PATH%*/} | sed 's#^/##g'`
     if [[ "`ls -A ${TARGET_PATH} | grep ${HOTFIX_LISTS_SUFFIX}`" = "" ]]; then
         echo -e "$RED_COL Getting hotfix packages failed $NORMAL_COL"
     else

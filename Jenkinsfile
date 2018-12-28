@@ -124,9 +124,8 @@ spec:
                         TAG_NAME = "${RELEASE_VERSION}"
                         IMGAE_LIST_DIR = "images-lists"
                 }
-                if (params.collect) {
-                    stage("Collect-Charts") {
-                        // bool params defined in Jenkins pipeline setting.
+                if (params.collect || params.release) {
+                    stage("Init Repo") {
                         withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIAL_ID}", passwordVariable: "GITHUB_TOKEN", usernameVariable: "GITHUB_USERNAME")]) {
                             sh """
                                 # Prepare GitHub OAuth Token
@@ -136,6 +135,15 @@ spec:
                                 git remote remove origin
                                 git remote add upstream https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/caicloud/product-release
                                 git remote add origin https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/${GITHUB_USERNAME}/product-release
+                            """
+                        }
+                    }
+                }
+                if (params.collect) {
+                    stage("Collect-Charts") {
+                        // bool params defined in Jenkins pipeline setting.
+                        withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIAL_ID}", passwordVariable: "GITHUB_TOKEN", usernameVariable: "GITHUB_USERNAME")]) {
+                            sh """
                                 git fetch upstream
                                 git reset --hard upstream/${BASE_BRANCH}
 
@@ -206,10 +214,10 @@ spec:
                             docker.withRegistry("https://${DOCKER_REGISTRY}", "${DOCKER_REGISTRY_CREDENTIAL_ID}") {
                                 sh """
                                     # Reset to upstream/master
-                                    git checkout ${BASE_BRANCH}
                                     git fetch upstream
                                     git reset --hard upstream/${BASE_BRANCH}
 
+                                    git checkout ${BASE_BRANCH}
                                     # Git tag
                                     git tag ${TAG_NAME}
                                     git push upstream --tags

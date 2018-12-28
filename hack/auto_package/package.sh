@@ -56,6 +56,8 @@ case $INPUT in
     echo -e "$GREEN_COL starting uploading $NORMAL_COL"
     OSS_PATH=$5
     OSS_PATH=${OSS_PATH:=auto}
+    # delete the "/" at the begin and end of path
+    OSS_PATH=`echo ${OSS_PATH%*/}` | sed 's#^/##g'
     cd ${CARGO_DIR} && tar cvf ${PRODUCT_NAME}-component-${RELEASE_VERSION}.tar.gz ${PRODUCT_NAME}-component-${RELEASE_VERSION}
     echo -e "$GREEN_COL will upload to ${OSS_DIR}/${OSS_PATH}/${PRODUCT_NAME}-component-${RELEASE_VERSION}.tar.gz $NORMAL_COL"
     /root/ossutil cp -ru ${CARGO_DIR}/${PRODUCT_NAME}-component-${RELEASE_VERSION}.tar.gz ${OSS_DIR}/${OSS_PATH}/${PRODUCT_NAME}-component-${RELEASE_VERSION}.tar.gz
