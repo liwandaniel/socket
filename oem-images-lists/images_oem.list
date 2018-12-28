@@ -1,3 +1,5 @@
+release/app-admin:v0.3.21-hotfix-clever-v1.3.0-rc03
+release/templates:v1.2.14
 release/clever-admin:0.0.8
 release/clever-resolver:0.0.8
 release/clever-converter:0.0.8
