@@ -1,13 +1,19 @@
 _config:
   _metadata:
+    description: dataset
     name: dataset
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: 'v0.0.1-rc.3'
   controllers:
   - type: Deployment
     controller:
       replica: 1
     containers:
     - name: dataset
-      image: '[[ registry_release ]]/clever-dataset:99957a2'
+      image: '[[ registry_release ]]/clever-dataset:v0.0.1-rc.3'
       imagePullPolicy: Always
       resources:
         requests:

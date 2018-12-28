@@ -1,7 +1,7 @@
 ---
 metadata:
   name: clever
-  version: 1.2.0
+  version: 1.3.0
   description: clever deployment config
 spec:
   systemAddons:
@@ -23,3 +23,9 @@ spec:
     description: Postgres for label
   - name: user-web
     description: User web
+  - name: dataset
+    description: dataset
+  - name: native-cyclone-server
+    description: native cyclone server
+  - name: cyclone-workflow-controller
+    description: cyclone workflow controller
