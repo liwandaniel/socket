@@ -1,8 +1,0 @@
-apiVersion: clever.caicloud.io/v1alpha1
-kind: Template
-metadata:
-  name: serving
-spec:
-  properties:
-    framework: serving
-    type: serving
