@@ -8,7 +8,7 @@ release/clever-fileserver:v1.4.2
 release/caicloud-droppy:v10.1.1
 release/pytorch-operator:v1alpha2-v1.2.0
 release/tf-operator:v1alpha2-v1.2.0
-release/clever-web:v3.5.7
+release/clever-web:v3.5.8
 release/native-cyclone-server:0.9.1
 release/cyclone-workflow-controller:0.9.1
 release/cyclone-resolver-git:0.9.1

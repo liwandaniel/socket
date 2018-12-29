@@ -25,7 +25,7 @@ spec:
     description: User web
   - name: dataset
     description: dataset
-  - name: native-cyclone-server
+  - name: native-cyclone
     description: native cyclone server
   - name: cyclone-workflow-controller
     description: cyclone workflow controller
