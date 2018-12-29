@@ -183,7 +183,7 @@ spec:
                                     # Collect Charts
                                     make collect-charts ADDONS_PATH=./${ADDONS_PATH} GITHUB_TOKEN_PATH=./token TARGET_COLLECT_TAG_PATH=./${RELEASE_CAHRTS_FILE}
                                     # Update images
-                                    make convert-images ADDONS_PATH=./${ADDONS_PATH} TARGET_FILE=./${TARGET_IMGAE_FILE}
+                                    make convert-images ADDONS_PATH=./${ADDONS_PATH} TARGET_IMGAES_LIST_PATH=./${TARGET_IMGAE_FILE}
 
                                     # Make commit.
                                     git add ${ADDONS_PATH} ${TARGET_IMGAE_FILE}
