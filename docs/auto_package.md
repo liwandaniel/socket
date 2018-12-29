@@ -72,7 +72,7 @@ make build-image JENKINS_VERSION=v0.0.x
 
 #### 配置 cargo 节点的 oss
 
-参考 [oss 配置文档](https://forum.caicloud.xyz/t/topic/100)
+参考 [OSS 配置文档](https://docs.google.com/document/d/1n-zJxQ-v--6ohGyNotkGpkBiVfhyOqfuW-fUeIOlwzE/edit)
 
 - 将 ossutil 执行文件和配置文件放置在 `/root` 目录下
 

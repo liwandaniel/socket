@@ -120,7 +120,7 @@ pull requests，待确认 pull requests 之后，将 pull requests merge，开�
 
 Step 1, 配置 oss 上传的工具，确保 `~` 目录，即 `/root` 下配置了正确的上传工具
 
-参考 [OSS 使用文档](https://forum.caicloud.xyz/t/topic/100)，相关问题咨询 @ijumps
+参考 [OSS 配置文档](https://docs.google.com/document/d/1n-zJxQ-v--6ohGyNotkGpkBiVfhyOqfuW-fUeIOlwzE/edit)
 
 Step 2， 执行以下命令：
 

@@ -107,7 +107,7 @@ OEM 研发过程中，可能需要对主线版本 Compass 组件（即 [addons](
 
 ## 上传发布包
 
-参考 [OSS 使用文档](https://forum.caicloud.xyz/t/topic/100)，相关问题咨询 @ijumps
+参考 [OSS 配置文档](https://docs.google.com/document/d/1n-zJxQ-v--6ohGyNotkGpkBiVfhyOqfuW-fUeIOlwzE/edit)
 
 ## 产品部署
 
