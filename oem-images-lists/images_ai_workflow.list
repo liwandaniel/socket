@@ -15,6 +15,7 @@ release/pytorch:v0.4.1-py27-gpu
 release/pytorch:v0.4.1-py27
 release/anaconda:v5.2.0
 release/anaconda:v5.2.0-gpu
+release/anaconda-lab:v5.2.0
 release/tf-operator:v1alpha2-v1.2.0
 release/pytorch-operator:v1alpha2-v1.2.0
 release/graphpipe-onnx:v1.0.1-initcontainer

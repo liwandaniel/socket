@@ -77,3 +77,29 @@ spec:
     cpu: "2"
     gpu: "1"
     memory: 4096Mi
+
+---
+
+apiVersion: clever.caicloud.io/v1alpha1
+kind: Flavor
+metadata:
+  name: jupyter
+spec:
+  images:
+  - image: '[[ registry_release ]]/anaconda-lab:v5.2.0'
+    name: jupyterLab
+  - image: '[[ registry_release ]]/anaconda:v5.2.0'
+    name: jupyterNotebook
+  resources:
+  - cpu: "1"
+    gpu: "0"
+    memory: 1024Mi
+    name: basic
+  - cpu: "2"
+    gpu: "0"
+    memory: 4096Mi
+    name: standard
+  - cpu: "2"
+    gpu: "1"
+    memory: 4096Mi
+    name: advanced
