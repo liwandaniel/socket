@@ -65,7 +65,7 @@ function makeHotfix(){
         mkdir "${TARGET_PATH}/${HOTFIX_FULL_NAME}"
         cp "${1}" "${TARGET_PATH}/${HOTFIX_FULL_NAME}"
         # get all images from yaml
-        images=$( cat "${1}" | grep -e "\[\[ registry_release \]\].*" | grep -o "/.*" | sed $'s/\'//g' | sed $'s/\///g')
+        images=$( cat "${1}" | grep -e "\[\[ registry_release \]\].*" | grep -o "/.*" | sed "s#'##g;s#/##g;s#,##g" | sed 's#"##g')
         for image in ${images[@]}
         do
             FULL_IMAGE="${SOURCE_REGISTRY}/${SOURCE_PROJECT}/${image}"
