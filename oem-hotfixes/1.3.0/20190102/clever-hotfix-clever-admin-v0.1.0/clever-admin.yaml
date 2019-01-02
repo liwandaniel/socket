@@ -1,0 +1,130 @@
+_config:
+  _metadata:
+    name: clever-admin
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.1.0"
+  controllers:
+  - type: Deployment
+    controller:
+      replica: 1
+    containers:
+    - name: clever-admin
+      image: '[[ registry_release ]]/clever-admin:v0.1.0'
+      resources:
+        requests:
+          cpu: 100m
+          memory: 100Mi
+      env:
+      - name: CLUSTER_ADMIN_ENDPOINT
+        value: http://cluster-admin:2233
+      - name: APP_ADMIN_ENDPOINT
+        value: http://app-admin:7799
+      - name: APP_HOST
+        value: '[[ kube_apiserver_endpoint_ip ]]'
+      - name: CONFIG_MAP_PATH
+        value: /etc/clever-admin/
+      - name: DROPPY_IMAGE
+        value: '[[ registry_release ]]/caicloud-droppy:v10.1.1'
+      - name: FILESERVER_IMAGE
+        value: '[[ registry_release ]]/clever-fileserver:v1.4.2'
+      - name: RESOLVER_IMAGE
+        value: '[[ registry_release ]]/clever-resolver:v0.1.0'
+      - name: CONVERTER_IMAGE
+        value: '[[ registry_release ]]/clever-converter:v0.1.0'
+      - name: DROPPY_REQUEST_CPU
+        value: '500m'
+      - name: DROPPY_REQUEST_MEMORY
+        value: '500Mi'
+      - name: SAVED_MODEL_CLI
+        value: '[[ registry_release ]]/saved_model_cli:latest'
+      mounts:
+      - name: clever-admin-config
+        path: /etc/clever-admin
+    services:
+    - name: clever-admin
+      type: NodePort
+      ports:
+      - protocol: HTTP
+        targetPort: 7070
+        port: 7070
+    volumes:
+    - name: clever-admin-config
+      source:
+        items:
+        - key: repository
+          path: repository
+        - key: serving
+          path: serving
+        - key: visualization
+          path: visualization
+        - key: others
+          path: others
+        target: clever-admin-config
+      type: Config
+    configs:
+    - name: clever-admin-config
+      data:
+      - key: repository
+        value: '[[ registry_release ]]'
+      - key: serving
+        value: |
+          - name: tensorflow
+            resources:
+              - name: basic
+                cpu: 1
+                gpu: 0
+                memory: 1024Mi
+              - name: standard
+                cpu: 2
+                gpu: 1
+                memory: 2048Mi
+            images:
+              - name: TFServing
+                path: tensorflow-serving:1.12.0
+          - name: onnx
+            resources:
+              - name: basic
+                cpu: 1
+                gpu: 0
+                memory: 1024Mi
+              - name: standard
+                cpu: 2
+                gpu: 1
+                memory: 2048Mi
+            images:
+              - name: OnnxServing-Py36
+                path: graphpipe-onnx:v1.0.1
+              - name: OnnxServing-Py27
+                path: graphpipe-onnx:v1.0.1-py27
+      - key: visualization
+        value: |
+          - name: tensorboard
+            resources:
+            - name: basic
+              cpu: 500m
+              gpu: 0
+              memory: 512Mi
+            - name: standard
+              cpu: 1000m
+              gpu: 0
+              memory: 1024Mi
+            images:
+              - name: TensorBoard
+                path: tensorflow:v1.9.0-py36
+      - key: others
+        value: |
+          - name: labelme
+            images:
+              - name: Labelme
+                path: labelme:v0.2.0
+          - name: labeler
+            images:
+              - name: Labeler
+                path: labeler:v0.1.13
+          - name: thumbnails
+            images:
+              - name: Thumbnails
+                path: clever-fileserver:v1.4.2
