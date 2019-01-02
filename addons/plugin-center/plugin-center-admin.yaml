@@ -34,7 +34,7 @@ _config:
       mounts:
       - name: preload
         path: /data
-      image: '[[ registry_release ]]/compass-plugins-manifest:v0.1.0.alpha.1'
+      image: '[[ registry_release ]]/compass-plugins-manifest:v0.1.0.alpha.2'
       imagePullPolicy: IfNotPresent
     controller:
       replica: 1

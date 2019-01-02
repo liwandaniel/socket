@@ -6,10 +6,10 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v2.2.0"
+    version: "v2.2.1"
   controllers:
   - containers:
-    - image: '[[ registry_release ]]/logging-admin:v2.2.0'
+    - image: '[[ registry_release ]]/logging-admin:v2.2.1'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 7800
