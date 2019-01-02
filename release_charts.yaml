@@ -36,7 +36,7 @@ spec:
 - repositoryFullName: caicloud/charts
   tag: v1.2.20
 - repositoryFullName: caicloud/compass-plugins
-  tag: v0.1.0.alpha.1
+  tag: v0.1.0.alpha.2
 - repositoryFullName: caicloud/cargo-admin
   tag: v0.5.4-beta
   resourcePaths:
@@ -70,7 +70,7 @@ spec:
   - release/config-reference.yaml
   targetPath: config
 - repositoryFullName: caicloud/console-web
-  tag: v3.4.4
+  tag: v3.4.6
   resourcePaths:
   - release/console-web.yaml
   - release/console-web-redis.yaml
@@ -97,7 +97,7 @@ spec:
   - release/dex-cauth.yaml
   targetPath: dex
 - repositoryFullName: caicloud/hodor
-  tag: v1.1.8
+  tag: v1.1.9
   resourcePaths:
   - release/hodor-server.yaml
   targetPath: hodor-server
@@ -130,7 +130,7 @@ spec:
 - repositoryFullName: caicloud/loadbalancer-provider
   tag: v0.4.6
 - repositoryFullName: caicloud/logging-admin
-  tag: v2.2.0
+  tag: v2.2.1
   resourcePaths:
   - release/logging-admin.yaml
   - release/logging-processor.yaml
@@ -229,7 +229,7 @@ spec:
   - release/microservice-controller.yaml
   targetPath: microservice
 - repositoryFullName: caicloud/gitbook-tutorial
-  tag: v1.0.0
+  tag: v1.0.3
   resourcePaths:
   - release/tutorial.yaml
   targetPath: tutorial
