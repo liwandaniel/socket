@@ -6,13 +6,13 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.4"
+    version: "v0.1.5"
   controllers:
   - containers:
     - command:
       - /eventer
       - --v=3
-      image: '[[ registry_release ]]/eventer:v0.1.4'
+      image: '[[ registry_release ]]/eventer:v0.1.5'
       imagePullPolicy: IfNotPresent
       env:
       - name: CLUSTER_NAME

@@ -6,13 +6,17 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.0.3"
+    version: "cps-v2.7.3-2"
   controllers:
   - containers:
     - env:
       - name: PRODUCTION
         value: 'compass'
-      image: '[[ registry_release ]]/tutorial:v1.0.3'
+      - name: EXTRA_BASE_PATH
+        value: '/tutorial'
+      - name: EXTRA_HOME_PAGE
+        value: '/product-introduction/product_description'
+      image: '[[ registry_release ]]/tutorial:cps-v2.7.3-2'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 4000
