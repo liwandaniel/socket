@@ -3,7 +3,7 @@ metadata:
   description: A set of files to collect.
 spec:
 - repositoryFullName: caicloud/app-admin
-  tag: v0.3.29
+  tag: v0.3.30
   resourcePaths:
   - release/app-admin.yaml
   targetPath: app
@@ -48,7 +48,7 @@ spec:
   - release/cargo-auth-controller.yaml
   targetPath: cargo
 - repositoryFullName: caicloud/cluster-admin
-  tag: v1.4.0-alpha.6
+  tag: v1.4.0-alpha.8
   resourcePaths:
   - release/cluster-admin.yaml
   - release/cluster-controller.yaml
@@ -70,19 +70,19 @@ spec:
   - release/config-reference.yaml
   targetPath: config
 - repositoryFullName: caicloud/console-web
-  tag: v3.4.6
+  tag: v3.4.8
   resourcePaths:
   - release/console-web.yaml
   - release/console-web-redis.yaml
   - release/web-gateway-proxy.yaml
   targetPath: console
 - repositoryFullName: caicloud/user-web
-  tag: v0.3.24-rc03.1
+  tag: v1.3.4-clever
   resourcePaths:
   - release/user-web.yaml
   targetPath: user-web
 - repositoryFullName: caicloud/cyclone
-  tag: v0.8.0-beta.3
+  tag: v0.9.2
   resourcePaths:
   - release/cyclone-server.yaml
   targetPath: devops
@@ -137,7 +137,7 @@ spec:
   - release/logging-ruler.yaml
   targetPath: logging
 - repositoryFullName: caicloud/eventer
-  tag: v0.1.4
+  tag: v0.1.5
   resourcePaths:
   - release/logging-eventer.yaml
   targetPath: logging
@@ -188,7 +188,7 @@ spec:
   - release/plugin-center-admin.yaml
   targetPath: plugin-center
 - repositoryFullName: caicloud/statistician
-  tag: v0.1.0
+  tag: v0.1.1
   resourcePaths:
   - release/statistician-admin.yaml
   targetPath: statistician
@@ -223,13 +223,13 @@ spec:
   - release/auth-provider.yaml
   targetPath: auth-provider
 - repositoryFullName: caicloud/microservice-admin
-  tag: v0.0.8
+  tag: v0.0.9
   resourcePaths:
   - release/microservice-admin.yaml
   - release/microservice-controller.yaml
   targetPath: microservice
 - repositoryFullName: caicloud/gitbook-tutorial
-  tag: v1.0.3
+  tag: cps-v2.7.3-2
   resourcePaths:
   - release/tutorial.yaml
   targetPath: tutorial
