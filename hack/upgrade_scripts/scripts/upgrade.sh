@@ -31,13 +31,12 @@ echo -e "$RED_COL Cargo env file not exist $NORMAL_COL"
 exit 1
 fi
 
-# delete am-master, am-minion, am-mysql of default namespace and create it by component installation
+# remove am-minion service after 2.7.3, recreate am-mysql by new installation to ensure data correct
 handle_am() {
-    ${KUBECTL_PATH} delete svc am-master am-minion am-mysql --kubeconfig=${CONFIG_PATH}
-    ${KUBECTL_PATH} delete deploy am-master am-minion am-mysql --kubeconfig=${CONFIG_PATH}
+    ${KUBECTL_PATH} delete svc am-minion --kubeconfig=${CONFIG_PATH}
+    ${KUBECTL_PATH} delete deploy am-mysql --kubeconfig=${CONFIG_PATH}
     ${KUBECTL_PATH} delete pvc am-mysql-data --kubeconfig=${CONFIG_PATH}
     ${KUBECTL_PATH} delete svc am-minion -n kube-system --kubeconfig=${CONFIG_PATH}
-    ${KUBECTL_PATH} delete deploy am-minion release-controller -n kube-system --kubeconfig=${CONFIG_PATH}
 }
 
 # load all images under folder and push to cargo
@@ -63,54 +62,62 @@ handle_cluster() {
     # get controller_cluster endpointIP
     controller_endpointIP=`${KUBECTL_PATH} get cluster ${controller_cluster} -o yaml --kubeconfig=${CONFIG_PATH} | grep -e 'endpointIP:' | awk '{print $2}'`
     
-    user_cluster=`${KUBECTL_PATH} get cluster --no-headers --kubeconfig=${CONFIG_PATH} | grep 'user' | awk '{print $1}'`
-    if [ -n "$user_cluster" ];then
-    for clusterName in ${user_cluster}
+    all_cluster=`${KUBECTL_PATH} get cluster --no-headers --kubeconfig=${CONFIG_PATH} | awk '{print $1}'`
+    if [ -n "$all_cluster" ];then
+    for clusterName in ${all_cluster}
     do
-        echo -e "$YELLOW_COL dealing with cluster ${clusterName}...... \n $NORMAL_COL"
         cluser_info=`${KUBECTL_PATH} get cluster ${clusterName} -o yaml --kubeconfig=${CONFIG_PATH}`
 
-        # get endpointIP
-        endpointIP=`echo ${cluser_info}| grep -oE 'endpointIP:.*' | awk '{print $2}'`
+        isControlCluster=`echo ${cluser_info}| grep -oE 'isControlCluster:.*' | awk '{print $2}'`
 
-        # get endpointPort
-        endpointPort=`echo ${cluser_info} | grep -oE 'endpointPort:.*' | awk '{print $2}' | sed 's/\"//g'`
+        if [ "${isControlCluster}" != "true" ]; then
 
-        # get kubeUser
-        kubeUser=`echo ${cluser_info} | grep -oE 'kubeUser:.*' | awk '{print $2}'`
+            echo -e "$YELLOW_COL dealing with cluster ${clusterName}...... \n $NORMAL_COL"
 
-        # get kubePassword
-        kubePassword=`echo ${cluser_info} | grep -oE 'kubePassword:.*' | awk '{print $2}'`
+            # get endpointIP
+            endpointIP=`echo ${cluser_info} | grep -oE 'endpointIP:.*' | awk '{print $2}'`
 
-        # generate kubeconfig for user-clusters
-        new_kubeconfig=`cat templates/kubeconfig.j2 | sed "s|endpointIP:endpointPort|${endpointIP}:${endpointPort}|g" | sed "s|clusterName|${clusterName}|g" | sed "s|kubeUser|${kubeUser}|g" | sed "s|kubePassword|${kubePassword}|g" > kubeconfig`
+            # get endpointPort
+            endpointPort=`echo ${cluser_info} | grep -oE 'endpointPort:.*' | awk '{print $2}' | sed 's/\"//g'`
 
-        # replace am-minion deployment and service
-        echo -e "$GREEN_COL replacing am-minion for cluster ${controller_cluster} $NORMAL_COL"
+            # get cluster-info
+            authorityData=`echo ${cluser_info} | grep -oE 'certificate-authority-data:.*' | awk '{print $2}'`
 
-        # apply am-minion deployment
-        ${KUBECTL_PATH} --kubeconfig=kubeconfig -n kube-system delete deployment `${KUBECTL_PATH} --kubeconfig=kubeconfig -n kube-system get deployment | grep am-minion | awk '{print $1}'`
-        cat ${TEMPLATE_PATH}/am_minion_ks_dp.yaml.j2 | sed "s/\[\[ registry_release \]\]/${CARGO_CFG_DOMAIN}\/release/g" \
-        | sed "s/\[\[ addon_master_ip \]\]/${controller_endpointIP}/g" \
-        | sed "s/\[\[ addon_master_port \]\]/${ADDON_MASTER_PORT}/g" | ${KUBECTL_PATH} --kubeconfig=kubeconfig apply -f -
+            certificateData=`echo ${cluser_info} | grep -oE 'client-certificate-data:.*' | awk '{print $2}'`
 
-        # apply am-minion service
-        ${KUBECTL_PATH} --kubeconfig=kubeconfig -n kube-system delete service `${KUBECTL_PATH} --kubeconfig=kubeconfig -n kube-system get service | grep am-minion | awk '{print $1}'`
-        cat ${TEMPLATE_PATH}/am_minion_ks_svc.yaml.j2 | ${KUBECTL_PATH} --kubeconfig=kubeconfig apply -f -
+            keyData=`echo ${cluser_info} | grep -oE 'client-key-data:.*' | awk '{print $2}'`
 
-        # replace release-controller deployment
-        echo -e "$GREEN_COL replacing release-controller for cluster ${controller_cluster} $NORMAL_COL"
+            # generate kubeconfig for user-clusters
+            new_kubeconfig=`cat templates/kubeconfig.j2 | sed "s|endpointIP:endpointPort|${endpointIP}:${endpointPort}|g;s|clusterName|${clusterName}|g" \
+            | sed "s|authorityData|${authorityData}|g;s|certificateData|${certificateData}|g;s|keyData|${keyData}|g" > kubeconfig`
 
-        # apply release-controller deployment
-        cat ${TEMPLATE_PATH}/release_controller_dp.yaml.j2 | sed "s/\[\[ registry_release \]\]/${CARGO_CFG_DOMAIN}\/release/g" \
-        | ${KUBECTL_PATH} --kubeconfig=kubeconfig apply -f -
+            # replace am-minion deployment and service
+            echo -e "$GREEN_COL replacing am-minion for cluster ${clusterName} $NORMAL_COL"
 
-        echo -e "$GREEN_COL cluster ${controller_cluster} successfully updated \n $NORMAL_COL"
+            # apply am-minion deployment
+            cat ${TEMPLATE_PATH}/am_minion_ks_dp.yaml.j2 | sed "s/\[\[ registry_release \]\]/${CARGO_CFG_DOMAIN}\/release/g" \
+            | sed "s/\[\[ addon_master_ip \]\]/${controller_endpointIP}/g" \
+            | sed "s/\[\[ addon_master_port \]\]/${ADDON_MASTER_PORT}/g" | ${KUBECTL_PATH} --kubeconfig=kubeconfig apply -f -
+
+            # delete am-minion service
+            ${KUBECTL_PATH} --kubeconfig=kubeconfig -n kube-system delete service `${KUBECTL_PATH} --kubeconfig=kubeconfig -n kube-system get service | grep am-minion | awk '{print $1}'` &>/dev/null
+
+            # replace release-controller deployment
+            echo -e "$GREEN_COL replacing release-controller for cluster ${clusterName} $NORMAL_COL"
+
+            # apply release-controller deployment
+            cat ${TEMPLATE_PATH}/release_controller_dp.yaml.j2 | sed "s/\[\[ registry_release \]\]/${CARGO_CFG_DOMAIN}\/release/g" \
+            | ${KUBECTL_PATH} --kubeconfig=kubeconfig apply -f -
+
+            echo -e "$GREEN_COL cluster ${controller_cluster} successfully updated \n $NORMAL_COL"
+        else
+        echo -e "$YELLOW_COL cluster ${clusterName} is not user cluster, pass $NORMAL_COL"
+        fi
 
 	rm -rf kubeconfig
     done
     else
-    echo -e "$RED_COL no user cluster, exit...... $NORMAL_COL"
+    echo -e "$RED_COL no cluster found, exit...... $NORMAL_COL"
     exit 1
     fi
 }

@@ -19,24 +19,28 @@ handle_cluster() {
         cluser_info=`${KUBECTL_PATH} get cluster ${clusterName} -o yaml --kubeconfig=${CONFIG_PATH}`
 
         # get endpointIP
-        endpointIP=`echo ${cluser_info}| grep -oE 'endpointIP:.*' | awk '{print $2}'`
+        endpointIP=`echo ${cluser_info} | grep -oE 'endpointIP:.*' | awk '{print $2}'`
 
         # get endpointPort
         endpointPort=`echo ${cluser_info} | grep -oE 'endpointPort:.*' | awk '{print $2}' | sed 's/\"//g'`
 
-        # get kubeUser
-        kubeUser=`echo ${cluser_info} | grep -oE 'kubeUser:.*' | awk '{print $2}'`
+        # get cluster-info
+        authorityData=`echo ${cluser_info} | grep -oE 'certificate-authority-data:.*' | awk '{print $2}'`
 
-        # get kubePassword
-        kubePassword=`echo ${cluser_info} | grep -oE 'kubePassword:.*' | awk '{print $2}'`
+        certificateData=`echo ${cluser_info} | grep -oE 'client-certificate-data:.*' | awk '{print $2}'`
+
+        keyData=`echo ${cluser_info}| grep -oE 'client-key-data:.*' | awk '{print $2}'`
 
         # generate kubeconfig for user-clusters
-        new_kubeconfig=`cat templates/kubeconfig.j2 | sed "s|endpointIP:endpointPort|${endpointIP}:${endpointPort}|g" \
-        | sed "s|clusterName|${clusterName}|g" | sed "s|kubeUser|${kubeUser}|g" | sed "s|kubePassword|${kubePassword}|g" > kubeconfig`
+        new_kubeconfig=`cat templates/kubeconfig.j2 | sed "s|endpointIP:endpointPort|${endpointIP}:${endpointPort}|g;s|clusterName|${clusterName}|g" \
+        | sed "s|authorityData|${authorityData}|g;s|certificateData|${certificateData}|g;s|keyData|${keyData}|g" > kubeconfig`
 
         # replace am-minion and release-controller
         ${KUBECTL_PATH} --kubeconfig=kubeconfig -n kube-system get deployment `${KUBECTL_PATH} --kubeconfig=kubeconfig get deployment -n kube-system \
         | grep am-minion | awk '{print $1}'` -o yaml | grep -oE 'am_minion:.*' | grep -v "{*}" | awk 'NR==1'
+
+        ${KUBECTL_PATH} --kubeconfig=kubeconfig -n kube-system get deployment `${KUBECTL_PATH} --kubeconfig=kubeconfig get deployment -n kube-system \
+        | grep am-minion | awk '{print $1}'` -o yaml | grep -oE 'templates:.*' | grep -v "{*}" | awk 'NR==1'
 
         ${KUBECTL_PATH} --kubeconfig=kubeconfig get deployment `${KUBECTL_PATH} --kubeconfig=kubeconfig get deployment -n kube-system \
         | grep ^release-controller | awk '{print $1}'` -o yaml -n kube-system | grep -oE 'release-controller:.*' | grep -v "{*}" | awk 'NR==1'
