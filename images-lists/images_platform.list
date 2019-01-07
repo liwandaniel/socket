@@ -20,12 +20,12 @@ release/cluster-machine-controller:v1.4.0-alpha.8
 release/cluster-reqgap-controller:v1.4.0-alpha.8
 release/cluster-scaling-controller:v1.4.0-alpha.8
 release/config-admin:v0.1.16
-release/config-admission:v0.2.10
-release/config-gc:v0.2.10
-release/config-reference:v0.2.10
-release/config-sync:v0.2.10
+release/config-admission:v0.2.11
+release/config-gc:v0.2.11
+release/config-reference:v0.2.11
+release/config-sync:v0.2.11
 release/redis:3.0.3
-release/console-web:v3.4.8
+release/console-web:v3.4.9
 release/nginx:1.15.5-alpine
 release/cyclone-worker:v0.8.0-beta.3
 release/cyclone-server:v0.8.0-beta.3
@@ -85,4 +85,4 @@ release/storage-nfs-multiple-provisioner:v0.0.2
 release/tenant-admin:v1.2.0
 release/tenant-controller:v1.2.0
 release/tutorial:cps-v2.7.3-2
-release/user-web:v0.3.24-rc03.1
+release/user-web:v0.3.24-rc05

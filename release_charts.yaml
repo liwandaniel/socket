@@ -62,7 +62,7 @@ spec:
   - release/config-admin.yaml
   targetPath: config
 - repositoryFullName: caicloud/config-controller
-  tag: v0.2.10
+  tag: v0.2.11
   resourcePaths:
   - release/config-gc.yaml
   - release/config-sync.yaml
@@ -70,14 +70,14 @@ spec:
   - release/config-reference.yaml
   targetPath: config
 - repositoryFullName: caicloud/console-web
-  tag: v3.4.8
+  tag: v3.4.9
   resourcePaths:
   - release/console-web.yaml
   - release/console-web-redis.yaml
   - release/web-gateway-proxy.yaml
   targetPath: console
 - repositoryFullName: caicloud/user-web
-  tag: v0.3.24-rc03.1
+  tag: v0.3.24-rc05
   resourcePaths:
   - release/user-web.yaml
   targetPath: user-web
