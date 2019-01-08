@@ -48,7 +48,7 @@ spec:
   - release/cargo-auth-controller.yaml
   targetPath: cargo
 - repositoryFullName: caicloud/cluster-admin
-  tag: v1.4.0-alpha.8
+  tag: v1.4.0-alpha.9
   resourcePaths:
   - release/cluster-admin.yaml
   - release/cluster-controller.yaml
@@ -70,7 +70,7 @@ spec:
   - release/config-reference.yaml
   targetPath: config
 - repositoryFullName: caicloud/console-web
-  tag: v3.4.9
+  tag: v3.4.11
   resourcePaths:
   - release/console-web.yaml
   - release/console-web-redis.yaml
