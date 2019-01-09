@@ -25,7 +25,7 @@ release/config-gc:v0.2.11
 release/config-reference:v0.2.11
 release/config-sync:v0.2.11
 release/redis:3.0.3
-release/console-web:v3.4.11
+release/console-web:v3.4.12
 release/nginx:1.15.5-alpine
 release/cyclone-worker:v0.8.0-beta.3
 release/cyclone-server:v0.8.0-beta.3

@@ -70,7 +70,7 @@ spec:
   - release/config-reference.yaml
   targetPath: config
 - repositoryFullName: caicloud/console-web
-  tag: v3.4.11
+  tag: v3.4.12
   resourcePaths:
   - release/console-web.yaml
   - release/console-web-redis.yaml
