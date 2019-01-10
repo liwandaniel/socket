@@ -1,0 +1,123 @@
+_config:
+  _metadata:
+    description: caicloud auth provider
+    name: auth-provider
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: 'v1.1.0-rc03.1'
+  controllers:
+    - containers:
+      - image: '[[ registry_release ]]/auth-provider:v1.1.0-rc03.1'
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: MONGODB_URL
+            value: '[[ platform_mongo_host ]]'
+          - name: DEBUG
+            value: 'oidc-provider:*,auth-provider:*'
+          - name: DEBUG_COLORS
+            value: 'yes'
+          - name: SESSION_EXPIRED
+            value: 30
+          - name: CLEVER_SERVER
+            from:
+              type: Config
+              name: platform-config
+              key: "cleverServer"
+          - name: DEFAULT_REDIRECT_PORT
+            value: '6060'
+          - name: DEFAULT_REDIRECT_URL
+            from:
+              type: Config
+              name: platform-config
+              key: "compassWebEndpoint"
+          - name: BASE_PATH
+            from:
+              type: Config
+              name: platform-config
+              key: "ssoBasePath"
+          - name: ISSUER
+            from:
+              type: Config
+              name: platform-config
+              key: "oidcIssuer"
+          - name: IP_ENDPOINT
+            from:
+              type: Config
+              name: platform-config
+              key: "ipEndpoint"
+          - name: DOMAIN_ENDPOINT
+            from:
+              type: Config
+              name: platform-config
+              key: "domainEndpoint"
+          - name: CLEVER_ON
+            from:
+              type: Config
+              name: platform-config
+              key: "cleverOn"
+        mounts:
+          - name: auth-provider
+            path: /usr/src/app/config/config-prod.yaml
+            subpath: config-prod.yaml
+      controller:
+        replica: 1
+      services:
+        - name: auth-provider
+          ports:
+            - port: 8020
+              protocol: TCP
+              targetPort: 8020
+          type: ClusterIP
+      volumes:
+        - name: auth-provider
+          source:
+            items:
+              - key: config-prod.yaml
+                path: config-prod.yaml
+            target: auth-provider
+          type: Config
+      configs:
+        - name: auth-provider
+          data:
+            - key: config-prod.yaml
+              value: |
+                clients:
+                  - client_id: 'compass-web'
+                    client_secret: 'compass-web'
+                    grant_types: ['authorization_code', 'refresh_token']
+                    response_types: ['code']
+                    redirect_uris: ['[[ ipEndpoint ]][[ consoleBasePath ]]/account/cb']
+                    frontchannel_logout_uri: '[[ ipEndpoint ]][[ consoleBasePath ]]/account/logout'
+                    post_logout_redirect_uris: ['[[ ipEndpoint ]][[ consoleBasePath ]]']
+
+                  - client_id: 'clever-web'
+                    client_secret: 'clever-web'
+                    grant_types: ['authorization_code', 'refresh_token']
+                    response_types: ['code']
+                    redirect_uris: ['[[ cleverServer ]]/account/cb']
+                    frontchannel_logout_uri: '[[ cleverServer ]]/account/logout'
+                    post_logout_redirect_uris: ['[[ cleverServer ]]']
+
+                  - client_id: 'user-web'
+                    client_secret: 'user-web'
+                    grant_types: ['authorization_code', 'refresh_token']
+                    response_types: ['code']
+                    redirect_uris: ['[[ ipEndpoint ]][[ userwebBasePath ]]/account/cb']
+                    frontchannel_logout_uri: '[[ ipEndpoint ]][[ userwebBasePath ]]/account/logout'
+                    post_logout_redirect_uris: ['[[ ipEndpoint ]][[ userwebBasePath ]]']
+
+                  - client_id: 'kubernetes'
+                    client_secret: 'kubernetes'
+                    grant_types: ['authorization_code', 'refresh_token']
+                    response_types: ['code']
+                    redirect_uris: ['http://localhost:8080/callback']
+                    frontchannel_logout_uri: 'http://localhost:8080/logout'
+                    post_logout_redirect_uris: ['http://localhost:8080']
+
+                infrastructure_uris: {
+                  cauth_uri: 'http://dex-cauth:8080',
+                  license_uri: 'http://license:4243',
+                }
+      type: Deployment

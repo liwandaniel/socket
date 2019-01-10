@@ -6,10 +6,14 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.3.2-clever"
+    version: "v0.3.25"
   controllers:
   - containers:
     - env:
+      - name: NODE_ENV
+        value: 'production'
+      - name: NODE_TLS_REJECT_UNAUTHORIZED
+        value: '0'
       - name: GRAFANA_PORT
         value: '6104'
       - name: KIBANA_PORT
@@ -44,30 +48,60 @@ _config:
           type: Config
           name: platform-config
           key: "tenantMode"
+      - name: OIDC_CLIENT_ID
+        value: user-web
+      - name: OIDC_CLIENT_SECRET
+        value: user-web
       - name: ISSUER
         from:
           type: Config
           name: platform-config
           key: "oidcIssuer"
-      - name: OIDC_CLIENT_ID
-        value: user-web
-      - name: OIDC_CLIENT_SECRET
-        value: user-web
+      - name: ISSUER_PORT
+        value: "6060"
+      - name: ISSUER_PREFIX_URL
+        from:
+          type: Config
+          name: platform-config
+          key: ssoBasePath
       - name: COMPASS_SERVER
         from:
           type: Config
           name: platform-config
           key: "compassWebEndpoint"
+      - name: CLEVER_BASE_PATH
+        value: ''
+      - name: CONSOLE_BASE_PATH
+        from:
+          type: Config
+          name: platform-config
+          key: "consoleBasePath"
+      - name: COMPASS_PORT
+        value: "6060"
+      - name: CLEVER_ON
+        from:
+          type: Config
+          name: platform-config
+          key: "cleverOn"
       - name: CLEVER_SERVER
         from:
           type: Config
           name: platform-config
           key: "cleverServer"
+      - name: CLEVER_PORT
+        value: "6061"
       - name: 'USERWEB_SERVER'
         from:
           type: Config
           name: platform-config
           key: "userwebServer"
+      - name: USERWEB_BASE_PATH
+        from:
+          type: Config
+          name: platform-config
+          key: "userwebBasePath"
+      - name: USERWEB_PORT
+        value: "6060"
       - name: SHOW_LANG
         value: 'false'
       - name: DEFAULT_LANG
@@ -77,7 +111,7 @@ _config:
         value: '[[ platform_release_version ]]'
       - name: PRODUCT_RELEASE_TIME
         value: '[[ platform_release_time ]]'
-      image: '[[ registry_release ]]/user-web:v1.3.2-clever'
+      image: '[[ registry_release ]]/user-web:v0.3.25'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 3006
@@ -91,7 +125,6 @@ _config:
     - name: user-web
       ports:
       - protocol: TCP
-        targetPort: 3006
         port: 3006
       type: ClusterIP
     type: Deployment
