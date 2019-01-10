@@ -6,12 +6,12 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: 'v0.9.2-alpha'
+    version: 'v0.9.2-beta'
   controllers:
   - containers:
     - command:
       - /workspace/controller
-      image: '[[ registry_release ]]/cyclone-workflow-controller:v0.9.2-alpha'
+      image: '[[ registry_release ]]/cyclone-workflow-controller:v0.9.2-beta'
       imagePullPolicy: Always
     controller:
       replica: 1
@@ -25,10 +25,10 @@ _config:
         value: |
           {
             "images": {
-              "git-resolver": "[[ registry_release ]]/cyclone-resolver-git:v0.9.2-alpha",
-              "image-resolver": "[[ registry_release ]]/cyclone-resolver-image:v0.9.2-alpha",
-              "kv-resolver": "[[ registry_release ]]/cyclone-resolver-kv:v0.9.2-alpha",
-              "coordinator": "[[ registry_release ]]/cyclone-coordiantor:v0.9.2-alpha",
+              "git-resolver": "[[ registry_release ]]/cyclone-resolver-git:v0.9.2-beta",
+              "image-resolver": "[[ registry_release ]]/cyclone-resolver-image:v0.9.2-beta",
+              "kv-resolver": "[[ registry_release ]]/cyclone-resolver-kv:v0.9.2-beta",
+              "coordinator": "[[ registry_release ]]/cyclone-coordiantor:v0.9.2-beta",
               "gc": "[[ registry_library ]]/alpine:3.7"
             },
             "logging": {

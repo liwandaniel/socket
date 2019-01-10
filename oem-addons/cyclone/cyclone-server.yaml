@@ -6,12 +6,12 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: 'v0.9.2-alpha'
+    version: 'v0.9.2-beta'
   controllers:
   - containers:
     - command:
       - /cyclone-server
-      image: '[[ registry_release ]]/native-cyclone-server:v0.9.2-alpha'
+      image: '[[ registry_release ]]/native-cyclone-server:v0.9.2-beta'
       imagePullPolicy: Always
       mounts:
       - name: cyclone-data

@@ -1,0 +1,32 @@
+_config:
+  _metadata:
+    description: hybrid-controller-manager
+    name: hybrid-controller-manager
+    namespace: kube-system
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: v1.2.10
+  controllers:
+  - containers:
+    - image: '[[ registry_release ]]/controller-manager:v1.2.10'
+      env:
+      - name: "CLUSTER_CIDR"
+        from:
+          type: Config
+          name: cluster-info
+          key: "cidr"
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 500m
+          memory: 200Mi
+        requests:
+          cpu: 500m
+          memory: 200Mi
+    controller:
+      replica: 1
+      strategy:
+        surge: 1
+        unavailable: 0
+    type: Deployment
