@@ -1,7 +1,7 @@
 ---
 metadata:
   name: mini compass
-  version: 2.7.2
+  version: 2.7.3
   description: mini compass deployment config
 spec:
   systemAddons:
@@ -32,6 +32,10 @@ spec:
       description: Console web
     - name: console-web-redis
       description: Redis for console web
+    - name: web-gateway-proxy
+      description: Web gateway proxy
+    - name: tutorial
+      description: Tutorial Gitbook
   - name: user-web
     description: User web
     required: true
@@ -65,8 +69,10 @@ spec:
       description: cluster controller
     - name: cluster-machine
       description: cluster machine controller
-    - name: cluster-addon
-      description: cluster addon manager
+    - name: cluster-scaling
+      description: cluster auto scaling group controller
+    - name: cluster-reqgap
+      description: cluster requirement gap controller
   - name: tenant
     description: tenant
     required: true
@@ -83,7 +89,7 @@ spec:
     description: statistician
     required: false
     addons:
-    - name: statistician-server
+    - name: statistician-admin
       description: statistician
   - name: alerting
     description: alerting
@@ -111,6 +117,26 @@ spec:
       description: Registry for app
     - name: canary-release-controller
       description: Controller for canary release
+    - name: template-registry
+      description: Registry for common template
+    - name: application-admission
+      description: Admission for application orchestration
+    - name: application-controller
+      description: Controller for application orchestration
+  - name: microservice
+    description: microservice
+    required: false
+    addons:
+    - name: microservice-admin
+      description: Microservice management
+    - name: microservice-controller
+      description: Controller for microservice task
+  - name: compass-admin
+    description: common template registry
+    required: true
+    addons:
+    - name: compass-admin
+      description: common template registry
   - name: loadbalancer
     description: load balancer
     required: false
@@ -183,6 +209,8 @@ spec:
       description: gpu exporter
     - name: exporters-node
       description: node exporter
+    - name: monitoring-addon
+      description: cps/k8s addon checker
   - name: logging
     description: logging
     required: false
@@ -191,20 +219,14 @@ spec:
       description: Logging management
     - name: logging-processor
       description: Logging processor
-    - name: logging-curator
-      description: Logging curator
-    - name: logging-elasticsearch
-      description: Store and search log
     - name: logging-eventer
       description: Collect k8s events
-    - name: logging-fluentd
-      description: Collect log
-    - name: logging-kibana
-      description: Display log
-    - name: logging-agent
-      description: Logging agent
     - name: logging-hooks
       description: Logging hooks
+    - name: logging-ruler
+      description: Logging ruler
+    - name: logging-filebeat
+      description: Logging filebeat
   extraAddons:
   - name: monitoring-admin
     description: Monitoring management

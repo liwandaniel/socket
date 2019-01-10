@@ -6,17 +6,15 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.3.0-alpha.4"
+    version: "v0.4.0-alpha.3"
   controllers:
   - containers:
     - env:
-      - name: ENV_CLUSTER_ADMIN_HOST
-        value: http://cds-server:9000
       - name: ENV_CONTROLLER_RESYNC_PERIOD_SECOND
         value: '600'
       - name: ENV_LOG_LEVEL
         value: info
-      image: '[[ registry_release ]]/storage-admin-controller:v0.3.0-alpha.4'
+      image: '[[ registry_release ]]/storage-admin-controller:v0.4.0-alpha.3'
       imagePullPolicy: IfNotPresent
     controller:
       replica: 1

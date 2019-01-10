@@ -6,10 +6,12 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.3.18"
+    version: "v0.3.24-rc05"
   controllers:
   - containers:
     - env:
+      - name: NODE_ENV
+        value: 'production'
       - name: NODE_TLS_REJECT_UNAUTHORIZED
         value: '0'
       - name: GRAFANA_PORT
@@ -52,7 +54,18 @@ _config:
           name: platform-config
           key: "oidcIssuer"
       - name: ISSUER_PORT
-        value: "6062"
+        value: "6060"
+      - name: ISSUER_PREFIX_URL
+        from:
+          type: Config
+          name: platform-config
+          key: ssoBasePath
+      - name: COMPASS_PORT
+        value: "6060"
+      - name: CLEVER_PORT
+        value: "6061"
+      - name: USERWEB_PORT
+        value: "6060"
       - name: OIDC_CLIENT_ID
         value: user-web
       - name: OIDC_CLIENT_SECRET
@@ -62,6 +75,13 @@ _config:
           type: Config
           name: platform-config
           key: "userwebBasePath"
+      - name: CONSOLE_BASE_PATH
+        from:
+          type: Config
+          name: platform-config
+          key: "consoleBasePath"
+      - name: CLEVER_BASE_PATH
+        value: ''
       - name: COMPASS_SERVER
         from:
           type: Config
@@ -72,6 +92,11 @@ _config:
           type: Config
           name: platform-config
           key: "userwebServer"
+      - name: CLEVER_ON
+        from:
+          type: Config
+          name: platform-config
+          key: "cleverOn"
       - name: SHOW_LANG
         value: 'false'
       - name: DEFAULT_LANG
@@ -81,7 +106,7 @@ _config:
         value: '[[ platform_release_version ]]'
       - name: PRODUCT_RELEASE_TIME
         value: '[[ platform_release_time ]]'
-      image: '[[ registry_release ]]/user-web:v0.3.18'
+      image: '[[ registry_release ]]/user-web:v0.3.24-rc05'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 3006

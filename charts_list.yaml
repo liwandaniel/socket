@@ -16,15 +16,29 @@ spec:
     resourcePaths:
       - release/app-admin.yaml
     targetPath: app
+  - repositoryFullName: caicloud/application
+    resourcePaths:
+      - release/application-admission.yaml
+      - release/application-controller.yaml
+    targetPath: app
   - repositoryFullName: caicloud/helm-registry
     resourcePaths:
       - release/helm-registry.yaml
     targetPath: app
+  - repositoryFullName: caicloud/template-registry
+    resourcePaths:
+      - release/template-registry.yaml
+    targetPath: app
+  - repositoryFullName: caicloud/compass-admin
+    resourcePaths:
+      - release/compass-admin.yaml
+    targetPath: cadm
   - repositoryFullName: caicloud/canary-release
     resourcePaths:
       - release/canary-release-controller.yaml
     targetPath: app
   - repositoryFullName: caicloud/charts
+  - repositoryFullName: caicloud/compass-plugins
   - repositoryFullName: caicloud/cargo-admin
     resourcePaths:
       - release/cargo-admin.yaml
@@ -38,7 +52,8 @@ spec:
       - release/cluster-admin.yaml
       - release/cluster-controller.yaml
       - release/cluster-machine.yaml
-      - release/cluster-addon.yaml
+      - release/cluster-reqgap.yaml
+      - release/cluster-scaling.yaml
     targetPath: cluster
   - repositoryFullName: caicloud/config-admin
     resourcePaths:
@@ -55,6 +70,7 @@ spec:
     resourcePaths:
       - release/console-web.yaml
       - release/console-web-redis.yaml
+      - release/web-gateway-proxy.yaml
     targetPath: console
   - repositoryFullName: caicloud/user-web
     resourcePaths:
@@ -102,15 +118,15 @@ spec:
     resourcePaths:
       - release/logging-admin.yaml
       - release/logging-processor.yaml
-      - release/logging-curator.yaml
-      - release/logging-elasticsearch.yaml
-      - release/logging-eventer.yaml
-      - release/logging-fluentd.yaml
-      - release/logging-kibana.yaml
+      - release/logging-ruler.yaml
     targetPath: logging
-  - repositoryFullName: caicloud/insight-agent
+  - repositoryFullName: caicloud/eventer
     resourcePaths:
-      - release/logging-agent.yaml
+      - release/logging-eventer.yaml
+    targetPath: logging
+  - repositoryFullName: caicloud/log-pilot
+    resourcePaths:
+      - release/logging-filebeat.yaml
     targetPath: logging
   - repositoryFullName: caicloud/insight-hooks
     resourcePaths:
@@ -122,10 +138,14 @@ spec:
       - release/monitoring-operator.yaml
       - release/monitoring-grafana.yaml
       - release/monitoring-kube-state-metrics.yaml
-      - release/monitoring-metrics-server.yaml
       - release/monitoring-prometheus.yaml
       - release/alerting-manager.yaml
       - release/alerting-notifier.yaml
+      - release/monitoring-addon.yaml
+    targetPath: monitoring
+  - repositoryFullName: caicloud/caicloud-metrics-server
+    resourcePaths:
+      - release/monitoring-metrics-server.yaml
     targetPath: monitoring
   - repositoryFullName: caicloud/exporters
     resourcePaths:
@@ -145,7 +165,7 @@ spec:
     targetPath: plugin-center
   - repositoryFullName: caicloud/statistician
     resourcePaths:
-      - release/statistician-server.yaml
+      - release/statistician-admin.yaml
     targetPath: statistician
   - repositoryFullName: caicloud/storage-admin
     resourcePaths:
@@ -172,3 +192,12 @@ spec:
     resourcePaths:
       - release/auth-provider.yaml
     targetPath: auth-provider
+  - repositoryFullName: caicloud/microservice-admin
+    resourcePaths:
+      - release/microservice-admin.yaml
+      - release/microservice-controller.yaml
+    targetPath: microservice
+  - repositoryFullName: caicloud/gitbook-tutorial
+    resourcePaths:
+      - release/tutorial.yaml
+    targetPath: tutorial

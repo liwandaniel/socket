@@ -1,0 +1,26 @@
+_config:
+  _metadata:
+    description: cluster-reqgap
+    name: cluster-reqgap
+    namespace: kube-system
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v1.4.0-alpha.9"
+  controllers:
+  - containers:
+    - env:
+      - name: ENV_CONTROLLER_MAX_RETRY_TIMES
+        value: '0'
+      - name: ENV_CONTROLLER_RESYNC_PERIOD_SECOND
+        value: '30'
+      - name: ENV_LOG_LEVEL
+        value: info
+      image: '[[ registry_release ]]/cluster-reqgap-controller:v1.4.0-alpha.9'
+      imagePullPolicy: IfNotPresent
+    controller:
+      replica: 1
+      strategy:
+        surge: 1
+        unavailable: 0
+    type: Deployment

@@ -6,6 +6,7 @@
   - [安装包部署](#%E5%AE%89%E8%A3%85%E5%8C%85%E9%83%A8%E7%BD%B2)
     - [准备工作](#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C)
     - [开始安装](#%E5%BC%80%E5%A7%8B%E5%AE%89%E8%A3%85)
+    - [debug 模式修改 release](#debug-%E6%A8%A1%E5%BC%8F%E4%BF%AE%E6%94%B9-release)
   - [镜像部署](#%E9%95%9C%E5%83%8F%E9%83%A8%E7%BD%B2)
     - [镜像启动](#%E9%95%9C%E5%83%8F%E5%90%AF%E5%8A%A8)
     - [创建 config](#%E5%88%9B%E5%BB%BA-config)
@@ -52,7 +53,29 @@ vi config
 bash install.sh
 ```
 
-至此，安装包的安装已经完成，只需等待所有组件的状态成功即可
+### debug 模式修改 release
+
+测试环境若要更新或者测试组件，可以通过安装包的 debug 模式来修改组件配置
+
+1. 需要先登录到安装 compass-component 的 cargo 节点
+    - 可以通过查看集群的 configMap 来查看此节点的ip
+        ```bash
+        $ kubectl get configMap platform-info -o yaml | grep cargo_registry_ip
+          cargo_registry_ip: 192.168.133.9
+        ```
+    - 需要自行确认安装包的路径，可以咨询安装的人员或者 release-team 的伙伴
+
+2. 登录安装节点，进入安装路径，使用脚本进入容器，修改对应组件的 chart yaml 并更新
+
+- 容器内部，组件的 yaml 路径，compass 为 [addons](../addons)，oem 的产品路径为 `oem-addons`
+
+```bash
+ssh root@192.168.133.9
+cd /${install-path}/compass-component-v2.7.2-xx/  # install-path 即是 cargo 节点安装包的安装路径，例如 /compass
+bash install.sh debug
+vim addons/console/console-web.yaml
+python3 amctl.py update -p addons/console/console-web.yaml  # pod 更新需等待一分钟左右
+```
 
 ## 镜像部署
 

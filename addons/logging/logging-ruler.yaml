@@ -1,0 +1,24 @@
+_config:
+  _metadata:
+    description: logging-ruler
+    name: logging-ruler
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v2.2.1"
+  controllers:
+  - containers:
+    - env:
+      - name: MGO_ENDPOINT
+        value: mongodb://mgo-cluster:27017
+      - name: ALERTMANAGERS
+        value: http://alertmanager:9093
+      image: '[[ registry_release ]]/logging-ruler:v2.2.1'
+      imagePullPolicy: IfNotPresent
+    controller:
+      replica: 1
+      strategy:
+        surge: 0
+        unavailable: 1
+    type: Deployment

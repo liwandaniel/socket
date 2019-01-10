@@ -1,0 +1,51 @@
+_config:
+  _metadata:
+    description: statistician-admin
+    name: statistician-admin
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.1.1"
+  controllers:
+  - containers:
+    - image: '[[ registry_release ]]/statistician-admin:v0.1.1'
+      imagePullPolicy: IfNotPresent
+      env:
+      - name: SERVER_KUBE_HOST
+        value: ""
+      - name: SERVER_KUBE_CONFIG
+        value: ""
+      - name: SERVER_PORT
+        value: "8080"
+      - name: SERVER_REFRESH_SECOND
+        value: "30"
+      - name: SERVER_TIMEOUT_SECOND
+        value: "3"
+      - name: SERVER_CARGO_ADMIN_HOST
+        value: "cargo-admin:8080"
+      - name: SERVER_CAUTH_HOST
+        value: "dex-cauth:8080"
+      - name: SERVER_DEV_OP_ADMIN_HOST
+        value: "devops-admin:7088"
+      ports:
+      - port: 8080
+        protocol: TCP
+      - port: 8081
+        protocol: TCP
+    controller:
+      replica: 1
+      strategy:
+        surge: 1
+        unavailable: 0
+    pod:
+      serviceAccountName: admin
+    services:
+    - name: statistician-admin
+      ports:
+      - port: 8080
+        protocol: TCP
+      - port: 8081
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment

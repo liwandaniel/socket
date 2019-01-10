@@ -6,15 +6,23 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.0"
+    version: "v0.1.5"
   controllers:
   - containers:
     - command:
       - /eventer
-      - --source=kubernetes:''
-      - --sink=elasticsearch:http://elasticsearch:9200?sniff=false
-      image: '[[ registry_release ]]/eventer:v0.1.0'
+      - --v=3
+      image: '[[ registry_release ]]/eventer:v0.1.5'
       imagePullPolicy: IfNotPresent
+      env:
+      - name: CLUSTER_NAME
+        from:
+          type: Config
+          name: cluster-info
+          key: name
+      mounts:
+      - name: output-config
+        path: /config
       ports:
       - port: 8084
         protocol: TCP
@@ -40,3 +48,9 @@ _config:
         targetPort: 8084
       type: ClusterIP
     type: Deployment
+    volumes:
+    - name: output-config
+      source:
+        target: filebeat-output
+        optional: true
+      type: Config

@@ -72,7 +72,7 @@ make build-image JENKINS_VERSION=v0.0.x
 
 #### 配置 cargo 节点的 oss
 
-参考 [oss 配置文档](https://forum.caicloud.xyz/t/topic/100)
+参考 [OSS 配置文档](https://docs.google.com/document/d/1n-zJxQ-v--6ohGyNotkGpkBiVfhyOqfuW-fUeIOlwzE/edit)
 
 - 将 ossutil 执行文件和配置文件放置在 `/root` 目录下
 
@@ -108,6 +108,7 @@ make build-image JENKINS_VERSION=v0.0.x
 - `target_registry_credential_id`: target_registry 仓库的登录配置
 - `release_registry`: 打包发布的镜像仓库域名，即上面服务器部署用于发布的仓库
 - `release_registry_credential_id`: release_registry 仓库的登录配置
+- `collect`: 选择是否进行收集 charts 的操作，默认为 false
 - `release`: 选择是否进行构建镜像的操作，默认为 false
 - `oem`: 选择打包 release 或者 hotfix 是否针对 oem 分支，oem 和 标准产品的保存路径不一样，需要区别开，默认为 false
 - `increment_release`: 针对 oem 产品，存在两种打包方式，此选项 false 可以选择打包成为一个完整的 oem compass 版本，true 为打包成为增量包，增量包即安装完标准 compass 之后再次安装的包
@@ -136,6 +137,7 @@ make build-image JENKINS_VERSION=v0.0.x
 
 - `sha1`: checkout scm 的分支名，默认为 `*/master`，例如 clever 分支，则填写 `oem-clever` 完整的分支名
 - `base_branch`: 用于额外拉取代码以及更新代码使用，填写完整的分支名，例如 `oem-clever`，和 `sha1` 保持一致，默认为 master
+- `collect`: 选择为 true
 - `release`: 选择为 true
 - `oem`: 按照实际情况，如果是 oem 的打包或者 oem 的 hotfix，则选择为 true
 - `increment_release`: 针对 oem 打包，如果是为增量包，则选择为 true

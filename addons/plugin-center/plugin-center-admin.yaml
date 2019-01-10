@@ -5,12 +5,12 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.5"
+    version: "v0.1.7"
   controllers:
   - containers:
     - args:
       - --mongo-host=[[ platform_mongo_host ]]
-      image: '[[ registry_release ]]/plugin-center-admin:v0.1.5'
+      image: '[[ registry_release ]]/plugin-center-admin:v0.1.7'
       imagePullPolicy: IfNotPresent
       resources:
         limits:
@@ -19,6 +19,23 @@ _config:
         requests:
           cpu: 200m
           memory: 200Mi
+      env:
+      - name: SERVER_PRELOAD_PATH
+        value: /data/preload
+      mounts:
+      - name: preload
+        path: /data
+    initContainers:
+    - env:
+      - name: OUTPUT_DIR
+        value: /data/preload
+      - name: IMAGE_DOMAIN_PROJECT
+        value: '[[ registry_release ]]'
+      mounts:
+      - name: preload
+        path: /data
+      image: '[[ registry_release ]]/compass-plugins-manifest:v0.1.0.alpha.2'
+      imagePullPolicy: IfNotPresent
     controller:
       replica: 1
     services:
@@ -29,3 +46,8 @@ _config:
         targetPort: 8080
       type: ClusterIP
     type: Deployment
+    volumes:
+    - name: preload
+      type: Scratch
+      source:
+        medium: ""

@@ -6,13 +6,13 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.3.1"
+    version: "v0.3.4"
   controllers:
   - containers:
     - args:
       - --debug
-      - --proxy-image=[[ registry_release ]]/canary-nginx-proxy:v0.3.1
-      image: '[[ registry_release ]]/canary-controller:v0.3.1'
+      - --proxy-image=[[ registry_release ]]/canary-nginx-proxy:v0.3.4
+      image: '[[ registry_release ]]/canary-controller:v0.3.4'
       imagePullPolicy: IfNotPresent
       resources:
         limits:

@@ -1,0 +1,98 @@
+_config:
+  _metadata:
+    description: web-gateway-proxy
+    name: web-gateway-proxy
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "1.0.1"
+  controllers:
+  - containers:
+    - image: '[[ registry_release ]]/nginx:1.15.5-alpine'
+      imagePullPolicy: IfNotPresent
+      mounts:
+        - name: web-gateway-proxy
+          path: /etc/nginx/nginx.conf
+          subpath: nginx.conf
+      ports:
+      - port: 6060
+        protocol: TCP
+    controller:
+      replica: 1
+    services:
+    - name: web-gateway-proxy
+      ports:
+      - port: 6060
+        protocol: TCP
+      type: ClusterIP
+    volumes:
+        - name: web-gateway-proxy
+          source:
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+            target: web-gateway-proxy
+          type: Config
+    configs:
+      - name: web-gateway-proxy
+        data:
+          - key: nginx.conf
+            value: |
+              user nginx;
+              worker_processes 1;
+              error_log /var/log/nginx/error.log warn;
+              pid /var/run/nginx.pid;
+              events {
+                  worker_connections 1024;
+              }
+              http {
+                  include /etc/nginx/mime.types;
+                  map $http_upgrade $connection_upgrade {
+                      default upgrade;
+                      '' close;
+                  }
+                  server {
+                      listen 6060;
+                      client_max_body_size 5G;
+                      proxy_read_timeout 3600;
+                      server_name_in_redirect off;
+                      port_in_redirect on;
+                      proxy_set_header Host $http_host;
+                      proxy_set_header X-Real-IP $remote_addr;
+                      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                      proxy_set_header Upgrade $http_upgrade;
+                      proxy_set_header Connection $connection_upgrade;
+                      proxy_http_version 1.1;
+                      location /userweb/ {
+                          proxy_pass http://user-web:3006/;
+                          proxy_redirect off;
+                      }
+                      location /hodor/ {
+                          proxy_pass http://hodor:8080/;
+                          proxy_redirect off;
+                      }
+                      location /sso/ {
+                          proxy_pass http://auth-provider:8020;
+                          proxy_redirect off;
+                      }
+                      location /tutorial/ {
+                          proxy_pass http://tutorial:4000/;
+                          proxy_redirect off;
+                      }
+                      location / {
+                          proxy_pass http://console-web:3000/;
+                          proxy_redirect off;
+                      }
+                  }
+                  default_type application/octet-stream;
+                  log_format main  '$remote_addr - $remote_user [$time_local] "$request" '
+                                    '$status $body_bytes_sent "$http_referer" '
+                                    '"$http_user_agent" "$http_x_forwarded_for"';
+                  access_log /var/log/nginx/access.log  main;
+                  sendfile on;
+                  #tcp_nopush     on;
+                  keepalive_timeout 65;
+              }
+
+    type: Deployment

@@ -1,0 +1,33 @@
+_config:
+  _metadata:
+    description: compass-admin
+    name: compass-admin
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.0.9"
+  controllers:
+  - containers:
+    - image: '[[ registry_release ]]/compass-admin:v0.0.9'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 8080
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+    controller:
+      replica: 1
+    services:
+    - name: compass-admin
+      ports:
+      - port: 8080
+        protocol: TCP
+        targetPort: 8080
+      type: ClusterIP
+    type: Deployment

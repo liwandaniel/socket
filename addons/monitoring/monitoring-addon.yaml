@@ -1,0 +1,46 @@
+_config:
+  _metadata:
+    description: monitoring-addon
+    name: monitoring-addon
+    namespace: kube-system
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.5.23"
+  controllers:
+  - containers:
+    - env:
+      - name: ENV_KUBE_HOST
+        value: ''
+      - name: ENV_KUBE_CONFIG
+        value: ''
+      - name: ENV_LISTEN_PORT
+        value: '6666'
+      - name: ENV_CONFIG_DIR
+        value: /caicloud/monitoring-admin/configs
+      - name: ENV_RUNNING_NAMESPACE
+        value: default
+      - name: ENV_APP_LABEL_KEY
+        value: k8s-app
+      image: '[[ registry_release ]]/monitoring-addon:v0.5.23'
+      imagePullPolicy: Always
+      ports:
+      - port: 6666
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 100m
+          memory: 128Mi
+        requests:
+          cpu: 25m
+          memory: 64Mi
+    controller:
+      replica: 1
+    services:
+    - name: monitoring-addon
+      ports:
+      - port: 6666
+        protocol: TCP
+        targetPort: 6666
+      type: ClusterIP
+    type: Deployment

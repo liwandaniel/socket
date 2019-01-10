@@ -6,14 +6,14 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.4.8"
+    version: "v0.4.9"
   controllers:
   - containers:
     - args:
       - --debug
       - --min-valid-port=20000
       - --max-valid-port=29999
-      image: '[[ registry_release ]]/loadbalancer-admin:v0.4.8'
+      image: '[[ registry_release ]]/loadbalancer-admin:v0.4.9'
       imagePullPolicy: IfNotPresent
       resources:
         limits:
