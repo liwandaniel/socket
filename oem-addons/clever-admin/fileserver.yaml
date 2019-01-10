@@ -5,14 +5,14 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.4.2"
+    version: "v1.4.3"
   controllers:
   - type: Deployment
     controller:
       replica: 1
     containers:
     - name: fileserver
-      image: '[[ registry_release ]]/clever-fileserver:v1.4.2'
+      image: '[[ registry_release ]]/clever-fileserver:v1.4.3'
       resources:
         requests:
           cpu: 50m
@@ -23,11 +23,11 @@ _config:
       - name: time
         path: "/etc/localtime"
     - name: droppy
-      image: '[[ registry_release ]]/caicloud-droppy:v10.1.1'
+      image: '[[ registry_release ]]/caicloud-droppy:v10.3.1'
       command:
       - "/bin/sh"
       - "-c"
-      - droppy start -f /clever
+      - droppy start -f /clever/public
       workingDir: "/"
       resources:
         requests:

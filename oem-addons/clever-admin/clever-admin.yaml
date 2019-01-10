@@ -5,14 +5,14 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "0.0.8"
+    version: "v0.1.2"
   controllers:
   - type: Deployment
     controller:
       replica: 1
     containers:
     - name: clever-admin
-      image: '[[ registry_release ]]/clever-admin:0.0.8'
+      image: '[[ registry_release ]]/clever-admin:v0.1.2'
       resources:
         requests:
           cpu: 100m
@@ -27,13 +27,13 @@ _config:
       - name: CONFIG_MAP_PATH
         value: /etc/clever-admin/
       - name: DROPPY_IMAGE
-        value: '[[ registry_release ]]/caicloud-droppy:v10.1.1'
+        value: '[[ registry_release ]]/caicloud-droppy:v10.3.1'
       - name: FILESERVER_IMAGE
-        value: '[[ registry_release ]]/clever-fileserver:v1.4.2'
+        value: '[[ registry_release ]]/clever-fileserver:v1.4.3'
       - name: RESOLVER_IMAGE
-        value: '[[ registry_release ]]/clever-resolver:0.0.8'
+        value: '[[ registry_release ]]/clever-resolver:v0.1.2'
       - name: CONVERTER_IMAGE
-        value: '[[ registry_release ]]/clever-converter:0.0.8'
+        value: '[[ registry_release ]]/clever-converter:v0.1.2'
       - name: DROPPY_REQUEST_CPU
         value: '500m'
       - name: DROPPY_REQUEST_MEMORY
@@ -127,4 +127,4 @@ _config:
           - name: thumbnails
             images:
               - name: Thumbnails
-                path: clever-fileserver:v1.4.2
+                path: clever-fileserver:v1.4.3

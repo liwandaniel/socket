@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v3.5.8"
+    version: "v3.6.8"
   controllers:
   - containers:
     - env:
@@ -28,7 +28,18 @@ _config:
       - name: HODOR_SERVER
         value: http://hodor:8080
       - name: ISSUER
-        value: '[[ oidcIssuer ]]'
+        from:
+          type: Config
+          name: platform-config
+          key: 'oidcIssuer'
+      - name: ISSUER_PORT
+        value: '6060'
+      - name: COMPASS_PORT
+        value: '6060'
+      - name: CLEVER_PORT
+        value: '6060'
+      - name: USERWEB_PORT
+        value: '6060'
       - name: LABELME_PATHNAME
         value: /tool.html
       - name: MONITORING_ADMIN
@@ -52,7 +63,7 @@ _config:
           type: Config
           name: platform-config
           key: "userwebServer"
-      image: '[[ registry_release ]]/clever-web:v3.5.8'
+      image: '[[ registry_release ]]/clever-web:v3.6.8'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 4006
