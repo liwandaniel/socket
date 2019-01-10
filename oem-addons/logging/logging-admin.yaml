@@ -1,0 +1,33 @@
+_config:
+  _metadata:
+    description: logging-admin
+    name: logging-admin
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v2.2.2"
+  controllers:
+  - containers:
+    - env:
+      - name: CDS_SERVER_ADDRESS
+        value: cds-server
+      - name: CDS_SERVER_PORT
+        value: '9000'
+      image: '[[ registry_release ]]/logging-admin:v2.2.2'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 7800
+        protocol: TCP
+    controller:
+      replica: 1
+      strategy:
+        surge: 1
+        unavailable: 0
+    services:
+    - name: logging-admin
+      ports:
+      - port: 7800
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment
