@@ -1,5 +1,4 @@
 // params defined in Jenkins pipeline setting
-// string params
 def DOCKER_REGISTRY = "${params.docker_registry}"
 def DOCKER_PROJECT = "${params.docker_project}"
 def DOCKER_REGISTRY_CREDENTIAL_ID = "${params.docker_credential_id}"
@@ -234,27 +233,27 @@ spec:
                 if (params.package) {
                     withCredentials([usernamePassword(credentialsId: "${RELEASE_CARGO_LOGIN}", passwordVariable: "RELEASE_CARGO_PASSWORD", usernameVariable: "RELEASE_CARGO_IP")]) {
                         stage("Sync images") {
-                            withCredentials([usernamePassword(credentialsId: "${SOURCE_REGISTRY_CREDENTIAL_ID}", passwordVariable: "SOURCE_REGISTRY_PASSWORD", usernameVariable: "SOURCE_REGISTRY_USER")]) {
-                                withCredentials([usernamePassword(credentialsId: "${TARGET_REGISTRY_CREDENTIAL_ID}", passwordVariable: "TARGET_REGISTRY_PASSWORD", usernameVariable: "TARGET_REGISTRY_USER")]) {
-                                    withCredentials([usernamePassword(credentialsId: "${RELEASE_REGISTRY_CREDENTIAL_ID}", passwordVariable: "RELEASE_REGISTRY_PASSWORD", usernameVariable: "RELEASE_REGISTRY_USER")]) {
-                                        sh """
-                                            cp /jenkins/ansible/inventory.sample /jenkins/ansible/inventory
-                                            sed -i 's/CARGO_IP/${RELEASE_CARGO_IP}/g' /jenkins/ansible/inventory
-                                            sed -i 's/CARGO_PASSWORD/${RELEASE_CARGO_PASSWORD}/g' /jenkins/ansible/inventory
-                                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "docker login ${SOURCE_REGISTRY} -u ${SOURCE_REGISTRY_USER} -p ${SOURCE_REGISTRY_PASSWORD}"
-                                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "docker login ${TARGET_REGISTRY} -u ${TARGET_REGISTRY_USER} -p ${TARGET_REGISTRY_PASSWORD}"
-                                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "docker login ${RELEASE_REGISTRY} -u ${RELEASE_REGISTRY_USER} -p ${RELEASE_REGISTRY_PASSWORD}"
-                                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "rm -rf ${SYNC_DIR} && mkdir -p ${SYNC_DIR}"
-                                            ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/sync_images_scripts/sync.sh dest=${SYNC_DIR}/ mode=0755"
-                                            ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=${IMGAE_LIST_DIR}/ dest=${SYNC_DIR}/images-lists/ mode=0644"
-                                            ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/auto_package/package.sh dest=/root/ mode=0755"
-                                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/source_registry/${SOURCE_REGISTRY}/g' /root/package.sh"
-                                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/target_registry/${TARGET_REGISTRY}/g' /root/package.sh"
-                                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/release_registry/${RELEASE_REGISTRY}/g' /root/package.sh"
-                                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "bash /root/package.sh sync ${RELEASE_VERSION} ${CARGO_DIR} ${PRODUCT_NAME} ${SYNC_DIR}"
-                                        """
-                                    }
-                                }
+                            withCredentials([
+                                [$class: "UsernamePasswordMultiBinding", credentialsId: "${SOURCE_REGISTRY_CREDENTIAL_ID}", passwordVariable: "SOURCE_REGISTRY_PASSWORD", usernameVariable: "SOURCE_REGISTRY_USER"],
+                                [$class: "UsernamePasswordMultiBinding", credentialsId: "${TARGET_REGISTRY_CREDENTIAL_ID}", passwordVariable: "TARGET_REGISTRY_PASSWORD", usernameVariable: "TARGET_REGISTRY_USER"],
+                                [$class: "UsernamePasswordMultiBinding", credentialsId: "${RELEASE_REGISTRY_CREDENTIAL_ID}", passwordVariable: "RELEASE_REGISTRY_PASSWORD", usernameVariable: "RELEASE_REGISTRY_USER"],
+                            ]) {
+                                sh """
+                                    cp /jenkins/ansible/inventory.sample /jenkins/ansible/inventory
+                                    sed -i 's/CARGO_IP/${RELEASE_CARGO_IP}/g' /jenkins/ansible/inventory
+                                    sed -i 's/CARGO_PASSWORD/${RELEASE_CARGO_PASSWORD}/g' /jenkins/ansible/inventory
+                                    ansible -i /jenkins/ansible/inventory cargo -m shell -a "docker login ${SOURCE_REGISTRY} -u ${SOURCE_REGISTRY_USER} -p ${SOURCE_REGISTRY_PASSWORD}"
+                                    ansible -i /jenkins/ansible/inventory cargo -m shell -a "docker login ${TARGET_REGISTRY} -u ${TARGET_REGISTRY_USER} -p ${TARGET_REGISTRY_PASSWORD}"
+                                    ansible -i /jenkins/ansible/inventory cargo -m shell -a "docker login ${RELEASE_REGISTRY} -u ${RELEASE_REGISTRY_USER} -p ${RELEASE_REGISTRY_PASSWORD}"
+                                    ansible -i /jenkins/ansible/inventory cargo -m shell -a "rm -rf ${SYNC_DIR} && mkdir -p ${SYNC_DIR}"
+                                    ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/sync_images_scripts/sync.sh dest=${SYNC_DIR}/ mode=0755"
+                                    ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=${IMGAE_LIST_DIR}/ dest=${SYNC_DIR}/images-lists/ mode=0644"
+                                    ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/auto_package/package.sh dest=/root/ mode=0755"
+                                    ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/source_registry/${SOURCE_REGISTRY}/g' /root/package.sh"
+                                    ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/target_registry/${TARGET_REGISTRY}/g' /root/package.sh"
+                                    ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/release_registry/${RELEASE_REGISTRY}/g' /root/package.sh"
+                                    ansible -i /jenkins/ansible/inventory cargo -m shell -a "bash /root/package.sh sync ${RELEASE_VERSION} ${CARGO_DIR} ${PRODUCT_NAME} ${SYNC_DIR}"
+                                """
                             }
                         }
                         stage("Packaging") {
@@ -318,25 +317,25 @@ spec:
                             HOTFIX_YAML_DIR = "release-hotfixes"
                         }
                         // bool params defined in Jenkins pipeline setting.
-                        withCredentials([usernamePassword(credentialsId: "${RELEASE_CARGO_LOGIN}", passwordVariable: "RELEASE_CARGO_PASSWORD", usernameVariable: "RELEASE_CARGO_IP")]) {
-                            withCredentials([usernamePassword(credentialsId: "${SOURCE_REGISTRY_CREDENTIAL_ID}", passwordVariable: "SOURCE_REGISTRY_PASSWORD", usernameVariable: "SOURCE_REGISTRY_USER")]) {
-                                withCredentials([usernamePassword(credentialsId: "${TARGET_REGISTRY_CREDENTIAL_ID}", passwordVariable: "TARGET_REGISTRY_PASSWORD", usernameVariable: "TARGET_REGISTRY_USER")]) {
-                                    sh """
-                                        cp /jenkins/ansible/inventory.sample /jenkins/ansible/inventory
-                                        sed -i 's/CARGO_IP/${RELEASE_CARGO_IP}/g' /jenkins/ansible/inventory
-                                        sed -i 's/CARGO_PASSWORD/${RELEASE_CARGO_PASSWORD}/g' /jenkins/ansible/inventory
-                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "docker login ${SOURCE_REGISTRY} -u ${SOURCE_REGISTRY_USER} -p ${SOURCE_REGISTRY_PASSWORD}"
-                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "docker login ${TARGET_REGISTRY} -u ${TARGET_REGISTRY_USER} -p ${TARGET_REGISTRY_PASSWORD}"
-                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "rm -rf ${HOTFIX_DIR} && mkdir -p ${HOTFIX_DIR}"
-                                        ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=${HOTFIX_YAML_DIR} dest=${HOTFIX_DIR} mode=0755"
-                                        ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/auto_hotfix/hotfix.sh dest=${HOTFIX_DIR} mode=0755"
-                                        ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/auto_hotfix/env.sh dest=${HOTFIX_DIR} mode=0755"
-                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/source_registry/${SOURCE_REGISTRY}/g;s/source_project/${SOURCE_PROJECT}/g' ${HOTFIX_DIR}/env.sh"
-                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/target_registry/${TARGET_REGISTRY}/g;s/target_project/${TARGET_PROJECT}/g' ${HOTFIX_DIR}/env.sh"
-                                        ansible -i /jenkins/ansible/inventory cargo -m shell -a "cd ${HOTFIX_DIR} && bash hotfix.sh hotfix ${HOTFIX_YAML_DIR}/${HOTFIX_YAML_PATH} ${PRODUCT_NAME}"
-                                    """
-                                }
-                            }
+                        withCredentials([
+                            [$class: "UsernamePasswordMultiBinding", credentialsId: "${RELEASE_CARGO_LOGIN}", passwordVariable: "RELEASE_CARGO_PASSWORD", usernameVariable: "RELEASE_CARGO_IP"],
+                            [$class: "UsernamePasswordMultiBinding", credentialsId: "${SOURCE_REGISTRY_CREDENTIAL_ID}", passwordVariable: "SOURCE_REGISTRY_PASSWORD", usernameVariable: "SOURCE_REGISTRY_USER"],
+                            [$class: "UsernamePasswordMultiBinding", credentialsId: "${TARGET_REGISTRY_CREDENTIAL_ID}", passwordVariable: "TARGET_REGISTRY_PASSWORD", usernameVariable: "TARGET_REGISTRY_USER"],
+                        ]) {
+                            sh """
+                                cp /jenkins/ansible/inventory.sample /jenkins/ansible/inventory
+                                sed -i 's/CARGO_IP/${RELEASE_CARGO_IP}/g' /jenkins/ansible/inventory
+                                sed -i 's/CARGO_PASSWORD/${RELEASE_CARGO_PASSWORD}/g' /jenkins/ansible/inventory
+                                ansible -i /jenkins/ansible/inventory cargo -m shell -a "docker login ${SOURCE_REGISTRY} -u ${SOURCE_REGISTRY_USER} -p ${SOURCE_REGISTRY_PASSWORD}"
+                                ansible -i /jenkins/ansible/inventory cargo -m shell -a "docker login ${TARGET_REGISTRY} -u ${TARGET_REGISTRY_USER} -p ${TARGET_REGISTRY_PASSWORD}"
+                                ansible -i /jenkins/ansible/inventory cargo -m shell -a "rm -rf ${HOTFIX_DIR} && mkdir -p ${HOTFIX_DIR}"
+                                ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=${HOTFIX_YAML_DIR} dest=${HOTFIX_DIR} mode=0755"
+                                ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/auto_hotfix/hotfix.sh dest=${HOTFIX_DIR} mode=0755"
+                                ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/auto_hotfix/env.sh dest=${HOTFIX_DIR} mode=0755"
+                                ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/source_registry/${SOURCE_REGISTRY}/g;s/source_project/${SOURCE_PROJECT}/g' ${HOTFIX_DIR}/env.sh"
+                                ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/target_registry/${TARGET_REGISTRY}/g;s/target_project/${TARGET_PROJECT}/g' ${HOTFIX_DIR}/env.sh"
+                                ansible -i /jenkins/ansible/inventory cargo -m shell -a "cd ${HOTFIX_DIR} && bash hotfix.sh hotfix ${HOTFIX_YAML_DIR}/${HOTFIX_YAML_PATH} ${PRODUCT_NAME}"
+                            """
                         }
                     }
                     stage("Upload") {
