@@ -5,14 +5,14 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.0"
+    version: "v1.3.0"
   controllers:
   - type: Deployment
     controller:
       replica: 1
     containers:
     - name: clever-e2e-demo
-      image: '[[ registry_release ]]/clever-e2e-demo:v0.1.0'
+      image: '[[ registry_release ]]/clever-e2e-demo:v1.3.0'
       imagePullPolicy: Always
       resources:
         requests:
@@ -22,5 +22,5 @@ _config:
       type: ClusterIP
       ports:
       - protocol: HTTP
-        targetPort: 9090
+        targetPort: 9090          
         port: 9090
