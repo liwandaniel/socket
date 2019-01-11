@@ -1,0 +1,26 @@
+_config:
+  _metadata:
+    description: tenant-admin
+    name: tenant-admin
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: v1.2.3
+  controllers:
+  - containers:
+    - env:
+      image: '[[ registry_release ]]/tenant-admin:v1.2.3'
+      imagePullPolicy: IfNotPresent
+    controller:
+      replica: 1
+      strategy:
+        surge: 1
+        unavailable: 0
+    services:
+    - name: tenant-admin
+      ports:
+      - port: 8080
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment

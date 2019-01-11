@@ -1,0 +1,26 @@
+_config:
+  _metadata:
+    description: tenant-controller
+    name: tenant-controller
+    namespace: kube-system
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: v1.2.3
+  controllers:
+  - containers:
+    - image: '[[ registry_release ]]/tenant-controller:v1.2.3'
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 500m
+          memory: 200Mi
+        requests:
+          cpu: 500m
+          memory: 200Mi
+    controller:
+      replica: 1
+      strategy:
+        surge: 1
+        unavailable: 0
+    type: Deployment
