@@ -37,6 +37,7 @@
 ├── oem-hotfixes
 ├── oem-images-lists
 ├── oem-plugins
+├── oem_charts_list.yaml
 └── oem.yaml
 ```
 
