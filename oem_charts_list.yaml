@@ -33,5 +33,5 @@ spec:
     targetPath: dataset
   - repositoryFullName: caicloud/clever-docs
     resourcePaths:
-      - release/release.yaml
+      - release/clever-docs.yaml
     targetPath: clever-docs
