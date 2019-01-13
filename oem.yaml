@@ -29,7 +29,7 @@ spec:
     description: cyclone workflow controller
   - name: app-admin
     description: app admin
-  - name: controller-manager
+  - name: hybrid-controller-manager
     description: controller manager
   - name: clever-e2e-demo
     description: clever docs
