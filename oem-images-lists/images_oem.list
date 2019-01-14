@@ -1,0 +1,6 @@
+release/auth-provider:v1.1.0-haier
+release/console-web:v3.4.12-haier-2
+release/cyclone-worker:v1alpha.2
+release/cyclone-server:v1alpha.2
+release/devops-admin:v1alpha.2
+release/user-web:v0.3.24-rc05-haier-1
