@@ -1,0 +1,11 @@
+---
+metadata:
+  name: haier
+  version: v2.7.3
+  description: haier deployment config
+spec:
+  systemAddons:
+  - name: auth-provider
+    description: caicloud auth provider
+  - name: cyclone-server
+    description: Core of CI/CD

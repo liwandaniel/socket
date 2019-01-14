@@ -14,3 +14,8 @@ systemEndpoint=""
 
 # GitHub、GitLab webhook 回调 compass-devops 的 url，方便配置外网访问代理
 devopsWebhookURL=""
+
+# Oauth 环境变量配置
+gitlabClient=""
+gitlabSecret=""
+gitlabURL=""
