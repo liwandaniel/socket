@@ -9,3 +9,7 @@ spec:
     description: caicloud auth provider
   - name: cyclone-server
     description: Core of CI/CD
+  - name: console-web
+    description: console-web 
+ - name: user-web
+    description: user-web 
