@@ -23,7 +23,7 @@ case $input in
     bash $SCRIPTS_DIR/remove_components.sh ${BASE_ROOT}
     ;;
   backup )
-    echo -e "$GREEN_COL removing addons... $NORMAL_COL"
+    echo -e "$GREEN_COL backup addons... $NORMAL_COL"
     bash $SCRIPTS_DIR/release_backup.sh ${BASE_ROOT}
     ;;
   * )
