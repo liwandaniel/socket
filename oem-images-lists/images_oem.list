@@ -1,0 +1,10 @@
+release/app-admin:v0.3.21-hotfix
+release/templates:v1.2.14-sust
+release/helm-registry:v0.2.8-experiment
+release/charts:v1.2.14-sust
+release/cluster-admin:v1alpha.1-sust
+release/cluster-machine-controller:v1alpha.1-sust
+release/cauth:v1alpha.1-sust
+release/hodor:v1alpha.1-sust
+release/tenant-admin:v1alpha.1-sust
+release/tenant-controller:v1alpha.1-sust

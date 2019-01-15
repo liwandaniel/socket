@@ -1,0 +1,23 @@
+---
+metadata:
+  name: sust
+  version: v2.7.2
+  description: sust oem config
+spec:
+  systemAddons:
+  - name: app-admin
+    description: App management
+  - name: helm-registry
+    description: Registry for app
+  - name: cluster-admin
+    description: Manage clusters
+  - name: cluster-machine
+    description: cluster machine controller
+  - name: dex-cauth
+    description: Auth server
+  - name: hodor-server
+    description: API Gateway
+  - name: tenant-admin
+    description: Manage tenants 
+  - name: tenant-controller
+    description: tenant controller
