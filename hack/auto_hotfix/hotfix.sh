@@ -65,14 +65,26 @@ function makeHotfix(){
         mkdir "${TARGET_PATH}/${HOTFIX_FULL_NAME}"
         cp "${1}" "${TARGET_PATH}/${HOTFIX_FULL_NAME}"
         # get all images from yaml
-        images=$( cat "${1}" | grep -e "\[\[ registry_release \]\].*" | grep -o "/.*" | sed "s#'##g;s#/##g;s#,##g" | sed 's#"##g')
-        for image in ${images[@]}
+        images=`(cat "${1}" | grep -E -o "(\[\[ registry_release \]\]|\[\[ registry_library \]\]).*" | sed "s# #@#g;s#'##g")`
+        for image_str in ${images}
         do
-            FULL_IMAGE="${SOURCE_REGISTRY}/${SOURCE_PROJECT}/${image}"
+            REGISTRY_PROJECT=`echo ${image_str} | awk -F "@" '{print $2}'`
+            if [ "${REGISTRY_PROJECT}" == "registry_library" ]; then
+                F_SOURCE_PROJECT="library"
+                F_TARGET_PROJECT="library"
+            elif [ "${REGISTRY_PROJECT}" == "registry_release" ]; then
+                F_SOURCE_PROJECT=${SOURCE_PROJECT}
+                F_TARGET_PROJECT=${TARGET_PROJECT}
+            else
+                echo -e "$RED_COL Unknow image project ${REGISTRY_PROJECT} $NORMAL_COL"
+                exit 1
+            fi
+            image=`echo ${image_str} | grep -o "/.*" | sed "s#'##g;s#/##g;s#,##g" | sed 's#"##g'`
+            FULL_IMAGE="${SOURCE_REGISTRY}/${F_SOURCE_PROJECT}/${image}"
             # pull images
             echo -e "$GREEN_COL pulling image ${FULL_IMAGE} $NORMAL_COL"
             docker pull ${FULL_IMAGE}
-            NEW_IMAGE="${TARGET_REGISTRY}/${TARGET_PROJECT}/${image}"
+            NEW_IMAGE="${TARGET_REGISTRY}/${F_TARGET_PROJECT}/${image}"
             echo ${NEW_IMAGE}
             docker tag ${FULL_IMAGE} ${NEW_IMAGE}
             docker push ${NEW_IMAGE}
