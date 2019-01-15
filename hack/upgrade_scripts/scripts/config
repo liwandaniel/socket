@@ -3,3 +3,9 @@ REMOVE_COMPONENT_DEFAULT="statistician-server"
 
 # the useless components in kube-system namespace after upgrading to 2.7.3
 REMOVE_COMPONENT_KS="logging-agent,logging-curator,logging-elasticsearch,logging-fluentd,logging-kibana"
+
+# items for backup which defined by us
+BACKUP_ITEMS="cluster,machine,persistentvolumes,customresourcedefinition,clusterroles"
+
+# items for backup which defined by us
+NAMESPACED_BACKUP_ITEMS="release,configMaps,secrets,loadbalancers,ingresses,persistentvolumeclaims,resourcequotas,serviceaccounts,endpoints,roles"

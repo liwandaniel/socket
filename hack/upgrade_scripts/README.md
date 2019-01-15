@@ -55,6 +55,7 @@ comapss-component-upgrade/
 ├── templates
 │   ├── am_minion_ks_dp.yaml.j2
 │   ├── release_controller.yaml.j2
+│   ├── kubeconfig-v2.7.2.j2
 │   └── kubeconfig.j2
 └── run.sh
 ```
@@ -84,6 +85,7 @@ comapss-component-upgrade/
             ```
     - release_controller.yaml.j2: kube-system 分区下 release_controller 的 [deployment yaml](../../prerequisites/release_controller/release_controller_dp.yaml.j2)
     - kubeconfig.j2: 生成用户集群 kubeconfig 的 [模板](templates/kubeconfig.j2)
+    - kubeconfig-v2.7.2.j2: 用于兼容 2.7.2 的版本生成用户集群 kubeconfig 的 [模板](templates/kubeconfig-v2.7.2.j2)
 
 将所有的文件打包成 compass 升级包 `comapss-component-upgrade.tar.gz`
 

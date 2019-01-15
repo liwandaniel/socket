@@ -26,14 +26,11 @@ echo -e "$RED_COL Upgrade config file not exist $NORMAL_COL"
 exit 1
 fi
 
-# set split symbol of components to ","
-IFS=","
-
 # remove components in default namespaces
 remove_default() {
-    default_component_arr=($REMOVE_COMPONENT_DEFAULT)
+    default_component_arr=`(echo $REMOVE_COMPONENT_DEFAULT | sed 's/,/ /g')`
 
-    for component in ${default_component_arr[@]}
+    for component in ${default_component_arr}
     do
     echo -e "$GREEN_COL remove release $component $NORMAL_COL"
     ${KUBECTL_PATH} delete release $component --kubeconfig=${CONFIG_PATH}
@@ -42,7 +39,7 @@ remove_default() {
 
 # remove components in kube-system namespaces
 remove_ks() {
-    ks_component_arr=($REMOVE_COMPONENT_KS)
+    ks_component_arr=`(echo $REMOVE_COMPONENT_KS | sed 's/,/ /g')`
 
     all_cluster=`${KUBECTL_PATH} get cluster --no-headers --kubeconfig=${CONFIG_PATH} | awk '{print $1}'`
     if [ -n "$all_cluster" ];then
@@ -68,7 +65,7 @@ remove_ks() {
         new_kubeconfig=`cat templates/kubeconfig.j2 | sed "s|endpointIP:endpointPort|${endpointIP}:${endpointPort}|g;s|clusterName|${clusterName}|g" \
         | sed "s|authorityData|${authorityData}|g;s|certificateData|${certificateData}|g;s|keyData|${keyData}|g" > kubeconfig`
 
-        for component in ${ks_component_arr[@]}
+        for component in ${ks_component_arr}
         do
             echo -e "$GREEN_COL removing release $component ... $NORMAL_COL"
             ${KUBECTL_PATH} delete release $component --kubeconfig=kubeconfig -n kube-system
