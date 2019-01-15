@@ -1,0 +1,39 @@
+_config:
+  _metadata:
+    description: haier-admin
+    name: haier-admin
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v1.0.1"
+  controllers:
+  - containers:
+    - command:
+      - /usr/bin/haier-admin
+      - --cauth-endpoint=http://dex-cauth:8080
+      - --cmdb-endpoint=http://cmdb-dev.qdct-lsb.haier.net
+      - --bind-address=0.0.0.0
+      - --listen-port=8080
+      - --v=4
+      image: '[[ registry_release ]]/haier-admin:v1.0.1'
+      imagePullPolicy: Always
+      ports:
+      - port: 8080
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 100m
+          memory: 100Mi
+        requests:
+          cpu: 50m
+          memory: 50Mi
+    controller:
+      replica: 1
+    services:
+    - name: haier-admin
+      ports:
+      - port: 8080
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment

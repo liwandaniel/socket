@@ -13,3 +13,5 @@ spec:
     description: console-web 
   - name: user-web
     description: user-web 
+  - name: haier-admin
+    description: haier-admin
