@@ -5,6 +5,9 @@
 - [Package Workflow](#package-workflow)
   - [Create your clone](#create-your-clone)
   - [构建 release 镜像](#%E6%9E%84%E5%BB%BA-release-%E9%95%9C%E5%83%8F)
+    - [标准产品构建镜像](#%E6%A0%87%E5%87%86%E4%BA%A7%E5%93%81%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F)
+    - [oem 构建镜像](#oem-%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F)
+    - [保存镜像](#%E4%BF%9D%E5%AD%98%E9%95%9C%E5%83%8F)
   - [对内发布](#%E5%AF%B9%E5%86%85%E5%8F%91%E5%B8%83)
   - [对外发布](#%E5%AF%B9%E5%A4%96%E5%8F%91%E5%B8%83)
     - [制作产品镜像包](#%E5%88%B6%E4%BD%9C%E4%BA%A7%E5%93%81%E9%95%9C%E5%83%8F%E5%8C%85)
@@ -41,15 +44,51 @@ git describe --tags --always --dirty
 
 使用最新的 release tag 替换 $RELEASE_TAG 并确保 `git describe --tags --always --dirty` 的输出与 $RELEASE_TAG 一致。
 
+### 标准产品构建镜像
+
 执行以下命令：
 
 ```bash
-make release-image REGISTRY=cargo.caicloudprivatetest.com PROJECT=release
+make release-image RELEASE_VERSION=v2.7.3
 ```
+
+### oem 构建镜像
+
+针对 oem 产品，类似于 clever 的增量包，需要保留 compass 原有的版本号，同时又增加 oem 产品的版本号
+
+- 需要在 [Makefile](../Makefile) 中注明基于哪个 compass 版本
+    - 如果作为基础的 compass 版本发生变化，需要跟随修改 compass 版本信息
+    ```
+    BASE_RELEASE_VERSION       ?= v2.7.2
+    BASE_RELEASE_TIME          ?= 2018-10-26 18:00
+    ```
+
+- 在 oem 分支的 [platform-info](../platform-info.yaml.j2) 中添加变量
+    ```
+    oem_product_release_version: G_OEM_RELEASE_VERSION
+    oem_product_release_time: G_OEM_RELEASE_TIME
+    ```
+
+构建镜像需要添加执行参数 `OEM_PRODUCT_NAME` 即 oem 产品的名称
+
+```bash
+make release-image RELEASE_VERSION=clever-v1.3.0 OEM_PRODUCT_NAME=clever
+```
+
+最终会在 [platform-info](../platform-info.yaml.j2) 中添加 compass 的版本号和 oem 产品的版本号
+
+```
+  platform_release_version: "v2.7.2"
+  platform_release_time: "2018-10-26 18:00"
+  clever_release_version: "clever-v1.3.0"
+  clever_release_time: "2018-12-19 10:00"
+```
+
+### 保存镜像
 
 上述命令将会：
 
-- 生成并推送 `cargo.caicloudprivatetest.com/release/release:$RELEASE_TAG`
+- 生成并推送 `cargo.caicloudprivatetest.com/caicloud/release:$RELEASE_TAG`
 - 在根目录下将 release 镜像通过 `docker save` 至 `release.tar.gz`， 此包后面会用到。
 
 ## 对内发布
@@ -148,4 +187,4 @@ tar cvf compass-component-v2.7.x.tar.gz ./compass-component-v2.7.x
 
 ### 上传发布包
 
-参考 [OSS 使用文档](https://forum.caicloud.xyz/t/topic/100)，相关问题咨询 @ijumps
+参考 [OSS 配置文档](https://docs.google.com/document/d/1n-zJxQ-v--6ohGyNotkGpkBiVfhyOqfuW-fUeIOlwzE/edit)

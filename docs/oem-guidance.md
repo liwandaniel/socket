@@ -37,7 +37,8 @@
 ├── oem-hotfixes
 ├── oem-images-lists
 ├── oem-plugins
-└── oem.yaml(可选)
+├── oem_charts_list.yaml
+└── oem.yaml
 ```
 
 ### oem-addons
@@ -47,6 +48,8 @@
 同时，部署时会读取 [platform-info.yaml.j2](../platform-info.yaml.j2) 与 [platform-config.yaml.j2](../platform-config.yaml.j2) 生成 k8s configmap 并替换 addons 中格式为 `[[ variable name ]]` 的变量，具体实现可参考 [configMap.md](./configMap.md)。
 
 ### oem-hotfixes
+
+- oem 分支需要另外创建 `oem-hotfixes`，与 master 分支 的 `release-hotfixes` 区别开来
 
 该目录存放定制化的 [hotfixes](../release-hotfixes)，制作流程请参考 [产品组件热升级安装包](./hotfix.md)
 
@@ -64,6 +67,8 @@
 - 其余镜像，请单独创建 list 文件记录
 
 ### oem-plugins
+
+- oem 分支需要另外创建 `oem-plugins`，与 master 分支 的 `release-plugins` 区别开来
 
 该目录存放定制化的 [release-plugins](../release-plugins)， 制作流程请参考 [产品插件安装包](./plugin.md)
 
@@ -103,7 +108,7 @@ OEM 研发过程中，可能需要对主线版本 Compass 组件（即 [addons](
 
 ## 上传发布包
 
-参考 [OSS 使用文档](https://forum.caicloud.xyz/t/topic/100)，相关问题咨询 @ijumps
+参考 [OSS 配置文档](https://docs.google.com/document/d/1n-zJxQ-v--6ohGyNotkGpkBiVfhyOqfuW-fUeIOlwzE/edit)
 
 ## 产品部署
 

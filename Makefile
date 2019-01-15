@@ -15,7 +15,9 @@ TAG = $(shell git describe --tags --always --dirty)
 
 # RELEASE_VERSION is the version of the release
 RELEASE_VERSION            ?= $(TAG)
-PANGOLIN_VERSION           ?= v0.0.2
+PANGOLIN_VERSION           ?= v0.0.4
+JENKINS_VERSION            ?= v0.0.1
+CHART_LINT_VERSION         ?= V0.0.1
 
 ADDONS_PATH                ?= ./addons
 CHART_LIST_PATH            ?= ./charts_list.yaml
@@ -45,8 +47,14 @@ release-image:
 
 build-image:
 	@echo "There are some prerequesties, please read the Dockerfile for more details."
-	docker build --no-cache --build-arg SSH_ID_RSA="$$(cat ~/.ssh/id_rsa)" -t "$(REGISTRY)/$(PROJECT)/golang-docker:1.10-17.09-product-release" $(DOCKER_LABELS) -f build/jenkinsfile-base/Dockerfile .
-	$(PUSH) "$(REGISTRY)/$(PROJECT)/golang-docker:1.10-17.09-product-release"
+	docker build --no-cache --build-arg SSH_ID_RSA="$$(cat ~/.ssh/id_rsa)" -t "$(REGISTRY)/$(PROJECT)/golang-jenkins:$(JENKINS_VERSION)" $(DOCKER_LABELS) -f build/jenkinsfile-base/Dockerfile .
+	$(PUSH) "$(REGISTRY)/$(PROJECT)/golang-jenkins:$(JENKINS_VERSION)"
+
+lint-image:
+	@git submodule init
+	@git submodule update
+	docker build -t "$(REGISTRY)/$(PROJECT)/chart-lint:$(CHART_LINT_VERSION)" -f build/chart-lint/Dockerfile .
+	$(PUSH) "$(REGISTRY)/$(PROJECT)/chart-lint:$(CHART_LINT_VERSION)"
 
 # Golang standard bin directory.
 BIN_DIR := $(GOPATH)/bin
@@ -80,4 +88,4 @@ collect-charts: $(AMCTL)
 convert-images: $(AMCTL)
 	amctl convert --addons-path=$(ADDONS_PATH) --export=$(TARGET_IMGAES_LIST_PATH)
 
-.PHONY: release-image lint update-tag collect-charts convert-images
+.PHONY: release-image build-image lint-image lint update-tag collect-charts convert-images

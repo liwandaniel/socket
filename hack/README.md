@@ -8,6 +8,8 @@
     - [install mode](#install-mode)
     - [debug mode](#debug-mode)
     - [hotfix mode](#hotfix-mode)
+  - [chart-lint.sh](#chart-lintsh)
+    - [如何使用](#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -73,3 +75,14 @@ bash install.sh debug
 ```bash
 bash install.sh hotfix
 ```
+
+
+### [chart-lint.sh](./chart-lint.sh)
+
+#### 如何使用
+
+```bash
+$ bash chart-lint.sh release/console-web.yaml #需要连接内网拉取镜像
+```
+
+传递参数: chart yaml 的路径

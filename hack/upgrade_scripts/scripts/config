@@ -1,0 +1,5 @@
+# the useless components in default namespace after upgrading to 2.7.3
+REMOVE_COMPONENT_DEFAULT="statistician-server"
+
+# the useless components in kube-system namespace after upgrading to 2.7.3
+REMOVE_COMPONENT_KS="logging-agent,logging-curator,logging-elasticsearch,logging-fluentd,logging-kibana"
