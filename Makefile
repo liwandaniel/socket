@@ -15,8 +15,8 @@ TAG = $(shell git describe --tags --always --dirty)
 
 # RELEASE_VERSION is the version of the release
 OEM_PRODUCT_NAME           ?= oem
-BASE_RELEASE_VERSION       ?= v2.7.2
-BASE_RELEASE_TIME          ?= 2018-10-26 18:00
+BASE_RELEASE_VERSION       ?= v2.7.3
+BASE_RELEASE_TIME          ?= 2019-01-10 18:00
 RELEASE_VERSION            ?= $(TAG)
 PANGOLIN_VERSION           ?= v0.0.4
 JENKINS_VERSION            ?= v0.0.1
