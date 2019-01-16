@@ -15,3 +15,5 @@ spec:
     description: user-web 
   - name: haier-admin
     description: haier-admin
+  - name: devops-admin
+    description: devops-admin
