@@ -8,3 +8,4 @@ release/cauth:v1alpha.1-sust
 release/hodor:v1alpha.1-sust
 release/tenant-admin:v1alpha.1-sust
 release/tenant-controller:v1alpha.1-sust
+release/approval-admin:v1.0.0

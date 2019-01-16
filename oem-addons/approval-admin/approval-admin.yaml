@@ -1,0 +1,41 @@
+_config:
+  _metadata:
+    description: approval-admin
+    name: approval-admin
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v1.0.0"
+  controllers:
+  - containers:
+    - env: 
+      - name: COMPASS_HOST
+        from:
+          type: Config
+          name: platform-config
+          key: compassWebEndpoint
+      image: '[[ registry_release ]]/approval-admin:v1.0.0'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 8080
+        protocol: TCP
+      args: 
+        - --db-endpoint=[[ platform_mongo_host ]]
+        - --postgres-endpoint=notify-admin-postgres:5432
+      resources:
+        limits:
+          cpu: 100m
+          memory: 100Mi
+        requests:
+          cpu: 100m
+          memory: 100Mi
+    controller:
+      replica: 1
+    services:
+    - name: approval-admin
+      ports:
+      - port: 8080
+        protocol: TCP
+      type: ClusterIP
+    type: Deployment

@@ -21,3 +21,5 @@ spec:
     description: Manage tenants 
   - name: tenant-controller
     description: tenant controller
+  - name: approval-admin
+    description: resource approval
