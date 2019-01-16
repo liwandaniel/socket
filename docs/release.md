@@ -90,7 +90,7 @@ make collect-charts ADDONS_PATH=./oem-addons GITHUB_TOKEN_PATH=./token TARGET_CO
 执行以下命令：
 
 ```bash
-make convert-images ADDONS_PATH=./oem-addons TARGET_FILE=./oem-images-lists/images_platform.list
+make convert-images ADDONS_PATH=./oem-addons TARGET_IMGAES_LIST_PATH=./images-lists/images_platform.list 
 ```
 
 上述命令将自动收集 Charts 中固定格式的镜像并保存在 `./oem-images-lists/images_platform.list` 中。

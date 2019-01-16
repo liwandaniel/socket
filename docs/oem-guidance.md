@@ -43,7 +43,9 @@
 
 ### oem-addons
 
-该目录存放定制化的 [addons](../addons), 语法请参考 [Chart 模版配置规范定义](https://github.com/caicloud/charts#chart-%E6%A8%A1%E7%89%88%E9%85%8D%E7%BD%AE%E8%A7%84%E8%8C%83%E5%AE%9A%E4%B9%89v100)
+该目录存放定制化的组件，即只包含增量的 release chart，对存量 release chart ([addons](../addons)) 的修改在原文件基础上修改
+
+语法请参考 [Chart 模版配置规范定义](https://github.com/caicloud/charts#chart-%E6%A8%A1%E7%89%88%E9%85%8D%E7%BD%AE%E8%A7%84%E8%8C%83%E5%AE%9A%E4%B9%89v100)
 
 同时，部署时会读取 [platform-info.yaml.j2](../platform-info.yaml.j2) 与 [platform-config.yaml.j2](../platform-config.yaml.j2) 生成 k8s configmap 并替换 addons 中格式为 `[[ variable name ]]` 的变量，具体实现可参考 [configMap.md](./configMap.md)。
 
@@ -55,16 +57,19 @@
 
 ### oem-images-lists
 
-该目录存放定制化组件的镜像列表 [images-lists](./images-lists)。
+手动创建目录，镜像列表命名规则为 `xxx.list`，`oem-images-lists` 目录存放定制化组件的镜像列表
 
-- 镜像存在于 [addons](../addons) 中的，可使用以下命令生成镜像列表：
+- 通过解析 `oem-addons` 目录中的 charts，可使用以下命令生成镜像列表：
 
 ```bash
-    $ go get github.com/caicloud/pangolin/cmd/amctl
-    $ amctl convert --addons-path=./oem-addons --export=./oem-images-lists/addons.list
+    $ make convert-images ADDONS_PATH=oem-addons TARGET_IMGAES_LIST_PATH=oem-images-lists/images_oem.list 
 ```
 
-- 其余镜像，请单独创建 list 文件记录
+其余镜像 ( 非工具生成 )
+   - 处于 release chart 中，但由于镜像命名规则不包含自定义的前缀，没有被工具解析出的，e.g. alpine:3.7
+   - 存在于 release chart 之外的镜像，例如 `应用商店的镜像` 或者 `流水线基础镜像` 等
+
+请单独创建 list 文件记录, 例如 `clever_extra.list`
 
 ### oem-plugins
 
