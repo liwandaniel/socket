@@ -23,3 +23,5 @@ spec:
     description: tenant controller
   - name: approval-admin
     description: resource approval
+  - name: monitoring-admin
+    description: monitoring
