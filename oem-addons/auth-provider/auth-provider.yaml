@@ -26,7 +26,7 @@ _config:
               name: platform-config
               key: "cleverServer"
           - name: DEFAULT_REDIRECT_PORT
-            value: '6060'
+            value: '6061'
           - name: DEFAULT_REDIRECT_URL
             from:
               type: Config
