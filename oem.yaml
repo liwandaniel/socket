@@ -18,10 +18,12 @@ spec:
   - name: hodor-server
     description: API Gateway
   - name: tenant-admin
-    description: Manage tenants 
+    description: Manage tenants
   - name: tenant-controller
     description: tenant controller
   - name: approval-admin
     description: resource approval
   - name: monitoring-admin
     description: monitoring
+  - name: console-web-web
+      description: console-web
