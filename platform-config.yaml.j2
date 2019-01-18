@@ -11,6 +11,8 @@ data:
   compassWebEndpoint: "http://{{ systemEndpoint }}:6060"
   userwebServer: "http://{{ systemEndpoint }}:6060/userweb"
   hodorEndpoint: "http://{{ systemEndpoint }}:6060/hodor"
+  # 流水线自动触发 hook 回调地址，请保证该地址 SCM webhook 可以访问通。
+  # 如果环境安装完成后，需要修改该地址，修改完成后请重启 cyclone-server 使其生效。
   devopsWebhookURL: "http://{{ systemEndpoint }}:6060/hodor/apis/admin.devops.caicloud.io/v1/pipelines"
   cleverServer: "http://{{ systemEndpoint }}:6061"
   userwebBasePath: "/userweb"
