@@ -262,7 +262,7 @@ spec:
                                 sh """
                                     ansible -i /jenkins/ansible/inventory cargo -m shell -a "bash /root/package.sh package ${RELEASE_VERSION} ${CARGO_DIR} ${PRODUCT_NAME}"
                                     ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/install.sh dest=${CARGO_DIR}/${PRODUCT_NAME}-component-${RELEASE_VERSION}/ mode=0755"
-                                    ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/config.sample dest=${CARGO_DIR}/${PRODUCT_NAME}-component-${RELEASE_VERSION}/ mode=0644"
+                                    ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=config.sample dest=${CARGO_DIR}/${PRODUCT_NAME}-component-${RELEASE_VERSION}/ mode=0644"
                                     ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=release.tar.gz dest=${CARGO_DIR}/${PRODUCT_NAME}-component-${RELEASE_VERSION}/image/ mode=0644"
                                 """
                             } else {
