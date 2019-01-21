@@ -1,0 +1,39 @@
+metadata: 
+  name: endpoint-admin                                  
+  alias: endpoint-admin                                        
+spec:
+ # class: endpoint
+  version: 1.0.6
+  compassRequirement: ">=v2.7.0"
+  note: endpoint-admin
+  author: caicloud.io                   
+  service:
+    port: 8080
+    nodePort: 30021
+    image: "cargo-infra.caicloud.xyz/devops_release/endpoint-server:v1.0.6"
+    configs:                  
+      envs:
+      - name: CARGO_ADMIN          
+        description: "cargo admin" 
+        value: cargo-admin:8080      
+      - name: ADMIN_SERVER_ENDPOINT         
+        description: "endpoint admin address"  
+        value: {vip}:30021      
+      - name: DB_ENDPOINT          
+        description: "mongo address" 
+        value: mongodb://infra-mongo-mongo-v1-0-0.mgo-cluster,infra-mongo-mongo-v1-0-1.mgo-cluster,infra-mongo-mongo-v1-0-2.mgo-cluster      
+    security:
+      cauth: true
+      privileged: true           
+  modules:
+  - name: endpoint
+    alias:                      
+      zh: 边缘服务
+      en: Edge Nodes Service
+    icon: "/apis/admin.endpoint.caicloud.io/v1/console/img/icon.svg"     
+    sources:                    
+    - "/apis/admin.endpoint.caicloud.io/v1/console/index.js"
+    - "/apis/admin.endpoint.caicloud.io/v1/console/css/all.css"
+    - "/apis/admin.endpoint.caicloud.io/v1/console/css/index.css"
+    slots:                      
+    - "user.plugin_center"
