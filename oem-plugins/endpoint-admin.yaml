@@ -10,7 +10,7 @@ spec:
   service:
     port: 8080
     nodePort: 30021
-    image: "cargo-infra.caicloud.xyz/devops_release/endpoint-server:v1.0.6"
+    image: "cargo-infra.caicloud.xyz/devops_release/endpoint-server:v1.0.7"
     configs:                  
       envs:
       - name: CARGO_ADMIN          
