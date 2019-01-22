@@ -1,0 +1,75 @@
+_config:
+  _metadata:
+    description: node-exporter
+    name: exporters-node
+    namespace: kube-system
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.14.0-upgrade"
+  controllers:
+  - containers:
+    - args:
+      - -collector.procfs
+      - /host/proc
+      - -collector.sysfs
+      - /host/sys
+      - -collector.filesystem.ignored-mount-points
+      - ^/(sys|proc|dev|host|etc)($|/)
+      image: '[[ registry_release ]]/node-exporter:v0.14.0'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: procfs
+        path: /host/proc
+        readonly: true
+        propagation: HostToContainer
+      - name: sysfs
+        path: /host/sys
+        readonly: true
+        propagation: HostToContainer
+      - name: rootfs
+        path: /rootfs
+        readonly: true
+        propagation: HostToContainer
+      ports:
+      - hostPort: 9100
+        port: 9100
+        protocol: TCP
+      resources:
+        requests:
+          cpu: 10m
+          memory: 20Mi
+    controller:
+      replica: 1
+    pod:
+      dns: ClusterFirst
+      host:
+        network: true
+        pid: true
+      restart: Always
+      termination: 30
+    services:
+    - name: node-exporter
+      ports:
+      - port: 9100
+        protocol: TCP
+        targetPort: 9100
+      type: ClusterIP
+    pod:
+      annotations:
+      - key: "scheduler.alpha.kubernetes.io/critical-pod"
+        value: ""
+    type: DaemonSet
+    volumes:
+    - name: procfs
+      source:
+        path: /proc
+      type: HostPath
+    - name: sysfs
+      source:
+        path: /sys
+      type: HostPath
+    - name: rootfs
+      source:
+        path: /
+      type: HostPath

@@ -43,6 +43,10 @@ _config:
       - port: 8080
         protocol: TCP
       type: ClusterIP
+    pod:
+      annotations:
+      - key: "scheduler.alpha.kubernetes.io/critical-pod"
+        value: ""
     type: DaemonSet
     volumes:
     - name: docker-sock
