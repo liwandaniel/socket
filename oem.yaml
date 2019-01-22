@@ -27,3 +27,6 @@ spec:
     description: monitoring
   - name: console-web-web
     description: console-web
+  - name: cargo-admin
+    description: cargo management
+
