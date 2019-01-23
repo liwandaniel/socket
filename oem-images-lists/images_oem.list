@@ -5,3 +5,5 @@ release/cyclone-server:v1alpha.2
 release/devops-admin:v1alpha.2
 release/user-web:v0.3.24-rc05-haier-1
 release/haier-admin:v1.0.1
+release/cluster-controller:v1.4.0-alpha.9-haier
+release/cluster-machine-controller:v1.4.0-alpha.9-haier
