@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v3.3.1-skd-0"
+    version: "v3.3.1-skd"
   controllers:
   - containers:
     - env:
@@ -80,7 +80,7 @@ _config:
         value: '[[ platform_release_version ]]'
       - name: PRODUCT_RELEASE_TIME
         value: '[[ platform_release_time ]]'
-      image: '[[ registry_release ]]/console-web:v3.3.1-skd-0'
+      image: '[[ registry_release ]]/console-web:v3.3.1-skd'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 3000
