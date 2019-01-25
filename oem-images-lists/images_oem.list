@@ -12,3 +12,4 @@ release/approval-admin:v1.0.0
 release/console-web:v3.3.1-skd-0
 release/monitoring-admin:v0.5.22-shtech
 release/cargo-admin:v0.4.15-sust
+release/exporter-gpu:v0.1.5-sust

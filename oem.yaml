@@ -29,4 +29,6 @@ spec:
     description: console-web
   - name: cargo-admin
     description: cargo management
+  - name: exporters-gpu
+    description: gpu exporter
 
