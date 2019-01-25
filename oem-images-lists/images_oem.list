@@ -8,8 +8,7 @@ release/cauth:v1alpha.1-sust
 release/hodor:v1alpha.1-sust
 release/tenant-admin:v1alpha.1-sust
 release/tenant-controller:v1alpha.1-sust
-release/approval-admin:v1.0.0
 release/console-web:v3.3.1-skd
-release/monitoring-admin:v0.5.22-shtech
+release/monitoring-admin:v0.5.22-shtech-1
 release/cargo-admin:v0.4.15-sust
 release/exporter-gpu:v0.1.5-sust

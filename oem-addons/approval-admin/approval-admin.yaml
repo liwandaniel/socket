@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.0.0"
+    version: "v1.0.1"
   controllers:
   - containers:
     - env: 
@@ -15,7 +15,7 @@ _config:
           type: Config
           name: platform-config
           key: compassWebEndpoint
-      image: '[[ registry_release ]]/approval-admin:v1.0.0'
+      image: '[[ registry_release ]]/approval-admin:v1.0.1'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 8080
