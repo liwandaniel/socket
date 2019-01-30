@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v3.6.9"
+    version: "v3.7.7"
   controllers:
   - containers:
     - env:
@@ -63,7 +63,7 @@ _config:
           type: Config
           name: platform-config
           key: "userwebServer"
-      image: '[[ registry_release ]]/clever-web:v3.6.9'
+      image: '[[ registry_release ]]/clever-web:v3.7.7'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 4006

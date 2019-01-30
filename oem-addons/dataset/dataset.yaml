@@ -5,14 +5,14 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.0.1-rc.4"
+    version: "v0.1.0"
   controllers:
   - type: Deployment
     controller:
       replica: 1
     containers:
     - name: dataset
-      image: '[[ registry_release ]]/clever-dataset:v0.0.1-rc.4'
+      image: '[[ registry_release ]]/clever-dataset:v0.1.0'
       imagePullPolicy: Always
       resources:
         requests:
@@ -52,16 +52,14 @@ _config:
         path: "/etc/localtime"
     services:
     - name: dataset
-      type: NodePort
+      type: ClusterIP
       ports:
       - protocol: HTTP
         targetPort: 8080                
         port: 8080
-        nodePort: 30032
     - name: gitserver
-      type: NodePort
+      type: ClusterIP
       ports:
       - protocol: HTTP
         targetPort: 22 
         port: 22
-        nodePort: 30696

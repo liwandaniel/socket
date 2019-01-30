@@ -5,14 +5,14 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.2"
+    version: "v0.1.5"
   controllers:
   - type: Deployment
     controller:
       replica: 1
     containers:
     - name: clever-admin
-      image: '[[ registry_release ]]/clever-admin:v0.1.2'
+      image: '[[ registry_release ]]/clever-admin:v0.1.5'
       resources:
         requests:
           cpu: 100m
@@ -31,9 +31,9 @@ _config:
       - name: FILESERVER_IMAGE
         value: '[[ registry_release ]]/clever-fileserver:v1.4.3'
       - name: RESOLVER_IMAGE
-        value: '[[ registry_release ]]/clever-resolver:v0.1.2'
+        value: '[[ registry_release ]]/clever-resolver:v0.1.5'
       - name: CONVERTER_IMAGE
-        value: '[[ registry_release ]]/clever-converter:v0.1.2'
+        value: '[[ registry_release ]]/clever-converter:v0.1.5'
       - name: DROPPY_REQUEST_CPU
         value: '500m'
       - name: DROPPY_REQUEST_MEMORY
