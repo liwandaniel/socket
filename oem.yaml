@@ -17,6 +17,8 @@ spec:
     description: clever pytorch operator
   - name: clever-tf-operator
     description: TF operator
+  - name: clever-spark-operator
+    description: clever spark operator
   - name: clever-labelgres
     description: Postgres for label
   - name: user-web

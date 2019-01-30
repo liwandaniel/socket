@@ -8,6 +8,7 @@ release/saved_model_cli:latest
 release/clever-fileserver:v1.4.3
 release/caicloud-droppy:v10.3.1
 release/pytorch-operator:v1alpha2-v1.2.0
+release/spark-operator:v2.3.1
 release/tf-operator:v1alpha2-v1.2.0
 release/clever-e2e-demo:v1.3.0
 release/clever-web:v3.6.9

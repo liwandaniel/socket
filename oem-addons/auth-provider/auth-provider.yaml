@@ -19,7 +19,7 @@ _config:
           - name: DEBUG_COLORS
             value: 'yes'
           - name: SESSION_EXPIRED
-            value: 30
+            value: '360'
           - name: CLEVER_SERVER
             from:
               type: Config
