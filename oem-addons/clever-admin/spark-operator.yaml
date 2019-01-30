@@ -1,0 +1,21 @@
+_config:
+  _metadata:
+    name: clever-spark-operator
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: v2.3.1
+  controllers:
+  - containers:
+    - image: '[[ registry_release ]]/spark-operator:v2.3.1'
+      imagePullPolicy: Always
+      command: ["/usr/bin/spark-operator"]
+      args:
+      - -logtostderr
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+    controller:
+      replica: 1
+    type: Deployment
