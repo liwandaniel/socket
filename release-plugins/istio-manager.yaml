@@ -1,0 +1,43 @@
+metadata:
+  name: servicemesh
+  alias: Istio 插件 
+spec:
+  class: servicemesh
+  version: v0.1.0
+  compassRequirement: ">=v2.7.3"
+  description: 用于连接、保护、控制和观测服务。
+  note: Istio 插件
+  author: caicloud.io
+  service:
+    port: 8080
+    image: harbor.caicloud.xyz/release/compass-plugins-istio-manager:v0.1.0
+    configs:
+      files: []
+    security:
+      privileged: false
+      clusterAccessible: true
+      apiAccessible: true
+    resources:
+      limits:
+        cpu: '0.5'
+        memory: 100Mi
+      requests:
+        cpu: '0.1'
+        memory: 50Mi
+  modules:
+  - name: istio-switch
+    alias:
+      zh: Istio开关
+      en: istio-switch
+    sources:
+    - "/assets/servicemesh_istio_switch.js"
+    slots:
+    - system.microservice.servicemesh
+  - name: istio-manage
+    alias:
+      zh: Istio管理
+      en: istio-manage
+    sources:
+    - "/assets/servicemesh_istio_manage.js"
+    slots:
+    - system.microservice.servicemesh
