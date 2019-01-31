@@ -213,10 +213,10 @@ spec:
                             docker.withRegistry("https://${DOCKER_REGISTRY}", "${DOCKER_REGISTRY_CREDENTIAL_ID}") {
                                 sh """
                                     # Reset to upstream/master
+                                    git checkout -B ${RELEASE_VERSION}
                                     git fetch upstream
                                     git reset --hard upstream/${BASE_BRANCH}
 
-                                    git checkout ${BASE_BRANCH}
                                     # Git tag
                                     git tag ${TAG_NAME}
                                     git push upstream --tags
