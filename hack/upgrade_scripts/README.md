@@ -57,12 +57,14 @@ comapss-component-upgrade/
 │   ├── release_controller.yaml.j2
 │   ├── kubeconfig-v2.7.2.j2
 │   └── kubeconfig.j2
+├── check.sh
 └── run.sh
 ```
 
 #### 升级包组成
 
 - `run.sh`: 执行脚本
+- `check.sh`: 检查集群 etcd 等业务状态的脚本
 - `scripts`: 具体任务对应的脚本
     - upgrade.sh: 升级脚本
     - check_image.sh: 升级镜像检查

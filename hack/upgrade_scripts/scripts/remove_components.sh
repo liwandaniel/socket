@@ -7,14 +7,24 @@ NORMAL_COL="\\033[0;39m"
 YELLOW_COL="\\033[33;1m"
 RED_COL="\\033[1;31m"
 CONFIG_PATH="${BASE_ROOT}/../../.kubectl.kubeconfig"
+CARGO_ENV_PATH="${BASE_ROOT}/../../.install-env.sh"
 KUBECTL_PATH="${BASE_ROOT}/scripts/kubectl"
 UPGRADE_CONFIG_PATH="${BASE_ROOT}/scripts/config"
+TEMPLATE_PATH="${BASE_ROOT}/templates"
 
 # check kubeconfig
 if [ -f ${CONFIG_PATH} ];then
 echo -e "$GREEN_COL starting...... $NORMAL_COL"
 else
 echo -e "$RED_COL kubeconfig file \"${CONFIG_PATH}\" not exist $NORMAL_COL"
+exit 1
+fi
+
+#source cargo env
+if [ -f ${CARGO_ENV_PATH} ];then
+source ${CARGO_ENV_PATH}
+else
+echo -e "$RED_COL Cargo env file not exist $NORMAL_COL"
 exit 1
 fi
 
@@ -65,6 +75,12 @@ remove_ks() {
         new_kubeconfig=`cat templates/kubeconfig.j2 | sed "s|endpointIP:endpointPort|${endpointIP}:${endpointPort}|g;s|clusterName|${clusterName}|g" \
         | sed "s|authorityData|${authorityData}|g;s|certificateData|${certificateData}|g;s|keyData|${keyData}|g" > kubeconfig`
 
+        # apply release-controller deployment
+        echo -e "$GREEN_COL replacing release-controller for cluster ${clusterName} $NORMAL_COL"
+        cat ${TEMPLATE_PATH}/release_controller_dp.yaml.j2 | sed "s/\[\[ registry_release \]\]/${CARGO_CFG_DOMAIN}\/release/g" \
+        | ${KUBECTL_PATH} --kubeconfig=kubeconfig apply -f -
+        docker run -v ${BASE_ROOT}/kubeconfig:/kubeconfig harbor.caicloud.xyz/release/replace:v0.0.1 --kubeconfig=/kubeconfig
+
         for component in ${ks_component_arr}
         do
             echo -e "$GREEN_COL removing release $component ... $NORMAL_COL"
@@ -76,9 +92,7 @@ remove_ks() {
     echo -e "$RED_COL no cluster, exit...... $NORMAL_COL"
     exit 1
     fi
-
 }
-
 
 remove_default
 remove_ks
