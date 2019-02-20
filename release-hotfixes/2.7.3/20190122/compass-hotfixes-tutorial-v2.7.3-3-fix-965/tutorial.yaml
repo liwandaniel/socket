@@ -1,0 +1,35 @@
+_config:
+  _metadata:
+    description: Tutorial Gitbook
+    name: tutorial
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v2.7.3-3"
+  controllers:
+  - containers:
+    - env:
+      - name: PRODUCTION
+        value: 'compass'
+      - name: EXTRA_BASE_PATH
+        value: '/tutorial'
+      - name: EXTRA_HOME_PAGE
+        value: '/product-introduction/product_description'
+      image: '[[ registry_release ]]/tutorial:cps-v2.7.3-3'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 4000
+        protocol: TCP
+    controller:
+      replica: 1
+      strategy:
+        surge: 1
+        unavailable: 0
+    services:
+    - name: tutorial
+      ports:
+      - protocol: TCP
+        port: 4000
+      type: ClusterIP
+    type: Deployment
