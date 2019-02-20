@@ -1,0 +1,62 @@
+_config:
+  _metadata:
+    description: exporter-gpu
+    name: exporters-gpu
+    namespace: kube-system
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.1.7"
+  controllers:
+  - containers:
+    - image: '[[ registry_release ]]/exporter-gpu:v0.1.7'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: docker-sock
+        path: /var/run/docker.sock
+        readonly: true
+        propagation: HostToContainer
+      - name: data
+        path: /opt/gpu/data
+      - path: /host/usr/lib64
+        name: libnvml
+        readonly: true
+      ports:
+      - port: 8080
+        protocol: TCP
+      securityContext:
+        privileged: true
+      resources:
+        limits:
+          cpu: 100m
+          memory: 256Mi
+        requests:
+          cpu: 50m
+          memory: 128Mi
+    controller:
+      replica: 1
+    services:
+    - annotations:
+      - key: prometheus.io/port
+        value: '8080'
+      - key: prometheus.io/scrape
+        value: 'true'
+      name: exporter-gpu
+      ports:
+      - port: 8080
+        protocol: TCP
+      type: ClusterIP
+    type: DaemonSet
+    volumes:
+    - name: docker-sock
+      source:
+        path: /var/run/docker.sock
+      type: HostPath
+    - name: data
+      source:
+        medium: ''
+      type: Scratch
+    - name: libnvml
+      type: HostPath
+      source:
+        path: /usr/lib64
