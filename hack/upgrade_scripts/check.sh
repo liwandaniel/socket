@@ -36,15 +36,5 @@ do
     ETCDCTL_API=3 /usr/local/etcd/bin/etcdctl --cacert=/var/lib/etcd/ssl/ca.crt --cert=/var/lib/etcd/ssl/etcd.crt --key=/var/lib/etcd/ssl/etcd.key --endpoints=https://${etcd_addr}:2379 member list
 
     echo -e "$GREEN_COL checking ca for apiserver status... $NORMAL_COL"
-
-    result=`curl https://${etcd_addr}:6443/healthz`
-
-    echo ""
-
-    if [[ "${result}" != "ok" ]]; then
-        echo -e "$RED_COL Ca out of date, replace $NORMAL_COL"
-        ssh root@${etcd_addr} "cat /etc/kubernetes/certs/ca.crt >> /etc/pki/tls/certs/ca-bundle.crt"
-    else
-        echo -e "$GREEN_COL ca correct $NORMAL_COL"
-    fi
+    ssh root@${etcd_addr} "cat /etc/kubernetes/certs/ca.crt >> /etc/pki/tls/certs/ca-bundle.crt"
 done
