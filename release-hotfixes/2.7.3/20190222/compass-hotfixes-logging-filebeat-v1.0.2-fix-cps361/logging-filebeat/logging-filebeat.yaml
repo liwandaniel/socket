@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.0.1"
+    version: "v1.0.2"
   controllers:
   - containers:
     - env:
@@ -22,7 +22,7 @@ _config:
         requests:
           memory: 50Mi
           cpu: 100m
-      image: '[[ registry_release ]]/filebeat:v1.0.1'
+      image: '[[ registry_release ]]/filebeat:v1.0.2'
       imagePullPolicy: Always
       command:
       - /opt/filebeat-keeper/filebeat-keeper
