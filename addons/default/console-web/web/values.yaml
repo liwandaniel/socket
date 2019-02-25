@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v3.2.6-asus.4"
+    version: "v3.2.6-oem-asus-4"
   controllers:
   - containers:
     - env:
@@ -77,7 +77,7 @@ _config:
         value: '[[ platform_release_version ]]'
       - name: PRODUCT_RELEASE_TIME
         value: '[[ platform_release_time ]]'
-      image: '[[ registry_release ]]/console-web:v3.2.6-asus.4'
+      image: '[[ registry_release ]]/console-web:v3.2.6-oem-asus-4'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 3000
