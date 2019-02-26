@@ -115,8 +115,6 @@ spec:
       description: App management
     - name: helm-registry
       description: Registry for app
-    - name: canary-release-controller
-      description: Controller for canary release
     - name: template-registry
       description: Registry for common template
     - name: application-admission

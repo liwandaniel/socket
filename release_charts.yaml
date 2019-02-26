@@ -28,11 +28,6 @@ spec:
   resourcePaths:
   - release/compass-admin.yaml
   targetPath: cadm
-- repositoryFullName: caicloud/canary-release
-  tag: v0.3.4
-  resourcePaths:
-  - release/canary-release-controller.yaml
-  targetPath: app
 - repositoryFullName: caicloud/charts
   tag: v1.2.20
 - repositoryFullName: caicloud/compass-plugins

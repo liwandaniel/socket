@@ -2,8 +2,6 @@ release/app-admin:v0.3.30
 release/templates:v1.2.20
 release/application-admission:v0.1.0-alpha.3
 release/application-controller:v0.1.0-alpha.3
-release/canary-nginx-proxy:v0.3.4
-release/canary-controller:v0.3.4
 release/helm-registry:v0.2.9-experiment
 release/charts:v1.2.20
 release/template-registry:v0.1.1
