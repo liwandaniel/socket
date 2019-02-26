@@ -6,13 +6,13 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.5.4-beta"
+    version: "v0.5.4"
   controllers:
   - type: Deployment
     controller:
       replica: 1
     containers:
-    - image: '[[ registry_release ]]/cargo-admin:v0.5.4-beta'
+    - image: '[[ registry_release ]]/cargo-admin:v0.5.4'
       imagePullPolicy: IfNotPresent
       name: admin
       mounts:
@@ -24,7 +24,7 @@ _config:
         path: /var/run/dind
       - name: cargo-cert
         path: /app/certs
-    - image: '[[ registry_release ]]/cargo-token:v0.5.4-beta'
+    - image: '[[ registry_release ]]/cargo-token:v0.5.4'
       imagePullPolicy: IfNotPresent
       name: token
       mounts:

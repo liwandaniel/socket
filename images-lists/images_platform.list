@@ -9,8 +9,8 @@ release/charts:v1.2.20
 release/template-registry:v0.1.1
 release/auth-provider:v1.1.0-rc03.1
 release/compass-admin:v0.0.9
-release/cargo-admin:v0.5.4-beta
-release/cargo-token:v0.5.4-beta
+release/cargo-admin:v0.5.4
+release/cargo-token:v0.5.4
 release/docker:18.03.1-ce-dind-certs
 library/busybox:1.30.0
 release/cargo-auth-controller:v0.1.4
