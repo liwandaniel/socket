@@ -219,3 +219,9 @@ spec:
       description: Logging ruler
     - name: logging-filebeat
       description: Logging filebeat
+  - name: infra-patch
+    description: infra patch for fixing runc
+    required: true
+    addons:
+    - name: infra-patch
+      description: infra patch for fixing runc

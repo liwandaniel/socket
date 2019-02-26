@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.0.0-alpha.1"
+    version: "v1.0.2"
   controllers:
   - containers:
     - env:
@@ -22,12 +22,12 @@ _config:
         requests:
           memory: 50Mi
           cpu: 100m
-      image: '[[ registry_release ]]/filebeat:v1.0.0-alpha.1'
+      image: '[[ registry_release ]]/filebeat:v1.0.2'
       imagePullPolicy: Always
       command:
       - /opt/filebeat-keeper/filebeat-keeper
       args:
-      - "--path.config=/etc/filebeat" 
+      - "--path.config=/etc/filebeat"
       - "--path.home=/opt/filebeat"
       - "-e"
       mounts:
@@ -48,7 +48,7 @@ _config:
         subpath: filebeat
       - name: output-config
         path: /config
-    - image: '[[ registry_release ]]/log-pilot:v1.0.0-alpha.1'
+    - image: '[[ registry_release ]]/log-pilot:v1.0.2'
       imagePullPolicy: Always
       command:
       - /opt/log-pilot/bin/log-pilot
@@ -59,11 +59,11 @@ _config:
       - -e
       resources:
         limits:
-          cpu: 20m
-          memory: 20Mi
+          cpu: 100m
+          memory: 200Mi
         requests:
           cpu: 10m
-          memory: 10Mi
+          memory: 20Mi
       mounts:
       - name: kubeletpods
         path: /var/lib/kubelet/pods

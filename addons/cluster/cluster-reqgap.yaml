@@ -6,17 +6,17 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.4.0-alpha.9"
+    version: "v1.4.4"
   controllers:
   - containers:
     - env:
       - name: ENV_CONTROLLER_MAX_RETRY_TIMES
         value: '0'
       - name: ENV_CONTROLLER_RESYNC_PERIOD_SECOND
-        value: '30'
+        value: '10'
       - name: ENV_LOG_LEVEL
         value: info
-      image: '[[ registry_release ]]/cluster-reqgap-controller:v1.4.0-alpha.9'
+      image: '[[ registry_release ]]/cluster-reqgap-controller:v1.4.4'
       imagePullPolicy: IfNotPresent
     controller:
       replica: 1

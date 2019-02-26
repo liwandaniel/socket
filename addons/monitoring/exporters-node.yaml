@@ -55,6 +55,10 @@ _config:
         protocol: TCP
         targetPort: 9100
       type: ClusterIP
+    pod:
+      annotations:
+      - key: "scheduler.alpha.kubernetes.io/critical-pod"
+        value: ""
     type: DaemonSet
     volumes:
     - name: procfs
