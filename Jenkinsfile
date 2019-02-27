@@ -367,7 +367,7 @@ spec:
                             if (params.install_option == "docker image") {
                                 sh """
                                 ansible -i /jenkins/ansible/inventory_cluster cargo -m copy -a "src=${KUBECONFIG_FILE} dest=/root/kubeconfig mode=0644"
-                                ansible -i /jenkins/ansible/inventory_cluster cargo -m copy -a "src=/hack/auto_installation/cluster_setting.sh dest=/root/cluster_setting.sh mode=0644"
+                                ansible -i /jenkins/ansible/inventory_cluster cargo -m copy -a "src=hack/auto_installation/cluster_setting.sh dest=/root/cluster_setting.sh mode=0644"
                                 ansible -i /jenkins/ansible/inventory_cluster cargo -m shell -a "docker login ${SOURCE_REGISTRY} -u ${SOURCE_REGISTRY_USER} -p ${SOURCE_REGISTRY_PASSWORD}"
                                 ansible -i /jenkins/ansible/inventory_cluster cargo -m shell -a "docker login ${TARGET_REGISTRY} -u ${TARGET_REGISTRY_USER} -p ${TARGET_REGISTRY_PASSWORD}"
                                 ansible -i /jenkins/ansible/inventory_cluster cargo -m shell -a "docker run --rm --name pangolin -e SOURCE_REGISTRY=${SOURCE_REGISTRY} \
@@ -400,8 +400,8 @@ spec:
                                     ansible -i /jenkins/ansible/inventory_cluster cargo -m copy -a "src=${KUBECONFIG_FILE} dest=${CARGO_DIR}/.kubectl.kubeconfig mode=0644"
                                     ansible -i /jenkins/ansible/inventory_cluster cargo -m shell -a "cd ${CARGO_DIR}/ && tar xvf compass-component.tar.gz"
                                     ansible -i /jenkins/ansible/inventory_cluster cargo -m shell -a "cd ${CARGO_DIR}/${PRODUCT_NAME}-component*/ && cp config.sample config"
-                                    ansible -i /jenkins/ansible/inventory_cluster cargo -m copy -a "src=/hack/auto_installation/clean_components.sh dest=${CARGO_DIR}/${PRODUCT_NAME}-component*/"
-                                    ansible -i /jenkins/ansible/inventory_cluster cargo -m copy -a "src=/hack/auto_installation/reinstall.sh dest=${CARGO_DIR}/${PRODUCT_NAME}-component*/"
+                                    ansible -i /jenkins/ansible/inventory_cluster cargo -m copy -a "src=hack/auto_installation/clean_components.sh dest=${CARGO_DIR}/${PRODUCT_NAME}-component*/"
+                                    ansible -i /jenkins/ansible/inventory_cluster cargo -m copy -a "src=hack/auto_installation/reinstall.sh dest=${CARGO_DIR}/${PRODUCT_NAME}-component*/"
                                     ansible -i /jenkins/ansible/inventory_cluster cargo -m shell -a "cd ${CARGO_DIR}/${PRODUCT_NAME}-component*/ && bash reinstall.sh"
                                 """
                             } else {
