@@ -47,9 +47,12 @@ case $INPUT in
   # package the files
   package )
     echo -e "$GREEN_COL starting packaging $NORMAL_COL"
+    PACKAGE_PATH=$5
+    PACKAGE_PATH=${PACKAGE_PATH:="/platform"}
+    mkdir -p ${PACKAGE_PATH}
     cd ${CARGO_DIR}/common/cargo-registry/ && tar -cvf pangolin-deploy-images.tar.gz docker
-    cd ${CARGO_DIR} && mkdir -p ${PRODUCT_NAME}-component-${RELEASE_VERSION}/image
-    mv ${CARGO_DIR}/common/cargo-registry/pangolin-deploy-images.tar.gz ${CARGO_DIR}/${PRODUCT_NAME}-component-${RELEASE_VERSION}/
+    cd ${PACKAGE_PATH} && mkdir  -p ${PRODUCT_NAME}-component-${RELEASE_VERSION}/image
+    mv ${CARGO_DIR}/common/cargo-registry/pangolin-deploy-images.tar.gz ${PACKAGE_PATH}/${PRODUCT_NAME}-component-${RELEASE_VERSION}/
     ;;
   # upload the package
   upload )
@@ -58,9 +61,12 @@ case $INPUT in
     OSS_PATH=${OSS_PATH:=auto}
     # delete the "/" at the begin and end of path
     OSS_PATH=`echo ${OSS_PATH%*/}` | sed 's#^/##g'
-    cd ${CARGO_DIR} && tar cvf ${PRODUCT_NAME}-component-${RELEASE_VERSION}.tar.gz ${PRODUCT_NAME}-component-${RELEASE_VERSION}
+    PACKAGE_PATH=$6
+    PACKAGE_PATH=${PACKAGE_PATH:="/platform"}
+    PACKAGE_PATH=`echo ${PACKAGE_PATH%*/}`
+    cd ${PACKAGE_PATH} && tar cvf ${PRODUCT_NAME}-component-${RELEASE_VERSION}.tar.gz ${PRODUCT_NAME}-component-${RELEASE_VERSION}
     echo -e "$GREEN_COL will upload to ${OSS_DIR}/${OSS_PATH}/${PRODUCT_NAME}-component-${RELEASE_VERSION}.tar.gz $NORMAL_COL"
-    /root/ossutil cp -ru ${CARGO_DIR}/${PRODUCT_NAME}-component-${RELEASE_VERSION}.tar.gz ${OSS_DIR}/${OSS_PATH}/${PRODUCT_NAME}-component-${RELEASE_VERSION}.tar.gz
+    /root/ossutil cp -ru ${PACKAGE_PATH}/${PRODUCT_NAME}-component-${RELEASE_VERSION}.tar.gz ${OSS_DIR}/${OSS_PATH}/${PRODUCT_NAME}-component-${RELEASE_VERSION}.tar.gz
     ;;
   * )
     echo -e "$RED_COL unknown command param:${INPUT} $NORMAL_COL"
