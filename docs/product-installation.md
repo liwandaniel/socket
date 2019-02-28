@@ -83,56 +83,33 @@ python3 amctl.py update -p addons/console/console-web.yaml  # pod 更新需等�
 
 使用版本发布之后的镜像或者自行构建镜像
 
+如果是定时构建的镜像，每天的镜像都会更新
+
+镜像命名规则为 `cargo-infra.caicloud.xyz/devops_release/release:auto-{date +%Y%m%d}`, 例如 auto-20190228
+
 CentOs:
 
 ```bash
-docker run --rm -it -v /etc/kubernetes/kubectl.kubeconfig:/root/.kube/config cargo.caicloudprivatetest.com/caicloud/release:$VERSION bash
+docker run --rm -it -v /etc/kubernetes/kubectl.kubeconfig:/root/.kube/config cargo-infra.caicloud.xyz/devops_release/release:$VERSION bash
 ```
 
 Mac:
 
 ```bash
-docker run --rm -it -v ~/.kube/config:/root/.kube/config cargo.caicloudprivatetest.com/caicloud/release:$VERSION bash
+docker run --rm -it -v ~/.kube/config:/root/.kube/config cargo-infra.caicloud.xyz/devops_release/release:$VERSION bash
 ```
 
-Please substitute $VERSION with your image tag.
+自行更改 $VERSION 为指定的版本
+
+如需更新组件请参考 [升级组件](#%E5%8D%87%E7%BA%A7%E7%BB%84%E4%BB%B6)
 
 ### 创建 config
+
+config 文件用于配置一些产品参数，如非必要，默认不修改
 
 ```
 cp script/config.sample config
 vi config
-```
-
-```
-# 选择安装的描述文件，默认为 "compass.yaml"
-# 标准产品，可选择安装 FULL-COMPASS 和 MINI-COMPASS，选择填写 "compass.yaml" 和 "mini-compass.yaml"
-# oem 产品，则填写 oem.yaml
-COMPONENT_LIST="compass.yaml"
-
-# 选择安装的 chart 路径，标准产品默认填写 "addons", oem 产品填写 "oem-addons"
-ADDONS_PATH="addons"
-
-# 配置单租户模式还是多租户模式，默认 enabled 为多租户，disabled 单租户
-tenantMode="enabled"
-
-# 默认从 system-info 中获取，如果 config 此处配置了 systemEndpoint，就会使用此处的值
-systemEndpoint=""
-
-# compass web 地址
-compassWebEndpoint=""
-
-# clever web 地址
-cleverServer=""
-
-# auth provider sso 登录
-oidcIssuer=""
-
-# user web 地址
-userwebServer=""
-
-# hodorEndpoint
-hodorEndpoint=""
 ```
 
 ### 安装产品
