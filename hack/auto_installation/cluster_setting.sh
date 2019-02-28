@@ -10,8 +10,8 @@ kubectl delete release -n kube-system `kubectl get release -n kube-system --no-h
 kubectl delete release `kubectl get release --no-headers | awk '{print $1}'`
 kubectl delete pvc `kubectl get pvc --no-headers | awk '{print $1}'`
 
-while /pangolin/kubectl get pods | grep -v heketi | grep -v plugin | grep Running;
-do echo "waiting for pods to be killed"; sleep 5; done;
+while [ `/pangolin/kubectl get pods --no-headers | grep -v heketi | grep -v plugin | wc -l` -ge 1 ];
+do echo "waiting for pods to be killed"; sleep 10; done;
 
 # create secret for cargo
 kubectl create secret docker-registry infra-cargo --docker-server=${SOURCE_REGISTRY} \

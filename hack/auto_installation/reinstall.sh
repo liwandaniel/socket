@@ -102,7 +102,7 @@ case $input in
     echo -e "$GREEN_COL installing components from ${addons} by using ${deploy_yaml} $NORMAL_COL"
 
     # load image resource
-#    load_all_images
+    load_all_images
 
     docker run --rm \
       -e DEPLOY_YAML=${deploy_yaml} \
