@@ -1,5 +1,5 @@
 release/app-admin:v0.3.30
-release/templates:v1.2.20
+release/templates:v1.3.0
 release/application-admission:v0.1.0-alpha.3
 release/application-controller:v0.1.0-alpha.3
 release/helm-registry:v0.2.9-experiment
