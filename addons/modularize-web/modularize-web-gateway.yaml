@@ -6,10 +6,10 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "0.0.1"
+    version: 'v0.4.2'
   controllers:
   - containers:
-    - image: '[[ registry_release ]]/modularize-web-gateway:v0.0.1'
+    - image: '[[ registry_release ]]/modularize-web-gateway:v0.4.2'
       imagePullPolicy: IfNotPresent
       env:
         - name: COOKIE_NAME

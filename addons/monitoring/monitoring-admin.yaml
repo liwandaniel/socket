@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.5.23"
+    version: "v0.6.0-alpha.0"
   controllers:
   - containers:
     - args:
@@ -15,7 +15,7 @@ _config:
       env:
       - name: MONGO_ENDPOINT
         value: '[[ platform_mongo_host ]]'
-      image: '[[ registry_release ]]/monitoring-admin:v0.5.23'
+      image: '[[ registry_release ]]/monitoring-admin:v0.6.0-alpha.0'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 8899

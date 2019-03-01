@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v2.7.3-3"
+    version: "cps-v2.7.3-3"
   controllers:
   - containers:
     - env:

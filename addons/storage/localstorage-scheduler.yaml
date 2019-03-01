@@ -1,21 +1,23 @@
 _config:
   _metadata:
-    description: config-admin
-    name: config-admin
-    namespace: default
+    description: localstorage-scheduler
+    name: localstorage-scheduler
+    namespace: kube-system
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.2.0"
+    version: "v0.5.0-alpha.1"
   controllers:
   - containers:
     - env:
-      - name: MONGO_HOST
-        value: '[[ platform_mongo_host ]]'
-      image: '[[ registry_release ]]/config-admin:v0.2.0'
+      - name: ENV_LOG_LEVEL
+        value: info
+      - name: ENV_LISTEN_PORT
+        value: '32233'
+      image: '[[ registry_release ]]/storage-localstorage-scheduler:v0.5.0-alpha.1'
       imagePullPolicy: IfNotPresent
       ports:
-      - port: 8080
+      - port: 32233
         protocol: TCP
     controller:
       replica: 1
@@ -23,9 +25,9 @@ _config:
         surge: 1
         unavailable: 0
     services:
-    - name: config-admin
+    - name: localstorage-scheduler
       ports:
-      - port: 8080
+      - port: 32233
         protocol: TCP
       type: ClusterIP
     type: Deployment

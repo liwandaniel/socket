@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: '[[ imageTagFromGitTag ]]'
+    version: 'v0.0.1-alpha'
   controllers:
     - containers:
         - env:
@@ -56,7 +56,7 @@ _config:
               value: '3002'
             - name: MODULARIZE_WEB_SERVICE
               value: 'http://modularize-web:4000'
-          image: '[[ registry_release ]]/devops-web:[[ imageTagFromGitTag ]]'
+          image: '[[ registry_release ]]/devops-web:v0.0.1-alpha'
           imagePullPolicy: IfNotPresent
           ports:
             - port: 3002

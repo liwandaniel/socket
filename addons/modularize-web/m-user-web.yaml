@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "[[ imageTagFromGitTag ]]"
+    version: "v0.3.25-alpha.0"
   controllers:
   - containers:
     - env:
@@ -116,7 +116,7 @@ _config:
         value: '[[ platform_release_version ]]'
       - name: PRODUCT_RELEASE_TIME
         value: '[[ platform_release_time ]]'
-      image: '[[ registry_release ]]/user-web:[[ imageTagFromGitTag ]]'
+      image: '[[ registry_release ]]/mdz-user-web:v0.3.25-alpha.0'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 3006

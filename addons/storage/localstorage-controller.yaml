@@ -1,0 +1,37 @@
+_config:
+  _metadata:
+    description: localstorage-controller
+    name: localstorage-controller
+    namespace: kube-system
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.5.0-alpha.1"
+  controllers:
+  - type: DaemonSet
+    containers:
+    - env:
+      - name: ENV_LOG_LEVEL
+        value: info
+      - name: ENV_CONTROLLER_RESYNC_PERIOD_SECOND
+        value: '60'
+      # NODE_NAME is default env variable
+      image: '[[ registry_release ]]/storage-localstorage-controller:v0.5.0-alpha.1'
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+      securityContext:
+        privileged: true
+      mounts:
+      - name: local-disks
+        path: /dev
+    volumes:
+    - name: local-disks
+      type: HostPath
+      source:
+        path: /dev

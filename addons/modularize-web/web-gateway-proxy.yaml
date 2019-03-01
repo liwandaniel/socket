@@ -8,8 +8,7 @@ _config:
       version: 1.0.0
     version: "1.0.1"
   controllers:
-  - type: Deployment
-    containers:
+  - containers:
     - image: '[[ registry_release ]]/nginx:1.15.5-alpine'
       imagePullPolicy: IfNotPresent
       mounts:
@@ -95,3 +94,5 @@ _config:
                   #tcp_nopush     on;
                   keepalive_timeout 65;
               }
+
+    type: Deployment

@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v1.1.9"
+    version: "v1.2.0-alpha.1"
   controllers:
   - containers:
     - env:
@@ -17,7 +17,7 @@ _config:
           key: "oidcIssuer"
       - name: OIDC_CLIENT_ID
         value: caicloud
-      image: '[[ registry_release ]]/hodor:v1.1.9'
+      image: '[[ registry_release ]]/hodor:v1.2.0-alpha.1'
       imagePullPolicy: IfNotPresent
       mounts:
       - name: hodor

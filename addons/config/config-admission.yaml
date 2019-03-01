@@ -6,10 +6,10 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.2.11"
+    version: "v0.3.0"
   controllers:
   - containers:
-    - image: '[[ registry_release ]]/config-admission:v0.2.11'
+    - image: '[[ registry_release ]]/config-admission:v0.3.0'
       imagePullPolicy: IfNotPresent
       resources:
         limits:

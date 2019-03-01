@@ -6,10 +6,10 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: 'v1.1.0-rc03.1'
+    version: 'v1.1.1-alpha.0'
   controllers:
     - containers:
-      - image: '[[ registry_release ]]/auth-provider:v1.1.0-rc03.1'
+      - image: '[[ registry_release ]]/auth-provider:v1.1.1-alpha.0'
         imagePullPolicy: IfNotPresent
         env:
           - name: MONGODB_URL
@@ -20,6 +20,11 @@ _config:
             value: 'yes'
           - name: SESSION_EXPIRED
             value: '30'
+          - name: CLEVER_SERVER
+            from:
+              type: Config
+              name: platform-config
+              key: "cleverServer"
           - name: DEFAULT_REDIRECT_PORT
             value: '6060'
           - name: DEFAULT_REDIRECT_URL

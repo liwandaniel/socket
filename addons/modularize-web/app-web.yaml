@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: '[[ imageTagFromGitTag ]]'
+    version: 'v0.0.2'
   controllers:
     - containers:
         - env:
@@ -53,7 +53,7 @@ _config:
               value: '0'
             - name: PORT
               value: '3010'
-          image: '[[ registry_release ]]/app-web:[[ imageTagFromGitTag ]]'
+          image: '[[ registry_release ]]/app-web:v0.0.2'
           imagePullPolicy: IfNotPresent
           ports:
             - port: 3010

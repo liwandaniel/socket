@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: '[[ imageTagFromGitTag ]]'
+    version: 'v0.4.2'
   controllers:
     - containers:
         - env:
@@ -119,7 +119,7 @@ _config:
               value: compass-web-sess
             - name: COOKIE_SECRET
               value: c2a0i1c6l0o3u2d
-          image: '[[ registry_release ]]/modularize-web:[[ imageTagFromGitTag ]]'
+          image: '[[ registry_release ]]/modularize-web:v0.4.2'
           imagePullPolicy: IfNotPresent
           ports:
             - port: 4000
