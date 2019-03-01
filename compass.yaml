@@ -187,6 +187,10 @@ spec:
       description: simple-static-file-server
     - name: cephfs-provisioner
       description: cephfs-provisioner
+    - name: localstorage-controller
+      description: Controller for local storage
+    - name: localstorage-scheduler
+      description: Scheduler for local storage
   - name: monitoring
     description: monitoring
     required: true

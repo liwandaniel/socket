@@ -187,6 +187,8 @@ spec:
       - release/storage-admission.yaml
       - release/storage-controller.yaml
       - release/cephfs-provisioner.yaml
+      - release/localstorage-controller.yaml
+      - release/localstorage-scheduler.yaml
     targetPath: storage
   - repositoryFullName: caicloud/external-storage
     resourcePaths:
