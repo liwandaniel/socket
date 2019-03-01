@@ -76,18 +76,22 @@ spec:
   tag: v0.0.2
   resourcePaths:
   - release/app-web.yaml
+  targetPath: modularize-web
 - repositoryFullName: caicloud/devops-web
   tag: v0.0.1-alpha
   resourcePaths:
   - release/devops-web.yaml
+  targetPath: modularize-web
 - repositoryFullName: caicloud/insight-web
   tag: v0.0.1
   resourcePaths:
   - release/insight-web.yaml
+  targetPath: modularize-web
 - repositoryFullName: caicloud/resource-web
   tag: v0.0.3-alpha.1
   resourcePaths:
   - release/resource-web.yaml
+  targetPath: modularize-web
 - repositoryFullName: caicloud/user-web
   tag: v0.3.25-alpha.0
   resourcePaths:
