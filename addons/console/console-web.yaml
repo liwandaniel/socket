@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: 'v3.4.12'
+    version: 'v3.4.15'
   controllers:
     - containers:
         - env:
@@ -33,6 +33,8 @@ _config:
                 key: 'hodorEndpoint'
             - name: MONITOR_SERVER
               value: http://monitoring-admin:8899/api/v1
+            - name: CLUSTER_SERVER
+              value: http://cluster-admin:2233/api/v2alpha1
             - name: CAICLOUD_PRODUCT_CFG_STRING_MULTI_TENANCY
               from:
                 type: Config
@@ -105,7 +107,7 @@ _config:
               value: '[[ platform_release_time ]]'
             - name: TUTORIAL_LINK
               value: 'tutorial'
-          image: '[[ registry_release ]]/console-web:v3.4.12'
+          image: '[[ registry_release ]]/console-web:v3.4.15'
           imagePullPolicy: IfNotPresent
           ports:
             - port: 3000
