@@ -62,12 +62,29 @@ spec:
       - release/config-admission.yaml
       - release/config-reference.yaml
     targetPath: config
-  - repositoryFullName: caicloud/console-web
+  - repositoryFullName: caicloud/modularize-web
     resourcePaths:
-      - release/console-web.yaml
-      - release/console-web-redis.yaml
+      - release/web-redis.yaml
+      - release/modularize-web.yaml
       - release/web-gateway-proxy.yaml
-    targetPath: console
+      - release/modularize-web-gateway.yaml
+    targetPath: modularize-web
+  - repositoryFullName: caicloud/app-web
+    resourcePaths:
+      - release/app-web.yaml
+  - repositoryFullName: caicloud/devops-web
+    resourcePaths:
+      - release/devops-web.yaml
+  - repositoryFullName: caicloud/insight-web
+    resourcePaths:
+      - release/insight-web.yaml
+  - repositoryFullName: caicloud/resource-web
+    resourcePaths:
+      - release/resource-web.yaml
+  - repositoryFullName: caicloud/user-web
+    resourcePaths:
+      - release/m-user-web.yaml
+    targetPath: modularize-web
   - repositoryFullName: caicloud/user-web
     resourcePaths:
       - release/user-web.yaml

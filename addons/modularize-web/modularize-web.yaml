@@ -1,12 +1,12 @@
 _config:
   _metadata:
-    description: console-web
-    name: console-web-web
+    description: modularize-web
+    name: modularize-web
     namespace: default
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: 'v3.4.12'
+    version: '[[ imageTagFromGitTag ]]'
   controllers:
     - containers:
         - env:
@@ -16,6 +16,10 @@ _config:
               value: '6104'
             - name: MONGODB_URL
               value: '[[ platform_mongo_host ]]'
+            - name: REDIS_HOST
+              value: 'web-redis'
+            - name: REDIS_PORT
+              value: '6379'
             - name: HIDE_MENU
               value: caas_circle
             - name: HIDE
@@ -33,6 +37,10 @@ _config:
                 key: 'hodorEndpoint'
             - name: MONITOR_SERVER
               value: http://monitoring-admin:8899/api/v1
+            - name: CAUTH_SERVER
+              value: http://dex-cauth:8080/api/v2
+            - name: CLUSTER_SERVER
+              value: http://cluster-admin:2233/api/v2alpha1
             - name: CAICLOUD_PRODUCT_CFG_STRING_MULTI_TENANCY
               from:
                 type: Config
@@ -91,7 +99,7 @@ _config:
               from:
                 type: Config
                 name: platform-config
-                key: "cleverOn"
+                key: 'cleverOn'
             - name: SHOW_LANG
               value: 'false'
             - name: DEFAULT_LANG
@@ -105,10 +113,16 @@ _config:
               value: '[[ platform_release_time ]]'
             - name: TUTORIAL_LINK
               value: 'tutorial'
-          image: '[[ registry_release ]]/console-web:v3.4.12'
+            - name: PORT
+              value: '4000'
+            - name: COOKIE_NAME
+              value: compass-web-sess
+            - name: COOKIE_SECRET
+              value: c2a0i1c6l0o3u2d
+          image: '[[ registry_release ]]/modularize-web:[[ imageTagFromGitTag ]]'
           imagePullPolicy: IfNotPresent
           ports:
-            - port: 3000
+            - port: 4000
               protocol: TCP
       controller:
         replica: 1
@@ -116,9 +130,9 @@ _config:
           surge: 1
           unavailable: 0
       services:
-        - name: console-web
+        - name: modularize-web
           ports:
             - protocol: TCP
-              port: 3000
+              port: 4000
           type: ClusterIP
       type: Deployment

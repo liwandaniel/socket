@@ -1,0 +1,126 @@
+_config:
+  _metadata:
+    description: resource-web
+    name: resource-web
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: '[[ imageTagFromGitTag ]]'
+  controllers:
+    - containers:
+        - env:
+            - name: NODE_ENV
+              value: 'production'
+            - name: GRAFANA_PORT
+              value: '6104'
+            - name: MONGODB_URL
+              value: '[[ platform_mongo_host ]]'
+            - name: HIDE_MENU
+              value: caas_circle
+            - name: HIDE
+              value: forget
+            - name: CLOUD_ENV
+              value: private
+            - name: OEM_ENV
+              value: '0'
+            - name: HODOR_SERVER
+              value: http://hodor:8080
+            - name: EXTERNAL_HODOR
+              from:
+                type: Config
+                name: platform-config
+                key: 'hodorEndpoint'
+            - name: MONITOR_SERVER
+              value: http://monitoring-admin:8899/api/v1
+            - name: CAICLOUD_PRODUCT_CFG_STRING_MULTI_TENANCY
+              from:
+                type: Config
+                name: platform-config
+                key: 'tenantMode'
+            - name: ISSUER
+              from:
+                type: Config
+                name: platform-config
+                key: 'oidcIssuer'
+            - name: ISSUER_PORT
+              value: '6060'
+            - name: COMPASS_PORT
+              value: '6060'
+            - name: CLEVER_PORT
+              value: '6061'
+            - name: USERWEB_PORT
+              value: '6060'
+            - name: ISSUER_PREFIX_URL
+              from:
+                type: Config
+                name: platform-config
+                key: ssoBasePath
+            - name: OIDC_CLIENT_ID
+              value: compass-web
+            - name: OIDC_CLIENT_SECRET
+              value: compass-web
+            - name: CONSOLE_BASE_PATH
+              from:
+                type: Config
+                name: platform-config
+                key: 'consoleBasePath'
+            - name: USERWEB_BASE_PATH
+              from:
+                type: Config
+                name: platform-config
+                key: 'userwebBasePath'
+            - name: CLEVER_BASE_PATH
+              value: ''
+            - name: COMPASS_SERVER
+              from:
+                type: Config
+                name: platform-config
+                key: 'compassWebEndpoint'
+            - name: CLEVER_SERVER
+              from:
+                type: Config
+                name: platform-config
+                key: 'cleverServer'
+            - name: 'USERWEB_SERVER'
+              from:
+                type: Config
+                name: platform-config
+                key: 'userwebServer'
+            - name: CLEVER_ON
+              from:
+                type: Config
+                name: platform-config
+                key: "cleverOn"
+            - name: SHOW_LANG
+              value: 'false'
+            - name: DEFAULT_LANG
+              value: 'zh-CN'
+            - name: NODE_TLS_REJECT_UNAUTHORIZED
+              value: '0'
+            # Get release info from system-info ConfigMap
+            - name: PRODUCT_VERSION
+              value: '[[ platform_release_version ]]'
+            - name: PRODUCT_RELEASE_TIME
+              value: '[[ platform_release_time ]]'
+            - name: TUTORIAL_LINK
+              value: 'tutorial'
+            - name: PORT
+              value: '3008'
+          image: '[[ registry_release ]]/resource-web:[[ imageTagFromGitTag ]]'
+          imagePullPolicy: IfNotPresent
+          ports:
+            - port: 3008
+              protocol: TCP
+      controller:
+        replica: 1
+        strategy:
+          surge: 1
+          unavailable: 0
+      services:
+        - name: resource-web
+          ports:
+            - protocol: TCP
+              port: 3008
+          type: ClusterIP
+      type: Deployment

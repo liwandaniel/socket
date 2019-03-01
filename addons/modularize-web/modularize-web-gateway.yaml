@@ -1,0 +1,65 @@
+_config:
+  _metadata:
+    description: modularize-web-gateway
+    name: modularize-web-gateway
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "0.0.1"
+  controllers:
+  - containers:
+    - image: '[[ registry_release ]]/modularize-web-gateway:v0.0.1'
+      imagePullPolicy: IfNotPresent
+      env:
+        - name: COOKIE_NAME
+          value: compass-web-sess
+        - name: COOKIE_SECRET
+          value: c2a0i1c6l0o3u2d
+      mounts:
+        - name: modularize-web-gateway
+          path: /app/config/prod.yaml
+          subpath: prod.yaml
+      ports:
+      - port: 3300
+        protocol: TCP
+    controller:
+      replica: 1
+    services:
+    - name: modularize-web-gateway
+      ports:
+      - port: 3300
+        protocol: TCP
+      type: ClusterIP
+    volumes:
+        - name: modularize-web-gateway
+          source:
+            items:
+              - key: prod.yaml
+                path: prod.yaml
+            target: modularize-web-gateway
+          type: Config
+    configs:
+      - name: modularize-web-gateway
+        data:
+          - key: prod.yaml
+            value: |
+              modules:
+              - name: console-web
+                endpoint: http://modularize-web:4000
+              - name: devops
+                endpoint: http://devops-web:3002
+                apipattern: "^/api/(devops|cargo)(/|\\b$)"
+              - name: insight
+                endpoint: http://insight-web:3004
+                apipattern: "^/api/(overview|alerting|monitoring|journal_v3|event_v2|groups|contacts|smtpconfigs|testemail)(/|\\b$)"
+              - name: user-web
+                endpoint: http://m-user-web:3006
+                apipattern: "^/api/(teams|profile|auth_v2)(/|\\b$)"
+              - name: resource
+                endpoint: http://resource-web:3008
+                apipattern: "^/api/(cluster|cluster_v2|clusters|machine|quota|storage|tags)(/|\\b$)"
+              - name: app-web
+                endpoint: http://app-web:3010
+                apipattern: "^/api/(appServer|application|autoScalers|applicationChart|job|statefulsets|configCenter|microservice|loadbalancer|deployment)(/|\\b$)"
+    type: Deployment

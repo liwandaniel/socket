@@ -8,7 +8,8 @@ _config:
       version: 1.0.0
     version: "1.0.1"
   controllers:
-  - containers:
+  - type: Deployment
+    containers:
     - image: '[[ registry_release ]]/nginx:1.15.5-alpine'
       imagePullPolicy: IfNotPresent
       mounts:
@@ -81,7 +82,7 @@ _config:
                           proxy_redirect off;
                       }
                       location / {
-                          proxy_pass http://console-web:3000/;
+                          proxy_pass http://modularize-web-gateway:3300/;
                           proxy_redirect off;
                       }
                   }
@@ -94,5 +95,3 @@ _config:
                   #tcp_nopush     on;
                   keepalive_timeout 65;
               }
-
-    type: Deployment

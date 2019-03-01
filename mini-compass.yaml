@@ -24,13 +24,25 @@ spec:
   - name: hybrid-controller-manager
     description: hybrid controller manager
   modules:
-  - name: console
-    description: Console web
+  - name: modularize-web
+    description: Web Console
     required: true
     addons:
-    - name: console-web-web
-      description: Console web
-    - name: console-web-redis
+    - name: app-web
+      description: app-web
+    - name: resource-web
+      description: resource-web
+    - name: insight-web
+      description: insight-web
+    - name: m-user-web
+      description: m-user-web
+    - name: devops-web
+      description: devops-web
+    - name: modularize-web-gateway
+      description: modularize-web-gateway
+    - name: modularize-web
+      description: modularize-web
+    - name: web-redis
       description: Redis for console web
     - name: web-gateway-proxy
       description: Web gateway proxy

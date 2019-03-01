@@ -1,7 +1,7 @@
 _config:
   _metadata:
-    description: console-web-redis
-    name: console-web-redis
+    description: redis for cps-web
+    name: web-redis
     namespace: default
     template:
       type: template.caicloud.io/application
@@ -17,7 +17,7 @@ _config:
     controller:
       replica: 1
     services:
-    - name: console-web-redis
+    - name: web-redis
       ports:
       - port: 6379
         protocol: TCP
