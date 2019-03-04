@@ -190,11 +190,7 @@ spec:
                     }
                     if (params.collect) {
                         stage("Collect Charts") {
-                            if (!params.auto_build){
-                                def collectTags = whetherPRMerged()
-                            } else {
-                                collectTags = true
-                            }
+                            def collectTags = whetherPRMerged()
                             if (collectTags) {
                                 if (!params.auto_build) {
                                     sh """
@@ -241,11 +237,7 @@ spec:
                 }
                 if (params.release) {
                     stage("Make Release-Image") {
-                        if (!params.auto_build){
-                            def collectCharts = whetherPRMerged()
-                        } else {
-                            collectCharts = true
-                        }
+                        def collectCharts = whetherPRMerged()
                         if (collectCharts) {
                             docker.withRegistry("https://${DOCKER_REGISTRY}", "${DOCKER_REGISTRY_CREDENTIAL_ID}") {
                                 if (!params.auto_build) {
@@ -456,12 +448,16 @@ spec:
 }
 
 def whetherPRMerged() {
-    try {
-        def merged = input message: 'Whether PR merged?',
-                    parameters: [booleanParam(defaultValue: true, description: 'Whether PR merged?', name: 'Merged')]
+    if (!params.auto_build) {
+        try {
+            def merged = input message: 'Whether PR merged?',
+                        parameters: [booleanParam(defaultValue: true, description: 'Whether PR merged?', name: 'Merged')]
+            return merged
+        } catch(e) {
+            return false
+        }
+    } else {
         return merged
-    } catch(e) {
-        return false
     }
 }
 
