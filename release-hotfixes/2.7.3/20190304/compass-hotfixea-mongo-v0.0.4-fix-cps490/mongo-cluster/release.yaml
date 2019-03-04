@@ -1,0 +1,69 @@
+_config:
+  _metadata:
+    name: infra-mongo
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.0.3-hotfix"
+  controllers:
+    - containers:
+        - name: mongo
+          image: "[[ registry_library ]]/mongo:3.6.5"
+          probe:
+            liveness:
+              threshold:
+                success: 1
+                failure: 3
+              delay: 15
+              period: 20
+              handler:
+                type: TCP
+                method:
+                  port: 27017
+              timeout: 1
+          imagePullPolicy: IfNotPresent
+          args:
+            - mongod
+            - "--replSet"
+            - rs0
+            - "--bind_ip"
+            - 0.0.0.0
+            - "--smallfiles"
+            - "--noprealloc"
+          mounts:
+            - name: mongo-storage
+              path: /data/db
+          ports:
+            - port: 27017
+              protocol: TCP
+        - name: mongo-sidecar
+          image: "[[ registry_release ]]/mongo-k8s-sidecar:v0.0.3"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MONGO_SIDECAR_POD_LABELS
+              value: "controller.caicloud.io/release=infra-mongo"
+            - name: MONGO_PORT
+              value: "27017"
+            - name: KUBERNETES_MONGO_SERVICE_NAME
+              value: mgo-cluster
+      schedule:
+        antiaffinity:
+          pod:
+            terms:
+              - selector:
+                  labels:
+                    k8s-app: mongo
+                topologyKey: kubernetes.io/hostname
+            type: Required
+        labels:
+          k8s-app: mongo
+      controller:
+        replica: 3
+        domain: mgo-cluster
+      type: StatefulSet
+      volumes:
+        - name: mongo-storage
+          source:
+            path: /var/lib/compass/db/mongo
+          type: HostPath
