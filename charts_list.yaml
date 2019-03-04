@@ -72,15 +72,19 @@ spec:
   - repositoryFullName: caicloud/app-web
     resourcePaths:
       - release/app-web.yaml
+    targetPath: modularize-web
   - repositoryFullName: caicloud/devops-web
     resourcePaths:
       - release/devops-web.yaml
+    targetPath: modularize-web
   - repositoryFullName: caicloud/insight-web
     resourcePaths:
       - release/insight-web.yaml
+    targetPath: modularize-web
   - repositoryFullName: caicloud/resource-web
     resourcePaths:
       - release/resource-web.yaml
+    targetPath: modularize-web
   - repositoryFullName: caicloud/user-web
     resourcePaths:
       - release/m-user-web.yaml
