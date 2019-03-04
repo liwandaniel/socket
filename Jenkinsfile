@@ -146,6 +146,9 @@ spec:
                                 git remote remove origin
                                 git remote add upstream https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/caicloud/product-release
                                 git remote add origin https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/${GITHUB_USERNAME}/product-release
+
+                                # Prepare git email for CLA.
+                                git config --global user.email ${GIT_EMAIL}
                             """
                         }
                     }
@@ -157,9 +160,6 @@ spec:
                             sh """
                                 git fetch upstream
                                 git reset --hard upstream/${BASE_BRANCH}
-
-                                # Prepare git email for CLA.
-                                git config --global user.email ${GIT_EMAIL}
 
                                 # Collect & Update tags
                                 make update-tag CHART_LIST_PATH=./${CHARTS_LIST_FILE} GITHUB_TOKEN_PATH=./token TARGET_COLLECT_TAG_PATH=./${RELEASE_CAHRTS_FILE}
