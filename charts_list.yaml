@@ -92,6 +92,7 @@ spec:
   - repositoryFullName: caicloud/cyclone
     resourcePaths:
       - release/cyclone-server.yaml
+      - release/workflow-controller.yaml
     targetPath: devops
   - repositoryFullName: caicloud/devops-admin
     resourcePaths:

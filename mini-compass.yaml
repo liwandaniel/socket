@@ -65,6 +65,8 @@ spec:
       - cargo-admin
     - name: cyclone-server
       description: Core of CI/CD
+    - name: cyclone-workflow-controller
+      description: Core of CI/CD
   - name: cargo
     description: Docker registry
     required: true
