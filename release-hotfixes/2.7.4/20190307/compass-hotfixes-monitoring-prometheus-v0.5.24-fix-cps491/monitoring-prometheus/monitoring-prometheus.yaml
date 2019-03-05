@@ -1,0 +1,92 @@
+_config:
+  _metadata:
+    description: monitoring-prometheus
+    name: monitoring-prometheus
+    namespace: kube-system
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.3.0"
+  controllers:
+  - containers:
+    - args:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention=7d
+      - --web.enable-lifecycle
+      - --web.enable-admin-api
+      image: '[[ registry_release ]]/prometheus:release-v2.1.0'
+      imagePullPolicy: IfNotPresent
+      mounts:
+      - name: prometheus-shared
+        path: /etc/prometheus
+      - name: prometheus-config
+        path: /config
+      - name: prometheus-data
+        path: /prometheus
+      - name: etcd-tls-secret
+        path: /secrets/etcd
+      - name: kubelet-client-tls-secret
+        path: /secrets/kubelet
+      ports:
+      - port: 9090
+        protocol: TCP
+      resources:
+        limits:
+          cpu: '4'
+          memory: 8Gi
+        requests:
+          cpu: '2'
+          memory: 4Gi
+    - env:
+      - name: ALERTMANAGER_HOST
+        value: "[[ kube_apiserver_endpoint_ip ]]:6007"
+      image: '[[ registry_release ]]/reloader:v0.5.24' 
+      imagePullPolicy: Always
+      args:
+      - "--config-file=/config/prometheus.yml"
+      - "--config-envsubst-file=/etc/prometheus/prometheus.yml"
+      mounts:
+      - name: prometheus-config
+        path: /config
+      - name: prometheus-shared
+        path: /etc/prometheus
+    - args:
+      - --web.listen-address=:9101
+      image: '[[ registry_release ]]/hierarchy-exporter:v0.2'
+      imagePullPolicy: IfNotPresent
+      ports:
+      - port: 9101
+        protocol: TCP
+    controller:
+      replica: 1
+    services:
+    - name: prometheus
+      ports:
+      - port: 9090
+        protocol: TCP
+        targetPort: 9090
+      type: ClusterIP
+    type: StatefulSet
+    volumes:
+    - name: etcd-tls-secret
+      source:
+        target: etcd-tls-secret
+      type: Secret
+    - name: kubelet-client-tls-secret
+      type: Secret
+      source:
+        target: kubelet-client-tls-secret
+    - name: prometheus-config
+      source:
+        target: prometheus-config
+        optional: true
+      type: Config
+    - name: prometheus-data
+      source:
+        medium: ''
+      type: Scratch
+    - name: prometheus-shared
+      source:
+        medium: ''
+      type: Scratch
