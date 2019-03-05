@@ -457,7 +457,7 @@ def whetherPRMerged() {
             return false
         }
     } else {
-        return merged
+        return true
     }
 }
 
