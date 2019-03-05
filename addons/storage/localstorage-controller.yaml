@@ -35,3 +35,5 @@ _config:
       type: HostPath
       source:
         path: /dev
+    controller:
+      name: "localstorage-controller"

@@ -35,3 +35,5 @@ _config:
     pod:
       restart: Always
       termination: 30
+    controller:
+      name: "infra-patch"
