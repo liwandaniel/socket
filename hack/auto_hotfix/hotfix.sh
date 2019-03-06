@@ -10,7 +10,7 @@
 
 function usage {
   echo -e "Usage:"
-  echo -e " bash hotfix.sh [CHOICE] [UPLOAD_OSS_PATH] [HOTFIX_YAML_PATH]"
+  echo -e " bash hotfix.sh [CHOICE] [UPLOAD_OSS_PATH] [HOTFIX_YAML_PATH] [PRODUCT] [DATE_VERSION]"
   echo -e ""
   echo -e " The script sync hotfix images from cargo-infra.caicloud.xyz to harbor.caicloud.xyz"
   echo -e " and save images to tar.gz file, then upload packages to certain path of oss server"
@@ -22,10 +22,10 @@ function usage {
   echo -e ""
   echo -e "Example:"
   echo -e " make hotfix"
-  echo -e "     bash hotfix.sh hotfix /path/of/product-release/release-hotfixes/2.7.1/20180907"
+  echo -e "     bash hotfix.sh hotfix /path/of/product-release/release-hotfixes/2.7.1/20180907 compass 20180907"
   echo -e "     will save hotfixes to ./hotfixes"
   echo -e " upload hotfix"
-  echo -e "     bash hotfix.sh upload compass-v2.7.1-ga/ "
+  echo -e "     bash hotfix.sh upload compass-v2.7.1-ga/ compass 20180907"
   echo -e "     will upload to oss://infra-release/platform/compass-v2.7.1-ga/hotfixes/20180907/..."
 }
 # -----------------------------------------------------------------------------
@@ -39,6 +39,9 @@ CHOICE=${CHOICE:=hotfix}
 # get product name of current hotfix, default is compass
 PRODUCT=$3
 PRODUCT=${PRODUCT:=compass}
+
+DATE_VERSION=$4
+DATE_VERSION=${DATE_VERSION:=`date +%Y%m%d`}
 
 HOTFIX_LISTS_SUFFIX="${PRODUCT}-hotfixes"
 TARGET_PATH="./hotfixes"
@@ -61,11 +64,11 @@ function makeHotfix(){
         echo -e "$GREEN_COL ########## handling ${1} ##########$NORMAL_COL"
         # make new dir in TARGET_PATH to save image and yaml
         ADDON_NAME=`cat "${1}" | grep -e "name:.*" | awk NR==1 | awk -F': ' '{print $2}'`
-        HOTFIX_FULL_NAME="${HOTFIX_LISTS_SUFFIX}-${PRODUCT_VERSION}-"`date +%Y%m%d`"-${ADDON_NAME}"
+        HOTFIX_FULL_NAME="${HOTFIX_LISTS_SUFFIX}-${PRODUCT_VERSION}-"${DATE_VERSION}"-${ADDON_NAME}"
         mkdir "${TARGET_PATH}/${HOTFIX_FULL_NAME}"
         cp "${1}" "${TARGET_PATH}/${HOTFIX_FULL_NAME}"
         # get all images from yaml
-        images=`(cat "${1}" | grep -E -o "(\[\[ registry_release \]\]|\[\[ registry_library \]\]).*" | sed "s# #@#g;s#'##g")`
+        images=`(cat "${1}" | grep -E -o "(\[\[ registry_release \]\]|\[\[ registry_library \]\]).*" | sed "s/[ \t]*$//g;s# #@#g;s#'##g")`
         for image_str in ${images}
         do
             REGISTRY_PROJECT=`echo ${image_str} | awk -F "@" '{print $2}'`
@@ -97,7 +100,7 @@ function makeHotfix(){
                 echo -e "$GREEN_COL ${NEW_IMAGE} successfully pushed $NORMAL_COL"
                 IMAGE_NAME=`echo $image | cut -d \: -f 1`
                 IMAGE_TAG=`echo $image | cut -d \: -f 2`
-                FULL_NAME="${HOTFIX_LISTS_SUFFIX}-${PRODUCT_VERSION}-"`date +%Y%m%d`"-${IMAGE_NAME}-${IMAGE_TAG}-image.tar.gz"
+                FULL_NAME="${HOTFIX_LISTS_SUFFIX}-${PRODUCT_VERSION}-"${DATE_VERSION}"-${IMAGE_NAME}-${IMAGE_TAG}-image.tar.gz"
                 echo -e "$GREEN_COL saving image to file ${FULL_NAME}...... $NORMAL_COL"
                 docker save ${NEW_IMAGE} -o "${TARGET_PATH}/${HOTFIX_FULL_NAME}/${FULL_NAME}"
             fi
@@ -147,16 +150,18 @@ case $CHOICE in
     UPLOAD_OSS_PATH=$2
     # delete the "/" at the begin and end of path
     UPLOAD_OSS_PATH=`echo ${UPLOAD_OSS_PATH%*/} | sed 's#^/##g'`
+    mkdir -p /platform/${UPLOAD_OSS_PATH}/hotfixes/${DATE_VERSION}
     if [[ "`ls -A ${TARGET_PATH} | grep ${HOTFIX_LISTS_SUFFIX}`" = "" ]]; then
         echo -e "$RED_COL Getting hotfix packages failed $NORMAL_COL"
     else
         for file in `ls ${TARGET_PATH}`
         do
             if [ "${file##*.}" = "gz" ] || [ "${file##*.}" = "md"  ]; then
-                FULL_UPLOAD_PATH="oss://infra-release/platform/${UPLOAD_OSS_PATH}/hotfixes/`date +%Y%m%d`/${file}"
+                FULL_UPLOAD_PATH="oss://infra-release/platform/${UPLOAD_OSS_PATH}/hotfixes/${DATE_VERSION}/${file}"
                 echo -e "$GREEN_COL uploading ${file} to ${FULL_UPLOAD_PATH}...... $NORMAL_COL"
                 # upload to oss, need to set configuration on "~" path
                 ~/ossutil cp -ru "${TARGET_PATH}/${file}" ${FULL_UPLOAD_PATH}
+                cp "${TARGET_PATH}/${file}" /platform/${UPLOAD_OSS_PATH}/hotfixes/${DATE_VERSION}
             else
                 rm -rf "${TARGET_PATH}/${file}"
             fi

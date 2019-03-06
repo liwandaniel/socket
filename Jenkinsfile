@@ -24,6 +24,7 @@ def KUBECONFIG = "${params.kubeconfig}"
 def COMPASS_COMPONENT_URL = "${params.compass_component_url}"
 def RELEASE_OSS_PATH = "${params.release_oss_path}"
 def HOTFIX_DIR = "${params.hotfix_dir}"
+def DATE_VERSION = "${params.date_version}"
 def HOTFIX_YAML_PATH = "${params.hotfix_yaml_path}"
 def HOTFIX_OSS_PATH = "${params.hotfix_oss_path}"
 
@@ -80,6 +81,8 @@ spec:
       value: "${RELEASE_OSS_PATH}"
     - name: HOTFIX_DIR
       value: "${HOTFIX_DIR}"
+    - name: DATE_VERSION
+      value: "${DATE_VERSION}"
     - name: HOTFIX_YAML_PATH
       value: "${HOTFIX_YAML_PATH}"
     - name: HOTFIX_OSS_PATH
@@ -409,6 +412,10 @@ spec:
                         } else {
                             HOTFIX_YAML_DIR = "release-hotfixes"
                         }
+
+                        if (!params.date_version) {
+                            DATE_VERSION = "`date +%Y%m%d`"
+                        }
                         // bool params defined in Jenkins pipeline setting.
                         withCredentials([
                             [$class: "UsernamePasswordMultiBinding", credentialsId: "${RELEASE_CARGO_LOGIN}", passwordVariable: "RELEASE_CARGO_PASSWORD", usernameVariable: "RELEASE_CARGO_IP"],
@@ -427,19 +434,14 @@ spec:
                                 ansible -i /jenkins/ansible/inventory cargo -m copy -a "src=hack/auto_hotfix/env.sh dest=${HOTFIX_DIR} mode=0755"
                                 ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/source_registry/${SOURCE_REGISTRY}/g;s/source_project/${SOURCE_PROJECT}/g' ${HOTFIX_DIR}/env.sh"
                                 ansible -i /jenkins/ansible/inventory cargo -m shell -a "sed -i 's/target_registry/${TARGET_REGISTRY}/g;s/target_project/${TARGET_PROJECT}/g' ${HOTFIX_DIR}/env.sh"
-                                ansible -i /jenkins/ansible/inventory cargo -m shell -a "cd ${HOTFIX_DIR} && bash hotfix.sh hotfix ${HOTFIX_YAML_DIR}/${HOTFIX_YAML_PATH} ${PRODUCT_NAME}"
+                                ansible -i /jenkins/ansible/inventory cargo -m shell -a "cd ${HOTFIX_DIR} && bash hotfix.sh hotfix ${HOTFIX_YAML_DIR}/${HOTFIX_YAML_PATH} ${PRODUCT_NAME} ${DATE_VERSION}"
                             """
                         }
                     }
                     stage("Upload") {
-                        def upload = upload()
-                        if (upload) {
-                            sh """
-                                ansible -i /jenkins/ansible/inventory cargo -m shell -a "cd ${HOTFIX_DIR} && bash ${HOTFIX_DIR}/hotfix.sh upload ${HOTFIX_OSS_PATH} ${PRODUCT_NAME}"
-                            """
-                        } else {
-                            echo 'Why choose no?'
-                        }
+                        sh """
+                            ansible -i /jenkins/ansible/inventory cargo -m shell -a "cd ${HOTFIX_DIR} && bash ${HOTFIX_DIR}/hotfix.sh upload ${HOTFIX_OSS_PATH} ${PRODUCT_NAME} ${DATE_VERSION}"
+                        """
                     }
                 }
             }
