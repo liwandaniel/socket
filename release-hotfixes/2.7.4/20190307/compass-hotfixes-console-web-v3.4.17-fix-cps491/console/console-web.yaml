@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: 'v3.4.16'
+    version: 'v3.4.17'
   controllers:
     - containers:
         - env:
@@ -107,7 +107,7 @@ _config:
               value: '[[ platform_release_time ]]'
             - name: TUTORIAL_LINK
               value: 'tutorial'
-          image: '[[ registry_release ]]/console-web:v3.4.16'
+          image: '[[ registry_release ]]/console-web:v3.4.17'
           imagePullPolicy: IfNotPresent
           ports:
             - port: 3000
