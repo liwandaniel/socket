@@ -1,0 +1,35 @@
+_config:
+  _metadata:
+    description: cargo auth controller
+    name: cargo-auth-controller
+    namespace: default
+    template:
+      type: template.caicloud.io/application
+      version: 1.0.0
+    version: "v0.1.5-alpha"
+  controllers:
+  - type: Deployment
+    controller:
+      replica: 1
+    initContainers:
+    - image: '[[ registry_library ]]/busybox:1.30.0'
+      imagePullPolicy: IfNotPresent
+      name: dep
+      command:
+        - /bin/sh
+        - -c
+        - while [ "$(wget -qS http://cargo-admin:8080/api/v2/healthcheck 2>&1 | grep -i 'HTTP/' | awk '{ print $2 }')" != "200" ]; do echo "cargo-admin not ready"; sleep 3; done
+    containers:
+    - image: '[[ registry_release ]]/cargo-auth-controller:v0.1.5-alpha'
+      imagePullPolicy: IfNotPresent
+      name: controller
+      command:
+        - /cargo-auth-controller
+        - -logtostderr=true
+      resources:
+        limits:
+          cpu: 500m
+          memory: 500Mi
+        requests:
+          cpu: 200m
+          memory: 200Mi
