@@ -365,6 +365,7 @@ spec:
                                 ansible -i /jenkins/ansible/inventory_cluster cargo -m copy -a "src=hack/auto_installation/cluster_setting.sh dest=/root/cluster_setting.sh mode=0644"
                                 ansible -i /jenkins/ansible/inventory_cluster cargo -m shell -a "docker login ${SOURCE_REGISTRY} -u ${SOURCE_REGISTRY_USER} -p ${SOURCE_REGISTRY_PASSWORD}"
                                 ansible -i /jenkins/ansible/inventory_cluster cargo -m shell -a "docker login ${TARGET_REGISTRY} -u ${TARGET_REGISTRY_USER} -p ${TARGET_REGISTRY_PASSWORD}"
+                                ansible -i /jenkins/ansible/inventory_cluster cargo -m shell -a "docker rm -f pangolin >/dev/null 2>&1 || true"
                                 ansible -i /jenkins/ansible/inventory_cluster cargo -m shell -a "docker run --rm --name pangolin -e SOURCE_REGISTRY=${SOURCE_REGISTRY} \
                                                                                                     -e SOURCE_REGISTRY_USER=${SOURCE_REGISTRY_USER} -e SOURCE_PROJECT=${SOURCE_PROJECT} \
                                                                                                     -e SOURCE_REGISTRY_PASSWORD=${SOURCE_REGISTRY_PASSWORD} \

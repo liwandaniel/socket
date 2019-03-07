@@ -11,7 +11,9 @@ kubectl delete release `kubectl get release --no-headers | awk '{print $1}'`
 kubectl delete pvc `kubectl get pvc --no-headers | awk '{print $1}'`
 
 while [ `/pangolin/kubectl get pods --no-headers | grep -v heketi | grep -v plugin | wc -l` -ge 1 ];
-do echo "waiting for pods to be killed"; sleep 10; done;
+do echo "waiting for pods to be killed..."; sleep 10; done;
+
+sleep 100
 
 # create secret for cargo
 kubectl create secret docker-registry infra-cargo --docker-server=${SOURCE_REGISTRY} \
@@ -46,7 +48,7 @@ python3 amctl.py init all
 sed -i 's/Pwd123456/'${SOURCE_REGISTRY_PASSWORD}'/g' /pangolin/addons/cargo/cargo-admin.yaml
 
 until /pangolin/kubectl get pods | grep am-master | grep Running;
-do echo "waiting for master to be ready"; sleep 5; done;
+do echo "waiting for master to be ready..."; sleep 5; done;
 
 python3 amctl.py install -p /pangolin/addons/
 
