@@ -52,7 +52,11 @@ done
 function load_all_images() {
     # Untar cargo resource
     cd $PANGOLIN_ROOT && tar -xvf "$PANGOLIN_ROOT/pangolin-deploy-images.tar.gz" -C "$COMMON_ROOT/cargo-registry"
-    docker restart harbor-ui
+    docker restart harbor-ui >/dev/null 2>&1 || docker restart cargo-core >/dev/null 2>&1
+    if [ $? != 0 ]; then
+        echo -e "$RED_COL restart cargo failed $NORMAL_COL"
+        exit 1
+    fi
     cd $PANGOLIN_ROOT
 }
 
