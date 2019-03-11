@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.4"
+    version: "v0.1.5-alpha"
   controllers:
   - type: Deployment
     controller:
@@ -20,7 +20,7 @@ _config:
         - -c
         - while [ "$(wget -qS http://cargo-admin:8080/api/v2/healthcheck 2>&1 | grep -i 'HTTP/' | awk '{ print $2 }')" != "200" ]; do echo "cargo-admin not ready"; sleep 3; done
     containers:
-    - image: '[[ registry_release ]]/cargo-auth-controller:v0.1.4'
+    - image: '[[ registry_release ]]/cargo-auth-controller:v0.1.5-alpha'
       imagePullPolicy: IfNotPresent
       name: controller
       command:

@@ -6,18 +6,18 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.5.0-alpha.1"
+    version: "v0.5.0-alpha.2"
   controllers:
   - containers:
     - env:
       - name: ENV_LOG_LEVEL
         value: info
       - name: ENV_LISTEN_PORT
-        value: '32233'
-      image: '[[ registry_release ]]/storage-localstorage-scheduler:v0.5.0-alpha.1'
+        value: '2233'
+      image: '[[ registry_release ]]/storage-localstorage-scheduler:v0.5.0-alpha.2'
       imagePullPolicy: IfNotPresent
       ports:
-      - port: 32233
+      - port: 2233
         protocol: TCP
     controller:
       replica: 1
@@ -27,7 +27,7 @@ _config:
     services:
     - name: localstorage-scheduler
       ports:
-      - port: 32233
+      - port: 2233
         protocol: TCP
       type: ClusterIP
     type: Deployment

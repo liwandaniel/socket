@@ -6,10 +6,10 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: 'v0.4.2'
+    version: 'v0.4.4'
   controllers:
   - containers:
-    - image: '[[ registry_release ]]/modularize-web-gateway:v0.4.2'
+    - image: '[[ registry_release ]]/modularize-web-gateway:v0.4.4'
       imagePullPolicy: IfNotPresent
       env:
         - name: COOKIE_NAME
@@ -52,7 +52,7 @@ _config:
                 apipattern: "^/api/(devops|cargo)(/|\\b$)"
               - name: insight
                 endpoint: http://insight-web:3004
-                apipattern: "^/api/(overview|alerting|monitoring|journal_v3|event_v2|groups|contacts|smtpconfigs|testemail)(/|\\b$)"
+                apipattern: "^/api/(overview|alerting|monitoring|journal_v3|event_v2|groups|contacts|smtpconfigs|testemail|logEndpoint)(/|\\b$)"
               - name: user-web
                 endpoint: http://m-user-web:3006
                 apipattern: "^/api/(teams|profile|auth_v2)(/|\\b$)"

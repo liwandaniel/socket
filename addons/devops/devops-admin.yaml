@@ -6,26 +6,14 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.7.0-beta.1"
+    version: "v0.8.0-alpha"
   controllers:
   - containers:
-    - env:
-      - name: CYCLONE_SERVER
-        value: http://cyclone-server:7099
-      - name: STORAGE_ADMIN_SERVER
-        value: storage-admin:2333
-      - name: CLUSTER_ADMIN_SERVER
-        value: cds-server:9000
-      - name: MONGO_SERVERS
-        value: '[[ platform_mongo_host ]]'
-      - name: CARGO_ADMIN_SERVER
-        value: cargo-admin:8080
-      - name: TENANT_ADMIN_SERVER
-        value: tenant-admin:8080
-      - name: NOTIFY_ADMIN_SERVER
-        value: notify-admin:8900
-      image: '[[ registry_release ]]/devops-admin:v0.7.0-beta.1'
+    - image: '[[ registry_release ]]/devops-admin:v0.8.0-alpha'
       imagePullPolicy: IfNotPresent
+      mounts:
+      - name: config
+        path: /app/etc
       ports:
       - port: 7088
         protocol: TCP
@@ -39,4 +27,31 @@ _config:
         targetPort: 7088
       type: ClusterIP
     type: Deployment
-
+    volumes:
+    - name: config
+      source:
+        target: devops-admin-config
+        items:
+        - key: devops-admin.json
+          path: devops-admin-config.json
+      type: Config
+    configs:
+    - name: devops-admin-config
+      data:
+      - key: devops-admin.json
+        value: |
+          {
+            "logging": {
+              "level": "info"
+            },
+            "host": "0.0.0.0",
+            "port": 7088,
+            "addresses": {
+              "cycloneServer": "cyclone-server:7099",
+              "storageAdmin": "storage-admin:2333",
+              "clusterAdmin": "cds-server:9000",
+              "cargoAdmin": "cargo-admin:8080",
+              "tenantAdmin": "tenant-admin:8080",
+              "notifyAdmin": "notify-admin:8900"
+            }
+          }

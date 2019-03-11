@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.5.0-alpha.1"
+    version: "v0.5.0-alpha.2"
   controllers:
   - type: DaemonSet
     containers:
@@ -16,7 +16,7 @@ _config:
       - name: ENV_CONTROLLER_RESYNC_PERIOD_SECOND
         value: '60'
       # NODE_NAME is default env variable
-      image: '[[ registry_release ]]/storage-localstorage-controller:v0.5.0-alpha.1'
+      image: '[[ registry_release ]]/storage-localstorage-controller:v0.5.0-alpha.2'
       imagePullPolicy: IfNotPresent
       resources:
         limits:

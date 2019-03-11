@@ -41,7 +41,7 @@ _config:
     - env:
       - name: ALERTMANAGER_HOST
         value: "[[ kube_apiserver_endpoint_ip ]]:6007"
-      image: '[[ registry_release ]]/reloader:v0.6.0-alpha.0' 
+      image: '[[ registry_release ]]/reloader:v0.6.0-beta.0' 
       imagePullPolicy: Always
       args:
       - "--config-file=/config/prometheus.yml"

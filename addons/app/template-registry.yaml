@@ -6,13 +6,13 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.1.2"
+    version: "v0.1.3"
   controllers:
   - containers:
     - env:
       - name: MONGO_HOST
         value: '[[ platform_mongo_host ]]'
-      image: '[[ registry_release ]]/template-registry:v0.1.2'
+      image: '[[ registry_release ]]/template-registry:v0.1.3'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 8080

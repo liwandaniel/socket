@@ -6,7 +6,7 @@ _config:
     template:
       type: template.caicloud.io/application
       version: 1.0.0
-    version: "v0.3.25-alpha.0"
+    version: "v1.0.0-rc.1.1"
   controllers:
   - containers:
     - env:
@@ -88,11 +88,6 @@ _config:
           type: Config
           name: platform-config
           key: "cleverServer"
-      - name: CLEVER_BASE_PATH
-        from:
-          type: Config
-          name: platform-config
-          key: "cleverBasePath"
       - name: CLEVER_PORT
         value: "6060"
       - name: 'USERWEB_SERVER'
@@ -116,7 +111,7 @@ _config:
         value: '[[ platform_release_version ]]'
       - name: PRODUCT_RELEASE_TIME
         value: '[[ platform_release_time ]]'
-      image: '[[ registry_release ]]/mdz-user-web:v0.3.25-alpha.0'
+      image: '[[ registry_release ]]/mdz-user-web:v1.0.0-rc.1.1'
       imagePullPolicy: IfNotPresent
       ports:
       - port: 3006

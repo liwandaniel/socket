@@ -101,5 +101,3 @@ _config:
         target: filebeat-output
         optional: true
       type: Config
-    controller:
-      name: "logging-filebeat"
